@@ -98,7 +98,7 @@ export default function ChooseShowtime() {
                   style={{ fontWeight: "bold", fontSize: 16 }}
                 >
                   <Breadcrumb.Item key="home">
-                    <Link to="/">Century Cinema</Link>
+                    <Link to="/">Meda|Ticket</Link>
                   </Breadcrumb.Item>
                   <Breadcrumb.Item key={pathSnippets[2]}>
                     <Link to={`/${pathSnippets[0]}/${pathSnippets[1]}`}>

@@ -50,7 +50,7 @@ function Landing() {
             fontWeight: "bold",
           }}
         >
-          Century Cinema
+          Meda|Ticket
         </div>
         <div
           style={{

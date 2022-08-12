@@ -137,7 +137,7 @@ export default function Tickets() {
                     }}
                   >
                     Meda Ticket{" "}
-                    <div style={{ fontWeight: "500" }}>Century Cinema</div>
+                    <div style={{ fontWeight: "500" }}>Meda|Ticket</div>
                   </div>
                   <div
                     style={{

@@ -35,7 +35,7 @@ function SeatsDetail({ showtime }: any) {
           <Typography.Text>Cinema</Typography.Text>
         </Col>
         <Col>
-          <Typography.Text strong>Century Cinema</Typography.Text>
+          <Typography.Text strong>Meda|Ticket</Typography.Text>
         </Col>
       </Row>
       <Row justify="start" style={{ height: "2em", margin: "5px 0px" }}>

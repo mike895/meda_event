@@ -180,7 +180,7 @@ function TicketSlider({ ticket }: Props) {
                   level={4}
                   style={{ fontWeight: "normal", marginTop: 10 }}
                 >
-                  Ticket : Century Cinema
+                  Ticket : Meda|Ticket
                   <Divider
                     style={{
                       margin: 0,
