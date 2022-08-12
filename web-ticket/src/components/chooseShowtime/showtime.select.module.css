@@ -1,0 +1,12 @@
+.button-container{
+    display: flex;
+    padding: 10px;
+    border: 1px solid #C3CAD2;
+    border-radius: 5px;
+    background-color: white;
+    font-weight: 500;
+    font-size: 1.1em;
+    color: grey;
+    cursor:pointer;
+    transition: all 0.3s linear;
+}

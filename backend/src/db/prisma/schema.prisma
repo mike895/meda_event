@@ -1,0 +1,225 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserRole {
+  id    Int    @id @default(autoincrement())
+  name  String
+  users User[]
+
+  @@map("roles")
+}
+
+model User {
+  id                   String                @id @default(uuid())
+  firstName            String
+  lastName             String
+  username             String                @unique
+  normalizedUsername   String                @unique
+  password             String
+  accountLockedOut     Boolean               @default(false)
+  accessFailedCount    Int                   @default(0)
+  phoneNumber          String                @unique
+  phoneNumberConfirmed Boolean               @default(false)
+  registeredBy         User?                 @relation("RegisteredBy", fields: [registrantId], references: [id])
+  registrantId         String?
+  createdAt            DateTime              @default(now())
+  User                 User[]                @relation("RegisteredBy")
+  TicketValidatorUser  TicketValidatorUser[]
+
+  roles      UserRole @relation(fields: [userRoleId], references: [id])
+  userRoleId Int
+  address    String?
+  Event      Event[]
+
+  @@map("users")
+}
+
+model TicketValidatorUser {
+  id                   String           @id @default(uuid())
+  firstName            String
+  lastName             String
+  username             String           @unique
+  normalizedUsername   String           @unique
+  password             String
+  accountLockedOut     Boolean          @default(false)
+  accessFailedCount    Int              @default(0)
+  phoneNumber          String           @unique
+  phoneNumberConfirmed Boolean          @default(false)
+  registeredBy         User             @relation(fields: [registrantId], references: [id])
+  registrantId         String
+  createdAt            DateTime         @default(now())
+  address              String?
+  TicketsOnSeats       TicketsOnSeats[]
+
+  @@map("ticketvalidatoruser")
+}
+
+model Event {
+  id             String          @id @default(uuid())
+  title          String          @unique
+  synopsis       String
+  tags           String[]
+  runtime        Int
+  posterImg      String
+  eventOrganizer String
+  eventAdderId   String
+  trailerLink    String?
+  addedAt        DateTime        @default(now())
+  addedBy        User            @relation(fields: [eventAdderId], references: [id])
+  EventSchedule  EventSchedule[]
+
+  @@map("event")
+}
+
+model EventHall {
+  id           String       @id @default(uuid())
+  name         String
+  regularSeats SeatColumn[] @relation("EventToRegularSeats")
+  // vipSeats     SeatColumn[] @relation("EventToVipSeats")
+  // ShowTime     ShowTime[]
+
+  ShowTime ShowTime[]
+  @@map("eventhall")
+}
+
+model Speakers {
+  id              String         @id @default(uuid())
+  firstName       String
+  lastName        String
+  biography       String
+  ShowTime        ShowTime[]
+  EventSchedule   EventSchedule? @relation(fields: [eventScheduleId], references: [id])
+  eventScheduleId String?
+
+  @@map("speakers")
+}
+
+model SeatColumn {
+  id                 String     @id @default(uuid())
+  columnName         String
+  columnOrder        Int
+  columnType         ColumnType
+  seats              Seat[]
+  EventHallRegular   EventHall? @relation("EventToRegularSeats", fields: [eventHallRegularId], references: [id])
+  eventHallRegularId String?
+
+  // EventHallVip       EventHall? @relation("EventToVipSeats", fields: [eventHallVipId], references: [id])
+  // eventHallVipId     String?
+  @@map("seatcolumn")
+}
+
+model Seat {
+  id             String           @id @default(uuid())
+  seatName       String
+  SeatColumn     SeatColumn       @relation(fields: [seatColumnId], references: [id])
+  seatColumnId   String
+  TicketsOnSeats TicketsOnSeats[]
+  seatType       SeatType
+
+  // status     String
+  @@map("seat")
+}
+
+model ShowTime {
+  id                   String         @id @default(uuid())
+  time                 DateTime
+  // eventType             EventType
+  eventHall            EventHall      @relation(fields: [eventHallId], references: [id])
+  eventHallId          String
+  EventSchedule        EventSchedule? @relation(fields: [eventEventScheduleId], references: [id])
+  eventEventScheduleId String?
+  EventTicket          EventTicket[]
+  active               Boolean        @default(true)
+  Speakers             Speakers?      @relation(fields: [speakersId], references: [id])
+  speakersId           String?
+
+  @@map("showtime")
+}
+
+// enum EventType {
+//   THREE @map("3D")
+//   TWO   @map("2D")
+// }
+
+enum ColumnType {
+  SEATMAP
+  PADDING
+}
+
+model EventSchedule {
+  id                 String     @id @default(uuid())
+  date               DateTime
+  event              Event      @relation(fields: [eventId], references: [id])
+  eventId            String
+  regularTicketPrice Float      @default(80)
+  showTimes          ShowTime[]
+  speakers           Speakers[]
+  // vipTicketPrice     Float      @default(100)
+
+  @@map("eventschedule")
+}
+
+// Tickets grouped together
+model EventTicket {
+  id              String           @id @default(uuid())
+  userId          String
+  createdAt       DateTime         @default(now())
+  TicketsOnSeats  TicketsOnSeats[]
+  referenceNumber String           @unique
+  amount          Float
+  paymentMethod   String?
+  paymentStatus   PaymentStatus
+
+  showTime   ShowTime? @relation(fields: [showTimeId], references: [id])
+  showTimeId String?
+  // This is the Phonenumber(Buyers)
+  @@map("eventticket")
+}
+
+// A single ticket
+model TicketsOnSeats {
+  eventTicket           EventTicket          @relation(fields: [eventTicketId], references: [id])
+  eventTicketId         String
+  seat                  Seat                 @relation(fields: [seatId], references: [id])
+  seatId                String
+  ticketKey             String               @unique @default(uuid())
+  ticketStatus          TicketStatus         @default(ACTIVE)
+  redeemdBy             TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
+  redeemdAt             DateTime?
+  ticketValidatorUserId String?
+  receiptStatus         ReceiptStatus        @default(NOTISSUED)
+  fsNumber              String?
+
+  //! Default value should be removed later
+  @@id([eventTicketId, seatId])
+  @@map("ticketsonseats")
+}
+
+enum TicketStatus {
+  REDEEMED
+  ACTIVE
+}
+
+enum SeatType {
+  REGULAR
+  VIP
+}
+
+enum ReceiptStatus {
+  ISSUED
+  NOTISSUED
+}
+
+enum PaymentStatus {
+  PAYED
+  CANCELED
+  PENDING
+  TOBERETURNED
+}

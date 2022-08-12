@@ -1,0 +1,28 @@
+.content-row{
+    margin: 25px 0px;
+    /* background-color: red; */
+}
+.content-container{
+    background-color: #F9FCFF;
+    /* height: 30vh; */
+    /* width: 60vh; */
+    display: flex;
+    flex-direction: column;
+    padding: 25px 25px;
+    /* min-height: 340px; */
+    padding-bottom: 40px;
+    /* align-items: flex-start; */
+    /* background-color: aqua; */
+}
+.image-col{
+    width: 200px !important;
+    margin-right: 30px;
+}
+@media only screen and (max-width: 767px) {
+    .image-col{ 
+            width: 100% !important;
+        justify-content: center !important;
+        display: flex !important;
+
+    }
+  }

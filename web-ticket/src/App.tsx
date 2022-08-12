@@ -1,0 +1,33 @@
+import React from "react";
+import "./App.less";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Landing from "./routes/Landing";
+import ChooseShowtime from "./routes/ChooseShowtime";
+import ChooseSeat from "./routes/ChooseSeat";
+import { AuthProvider } from "./context/authContext";
+import AuthModal from "./components/auth/authModal";
+import Tickets from "./routes/Tickets";
+import Custom404 from "./routes/404";
+import MyTickets from "./routes/myTickets";
+function App() {
+  return (
+    <AuthProvider>
+      <AuthModal />
+      <BrowserRouter basename="/">
+        <Routes>
+          <Route path="*" element={<Custom404 />} />
+          <Route path="/" element={<Landing />}></Route>
+          <Route path="/schedule/:id" element={<ChooseShowtime />}></Route>
+          <Route
+            path="/schedule/:id/showtime/:st"
+            element={<ChooseSeat />}
+          ></Route>
+          <Route path="/tickets/:id" element={<Tickets />}></Route>
+          <Route path="/my-tickets" element={<MyTickets />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
+
+export default App;

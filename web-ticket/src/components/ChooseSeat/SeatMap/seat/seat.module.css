@@ -1,0 +1,49 @@
+.error-animation {
+    animation: sampleanimation 0.5s forwards;
+  }
+  
+  @keyframes sampleanimation {
+    /* 0% {
+      background-color:grey;
+  
+    } */
+    50% {
+      background-color:red;
+    }
+  }
+.seat{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  margin: 3px;
+  width: 35px;
+  height: 35px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  user-select: none;
+  font-size: 12px;
+}
+  
+.available-selection{
+    background-color: white;
+    border: 1px solid #c3cad2;
+}
+.booked-selection{
+    background-color: #c3cad2;
+    border: 1px solid #c3cad2;
+}
+.selected-selection{
+    background-color: #F56A05;
+    border: 1px solid white;
+    color: white;
+    font-weight: bolder;
+    /* font-size: 9 !important; */
+}
+.unavailable{
+    background-color: rgba(0, 0, 0, 0.842);
+    color: white;
+    font-weight: bolder;
+    /* font-size: 9 !important; */
+}

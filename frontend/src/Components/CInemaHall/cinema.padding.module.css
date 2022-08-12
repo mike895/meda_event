@@ -1,0 +1,41 @@
+.seatPadding {
+    width:80px;
+    border-radius: 2px;
+    margin: 10px;
+    border:rgba( 0, 0, 0, 0.1 ) 1px solid;   
+}
+.deleteConfirm{
+    display: none;
+}
+.deleteConfirm:hover{
+    display: flex !important;
+  -webkit-animation-name: fadeIn;
+  -webkit-animation-duration: 0.5s;
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+}
+.seatPadding:hover .deleteConfirm{
+    display: flex !important;
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: 0.5s;
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+}
+
+@-webkit-keyframes fadeIn { 
+    0% { opacity: 0; }
+    20% { opacity: 0; }
+    40% { opacity: 0.3; }
+    60% { opacity: 0.5; }
+    80% { opacity: 0.9; }
+    100% { opacity: 1; }
+  }
+  
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    20% { opacity: 0; }
+    40% { opacity: 0.3; }
+    60% { opacity: 0.5; }
+    80% { opacity: 0.9; }
+    100% { opacity: 1; }
+  }

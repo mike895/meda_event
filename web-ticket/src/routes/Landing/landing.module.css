@@ -1,0 +1,105 @@
+.calender-active{
+    width: 80px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border-color: #F56A05;
+    margin:10px 10px;
+    border-width: 3px;
+    border-radius: 10px;
+    border-style: solid;
+    overflow: hidden;
+}
+.calender-active .top-row{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #F56A05;
+}
+.calender-active .top-row .text{
+    color: white;
+    padding: 3px;
+    text-transform: uppercase;
+    text-align: center;
+}
+.calender-active .middle-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.calender-active .middle-row .text{
+    color: #F56A05;
+    padding: 0px;
+    font-size: 25px;
+    font-weight: bold;
+}
+.calender-active .bottom-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.calender-active .bottom-row .text{
+    color: #F56A05;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+
+
+.calender-not-active{
+    width: 80px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border-color: #B8B8B8;
+    margin:10px 10px;
+    border-width: 3px;
+    border-radius: 10px;
+    border-style: solid;
+    overflow: hidden;
+}
+
+.calender-not-active .top-row{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #B8B8B8;
+}
+.calender-not-active .top-row .text{
+    color: white;
+    padding: 3px;
+    text-transform: uppercase;
+    text-align: center;
+}
+.calender-not-active .middle-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.calender-not-active .middle-row .text{
+    color: #B8B8B8;
+    padding: 0px;
+    font-size: 25px;
+    font-weight: bold;
+}
+.calender-not-active .bottom-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.calender-not-active .bottom-row .text{
+    color: #B8B8B8;
+    text-align: center;
+    text-transform: uppercase;
+}
+

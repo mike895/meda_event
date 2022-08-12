@@ -1,0 +1,27 @@
+.content-row{
+    margin: 25px 0px;
+    /* background-color: red; */
+}
+.content-container{
+    background-color: #F9FCFF;
+    /* height: 30vh; */
+    /* width: 60vh; */
+    display: flex;
+    flex-direction: column;
+    padding: 25px 25px;
+    /* min-height: 340px; */
+    padding-bottom: 40px;
+    width: 100%;
+    margin: 0 10vw;
+    /* align-items: flex-start; */
+    /* background-color: aqua; */
+}
+@media only screen and (max-width: 767px) {
+    .content-row{
+        margin: 0px 0px !important;
+        /* background-color: red; */
+    }
+    .content-container{
+        margin: 0;
+    }
+  }
