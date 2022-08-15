@@ -80,17 +80,6 @@ export default function AddMovie() {
   };
 
 
-const uploadFile = (values) = {
-  // console.log(values)
-
-}
-
-const URL = "http://localhost:3000";
-
-// const dummyRequest = (arg1, arg2)=>{
-//   console.log("dummmmmm")
-// }
-
   const validateMessages = {
     required: "This felid is required!",
   };
@@ -131,20 +120,7 @@ const URL = "http://localhost:3000";
     <>
       <div style={BODY}>
         <div style={FORM_CONTENT}>
-          <Title level={2} style={{ margin: "0px 0px 20px 0px" }}>
-            {"Add an Event"}
-          </Title>
-          <Form name="imageUpload" onFinish={()=>uploadFile}>
-              <Form.Item>
-                  <Upload >  
-                    <Button>Upload</Button> 
-                  </Upload>
-                  <Button type="primary"
-                  htmlType="submit">
-                    Upload
-                  </Button>
-              </Form.Item>
-              </Form>
+
           <Form
             style={FORM_SECTION}
             initialValues={{ remember: true }}
@@ -207,7 +183,7 @@ const URL = "http://localhost:3000";
             >
              
 
-              {/* <Input
+               <Input
               onChange={(val)=>{
                 setImageLQPreviewUrl(val.target.value);
               }}
@@ -220,7 +196,7 @@ const URL = "http://localhost:3000";
                     <InfoCircleTwoTone style={{ color: "rgba(0,0,0,.45)" }} />
                   </Tooltip>
                 }
-              /> */}
+              /> 
             </Form.Item>
 
         
@@ -266,8 +242,8 @@ const URL = "http://localhost:3000";
               </Button>
             </Form.Item>
           </Form>
-        </div>
-      </div>
+	</div>
+ 	</div>
     </>
   );
 }

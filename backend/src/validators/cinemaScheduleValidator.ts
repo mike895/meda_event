@@ -42,5 +42,5 @@ export const addCinemaScheduleSchema = Joi.object().keys({
     scheduleRange: Joi.array().items(Joi.date()).required(),
     event: Joi.string().required(),
     showTimes: Joi.array().items(Joi.object().keys({ time: Joi.date(), eventHall: Joi.string().required(), })),
-    speakers: Joi.array().items(Joi.object().keys({ firstName: Joi.string().required(), lastName: Joi.string().required(), biography: Joi.string().required(), })),
+    speakers: Joi.array().items(Joi.object().keys({ firstName: Joi.string().required(), lastName: Joi.string().required(), biography: Joi.string().required(), posterImg: Joi.string().uri().required(), })),
 });

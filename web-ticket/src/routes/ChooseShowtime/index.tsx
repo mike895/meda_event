@@ -174,7 +174,7 @@ export default function ChooseShowtime() {
                             <Card
                             hoverable
                             style={{ width: 260, height: 750 }}
-                            cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                            cover={<img alt="Speaker Image" src={e.posterImg} />}
                           >
                             <Meta title= {e.firstName+" "+ e.lastName} description= {e.biography} />
                           </Card>

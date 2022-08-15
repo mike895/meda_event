@@ -29,7 +29,7 @@ export default class EventScheduleController {
         // vipTicketPrice: number;
         regularTicketPrice: number;
         showTimes: { eventType: string; time: string; eventHall: string }[];
-        speakers: { firstName: string; lastName: string; biography: string }[];
+        speakers: { firstName: string; lastName: string; posterImg: string; biography: string  }[];
       } = req.body;
       const scheduleStartDate = dayjs(scheduleRange[0]);
       const scheduleEndDate = dayjs(scheduleRange[1]);
@@ -57,13 +57,15 @@ export default class EventScheduleController {
        firstName: string;
        lastName: string; 
        biography: string;
+	posterImg: string;
       }[] = [];
       speakers.forEach((e) => {
         speakerArray.push({
           firstName: e.firstName, 
           lastName: e.lastName, 
           biography: e.biography,
-        });
+        posterImg: e.posterImg,
+	});
       });
 
       await prisma.$transaction([
@@ -96,6 +98,7 @@ export default class EventScheduleController {
                         firstName: e.firstName, 
                         lastName: e.lastName, 
                         biography: e.biography,
+			posterImg: e.posterImg,
                       };
                     }),
                   ],
@@ -429,7 +432,7 @@ async AddSpeakerToSchedule(
       const {
         speakers,
       }: {
-        speakers: { firstName: string; lastName: string; biography: string }[];
+        speakers: { firstName: string; lastName: string; posterImg: string; biography: string }[];
       } = req.body;
       const scheduleId = req.params.id;
 
@@ -437,12 +440,14 @@ async AddSpeakerToSchedule(
        firstName: string;
        lastName: string; 
        biography: string;
+	posterImg: string;
       }[] = [];
       speakers.forEach((e) => {
         speakerArray.push({
           firstName: e.firstName, 
           lastName: e.lastName, 
           biography: e.biography,
+	posterImg: e.posterImg,
         });
       });
 
@@ -459,6 +464,8 @@ async AddSpeakerToSchedule(
                     firstName: e.firstName, 
                     lastName: e.lastName, 
                     biography: e.biography,
+		    posterImg: e.posterImg,
+
                   };
                 }),
               ],

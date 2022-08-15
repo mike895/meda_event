@@ -25,17 +25,17 @@ export default class Server {
 
   public config(app: Application): void {
 
-    const storage = multer.diskStorage({
-      destination:(req,file,cb)=>{
-        cb(null,'public/images/'){
-          
-        }
-      },
-      filename: (req,file,cb)=>{
-        cb(null,file.originalname)
-      }
-    })
-    const upload = multer({storage:storage})
+//    const storage = multer.diskStorage({
+//      destination:(req,file,cb)=>{
+//        cb(null,'public/images/'){
+ //         
+ //       }
+ //     },
+ //     filename: (req,file,cb)=>{
+ //       cb(null,file.originalname)
+ //     }
+ //   })
+  //  const upload = multer({storage:storage})
 
     const accessLogStream: WriteStream = fs.createWriteStream(
       path.join(__dirname, '../logs/access.log'),
@@ -56,12 +56,12 @@ export default class Server {
     passportMiddleware(passport);
 
     app.use(unCaughtErrorHandler);
-    app.use('/upload',(req,res)=>{
-      console.log(req)
-      res.status(200).json({
-      success: 'Success',
-      });                     
-    })
+//    app.use('/upload',(req,res)=>{
+//      console.log(req)
+//      res.status(200).json({
+//      success: 'Success',
+ //     });                     
+ //   })
   }
 
 }
