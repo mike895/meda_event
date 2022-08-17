@@ -823,7 +823,7 @@ export default class TicketController {
           });
           await sendSmsMessage(
             allFinance.map((e) => e.phoneNumber),
-            `Century Event: ${
+            `Meda|Ticket: ${
               eventTicket.TicketsOnSeats.length
             } tickets for the event ${
               eventTicket.showTime!.EventSchedule?.event.title
@@ -837,7 +837,7 @@ export default class TicketController {
           // Send the user a notification and a url to checkout his link
           await sendMessage(
             eventTicket.userId,
-            `Century Event: Dear user You have bought ${
+            `Meda|Ticket: Dear user You have bought ${
               eventTicket.TicketsOnSeats.length
             } tickets for the event ${
               eventTicket.showTime!.EventSchedule?.event.title

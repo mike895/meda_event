@@ -20,9 +20,9 @@ import TicketSlider from "../../components/tickets/ticketSlider";
 const { Paragraph } = Typography;
 let siteUrl = "";
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-  siteUrl = "http://localhost:3000";
+  siteUrl = "http://3.70.8.102:3000";
 } else {
-  siteUrl = "http://165.227.142.142";
+  siteUrl = "http://3.70.8.102";
 }
 
 export default function Tickets() {
@@ -181,6 +181,8 @@ export default function Tickets() {
                           fontSize: 16,
                         }}
                       >
+                        { (ticket?.paymentStatus == "PAYED") ?
+                  
                         <Paragraph
                           copyable={{
                             text: `${siteUrl}/tickets/${ticket?.id}`,
@@ -188,7 +190,8 @@ export default function Tickets() {
                           strong
                         >
                           Copy link :
-                        </Paragraph>
+                        </Paragraph> :null
+                       }
                       </div>
                       <TicketWarning />
                     </>
@@ -222,8 +225,8 @@ export default function Tickets() {
                   )}
                 </div>
               </Col>
-
-              {ticket?.showTime != null ? (
+                    
+              {(ticket?.paymentStatus == "PAYED") && ticket?.showTime != null ? (
                 <TicketSlider ticket={ticket} />
               ) : null}
             </Row>

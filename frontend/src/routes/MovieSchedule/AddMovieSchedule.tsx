@@ -47,7 +47,7 @@ const uploadHandler = (e: any) => {
   console.log("fileee",formData)
 
 
-  axios.post('http://localhost:3000/upload/', formData)
+  axios.post('http://3.70.8.102:3000/upload/', formData)
   .then((res) => {
     console.log("yesssss",res)
     // setposterImg(res.data.name);

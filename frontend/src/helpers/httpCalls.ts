@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 let baseUrl: string;
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  baseUrl = "http://localhost:3000"
+  baseUrl = "http://3.70.8.102:3000"
 } else {
   baseUrl = ""
 }
@@ -608,6 +608,7 @@ export const getSalesReport = async (data: any) => {
     },
     body: JSON.stringify(data),
   });
+  console.log(res)
   if (res.status == 200) {
     return await res.json();
   }
