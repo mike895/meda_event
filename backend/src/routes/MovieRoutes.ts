@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import AuthController from '../controllers/AuthController';
-import MovieController from '../controllers/MovieController';
-// import UploadController from '../controllers/UploadController';
+import EventController from '../controllers/MovieController';
+import upload from '../controllers/MovieController';
 
 import Roles from '../data/roles';
 import UserType from '../data/userType';
@@ -10,13 +10,43 @@ import userRoleAuth from '../middlewares/userRoleAuth';
 import userTypeAuth from '../middlewares/userTypeAuth';
 import { addMovieSchema, MovieValidator } from '../validators/movieValidator';
 
+// const multer  = require('multer')
+// var path = require('path')
+
 class MovieRoutes {
   router = Router();
-  movieController = new MovieController();
+  movieController = new EventController();
   movieValidator = new MovieValidator();
   constructor() {
     this.initializeRoutes();
   }
+
+
+//  storage = multer.diskStorage({
+//         destination: (req, file, cb) => {
+//                 cb(null, 'public/images')
+//         },
+//         filename: (req, file, cb) => {
+//         cb(null, Date.now() + path.extname(file.originalname))
+//    }
+// })
+
+//  upload = multer({
+//         storage: this.storage,
+//         limits: { fileSize: '2000000' },
+//         fileFilter: (req, file, cb) => {
+//                 const fileTypes = /jpeg|jpg|png|gif/
+//                 const mimeType = fileTypes.test(file.mimetype)
+//                 const extname = fileTypes.test(path.extname(file.originalname))
+
+//                 if(mimeType && extname) {
+//                         return cb(null, true)
+//                 }
+//                 cb('Give proper files format to upload')
+//         }
+
+// }).single('posterImg')
+
 
   initializeRoutes() {
     /**
@@ -68,8 +98,19 @@ class MovieRoutes {
         userTypeAuth(UserType.User),
         userRoleAuth([Roles.Admin]),
         this.movieValidator.validateAdd(addMovieSchema),
+        // this.upload,
         this.movieController.CreateEvent
       );
+
+      // this.router
+      // .route('/upload')
+      // .post(
+      //   // userAuth,
+      //   // userTypeAuth(UserType.User),
+      //   // userRoleAuth([Roles.Admin]),
+      //   this.upload
+      // );
+
     /**
      * @swagger
      * /api/movie/search/{title}:
@@ -96,6 +137,25 @@ class MovieRoutes {
         userRoleAuth([Roles.Admin]),
         this.movieController.SearchAnEvent
       );
+      this.router
+      .route('/search2/:id')
+      .get(
+        userAuth,
+        userTypeAuth(UserType.User),
+        userRoleAuth([Roles.Admin]),
+        this.movieController.SearchAnEvent2
+      );
+
+    this.router.route('/:id').get(this.movieController.GetEventById);
+
+    this.router
+    .route('/:id')
+    .put(
+      this.movieValidator.validateAdd(addMovieSchema),
+      this.movieController.UpdateEventById
+    );
+
+
     /**
      * @swagger
      * /api/movie/:
@@ -119,14 +179,7 @@ class MovieRoutes {
         this.movieController.GetAllEvents
       );
 
-      // this.router
-      // .route('/upload')
-      // .get(
-      //   userAuth,
-      //   userTypeAuth(UserType.User),
-      //   userRoleAuth([Roles.Admin, Roles.Finanace, Roles.Cashier]),
-      //   this.uploadController.upload
-      // );
+   
   }
 }
 

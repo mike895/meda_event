@@ -303,7 +303,39 @@ export const updateMovie = async (data: any) => {
 
 }
 
+
+// export const addImage = async (data: any) => {
+//   console.log("aaaaaaa", data)
+
+//   const res = await fetch(`${baseUrl}/upload/`, {
+//     method: 'POST',
+//     headers: {
+//       // 'Content-Type': 'multipart/form-data',
+//       "Authorization": Cookies.get("jwt_auth") || ""
+//     },
+//     body: data,
+//   });
+//   if (res.status == 201) {
+//     return await res.json();
+//   }
+//   else if (res.status == 400) {
+//     return { error: "Please make sure you've filled all the required values." }
+//   }
+//   else {
+//     let json = await res.json();
+//     if (json.error) {
+//       return { error: json.error };
+//     }
+//     return { error: "Internal server error." }
+//   }
+
+// }
+
+
+
 export const addMovie = async (data: any) => {
+  // data.posterImg = im_name;
+  console.log("kjsdfhk",data)
   const res = await fetch(`${baseUrl}/api/event/`, {
     method: 'POST',
     headers: {
@@ -356,6 +388,7 @@ export const addMovie = async (data: any) => {
 
 
 export const searchMovie = async (title: string) => {
+  console.log(title)
   const res = await fetch(`${baseUrl}/api/event/search/${title}`, {
     method: 'GET',
     headers: {
@@ -363,6 +396,7 @@ export const searchMovie = async (title: string) => {
       "Authorization": Cookies.get("jwt_auth") || ""
     },
   });
+  console.log(res)
   if (res.status == 200) {
     return await res.json();
   }
@@ -373,7 +407,55 @@ export const searchMovie = async (title: string) => {
     }
     return { error: "Internal server error." }
   }
+
 }
+
+export const searchEvent = async (id: string) => {
+  const res = await fetch(`${baseUrl}/api/event/search2/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": Cookies.get("jwt_auth") || ""
+    },
+  });
+  console.log(res)
+  if (res.status == 200) {
+    return await res.json();
+  }
+  else {
+    let json = await res.json();
+    if (json.error) {
+      return { error: json.error };
+    }
+    return { error: "Internal server error." }
+  }
+
+}
+
+export const updateEvent = async (id: string, data: any) => {
+  const res = await fetch(`${baseUrl}/api/event/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": Cookies.get("jwt_auth") || ""
+    },
+    body: JSON.stringify(data),
+  });
+  if (res.status == 201) {
+    return await res.json();
+  }
+  else if (res.status == 400) {
+    return { error: "Please make sure you've filled all the required values." }
+  }
+  else {
+    let json = await res.json();
+    if (json.error) {
+      return { error: json.error };
+    }
+    return { error: "Internal server error." }
+  }
+}
+
 export const getAllMovies = async () => {
   const res = await fetch(`${baseUrl}/api/event/`, {
     method: 'GET',

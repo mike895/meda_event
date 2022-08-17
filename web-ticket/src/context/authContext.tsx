@@ -1,12 +1,7 @@
 import Cookies from "js-cookie";
-import React, {
-  useContext,
-  useState,
-  useEffect,
-  Children,
-  ReactComponentElement,
-} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { getCurrentUser } from "../utils/auth_http_calls";
+
 const AuthContext = React.createContext({
   currentUser: null,
   loading: true,
@@ -24,6 +19,7 @@ const AuthContext = React.createContext({
 export function useAuth() {
   return useContext(AuthContext);
 }
+
 export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<any | null>();
   const [loading, setLoading] = useState(true);
@@ -31,15 +27,14 @@ export function AuthProvider({ children }: any) {
     open: false,
     props: {},
   });
-  //   function login({ email, password }: any) {
-  //     return signInWithEmailAndPassword(auth, email, password);
-  //   }
+
   async function getLoggedInUser() {
     setLoading(true);
+
     let res = await getCurrentUser();
+
     if (res.error) {
       setCurrentUser(null);
-      //   Cookies.remove("jwt_auth", { path: "/" });
       setLoading(false);
     } else {
       setCurrentUser(res);
@@ -58,6 +53,16 @@ export function AuthProvider({ children }: any) {
     });
     await getLoggedInUser();
   }
+
+  // Bot
+  async function botlogin(token: any) {
+    Cookies.set("jwt_auth", `Bearer ${token}`, {
+      path: "/",
+      expires: new Date(8640000000000000),
+    });
+    await getLoggedInUser();
+  }
+
   function toggleAuthModal(status: boolean, options: any | null) {
     setAuthModalProps((prevState) => ({
       open: status,
@@ -72,10 +77,12 @@ export function AuthProvider({ children }: any) {
     currentUser,
     login,
     logout,
+    botlogin,
     loading,
     toggleAuthModal,
     authModalProps,
   };
+
   return (
     <AuthContext.Provider value={value as any}>
       {!loading && children}

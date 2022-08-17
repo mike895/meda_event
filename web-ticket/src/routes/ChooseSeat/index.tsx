@@ -42,259 +42,258 @@ export default function ChooseSeat() {
   const query = useQuery();
   const { currentUser, loading, toggleAuthModal, authModalProps, login } =
     useAuth();
-  async function loadData() {
-    await onFetch(async () => await getShowtimeWithHallById(st), {
-      errorCallback: (error: any) => {
-        message.error(`${error}`);
-        navigate("/404", { replace: true });
-      },
-      onSuccessCallback: (data: any) => {
-        console.log("ddddddddd",data)
-        setShowtime(data);
-      },
-    });
-  }
-  useEffect(() => {
-    setShowtime(null);
-    loadData();
-  }, []);
-  const navigate = useNavigate();
+  
+  
+async function loadData() {
+  await onFetch(async () => await getShowtimeWithHallById(st), {
+    errorCallback: (error: any) => {
+      message.error(`${error}`);
+      navigate("/404", { replace: true });
+    },
+    onSuccessCallback: (data: any) => {
+      console.log("ddddddddd", data);
+      setShowtime(data);
+    },
+  });
+}
+useEffect(() => {
+  setShowtime(null);
+  loadData();
+}, []);
 
-  //amount error
-  async function buySeats(price:any) {
-    let res = await buyTicket({
-      showTimeId: st,
-      seats: selectedSeats.map((e: any) => e.id),
-      amount: 1,
-    });
-    if (res.error == undefined) {
-      //Success
-      window.open(res.href, "_blank");
-      navigate({
-        pathname: `/tickets/${res.id}`,
-      });
-    } else {
-      message.error(res.error||"Unknown error");
-    }
-  }
+const navigate = useNavigate();
 
-  useEffect(() => {
-    if (currentUser == null && loading == false) {
-      toggleAuthModal(true, {
-        ...authModalProps,
-        phoneNumber: query.get("phoneNumber"),
-      });
-    } else if (
-      currentUser != null &&
-      loading == false &&
-      query.get("ref") == "tbot" &&
-      currentUser.phoneNumber != query.get("phoneNumber")
-    ) {
-      toggleAuthModal(true, {
-        ...authModalProps,
-        phoneNumber: query.get("phoneNumber"),
-      });
-    } else {
-      toggleAuthModal(false, { ...authModalProps, phoneNumber: null });
-    }
-  }, [currentUser, loading]);
-  function isSeatSelected(seat: any) {
-    return selectedSeats.find((e: any) => e.id == seat.id) ? true : false;
-  }
-  const toggleSelectSeat = (seat: any) => {
-    if (isSeatSelected(seat)) {
-      // Remove seat
-      let valueList = [...selectedSeats];
-      const seatToBeRemovedIdx = valueList.findIndex((e) => e.id == seat.id);
-      valueList.splice(seatToBeRemovedIdx, 1);
-      setSelectedSeats(valueList);
-    } else {
-      // Select seat
-      setSelectedSeats([...selectedSeats, seat]);
-    }
-  };
-  const [selectedSeats, setSelectedSeats] = useState<any>([]);
-  const [totalPrice, setTotalPrice] = useState(0);
-  useLayoutEffect(() => {
-    var sum = 0;
-    selectedSeats.forEach((e: any) => {
-      if (e.seatType == SeatType.Regular) {
-        sum += showtime?.EventSchedule.regularTicketPrice ?? 0;
-      } else {
-        // sum += showtime?.CinemaMovieSchedule.vipTicketPrice ?? 0;
-      }
+//amount error
+async function buySeats(price: any) {
+  let res = await buyTicket({
+    showTimeId: st,
+    seats: selectedSeats.map((e: any) => e.id),
+    amount: 1,
+  });
+  if (res.error == undefined) {
+    //Success
+    window.open(res.href, "_blank");
+    navigate({
+      pathname: `/tickets/${res.id}`,
     });
+  } else {
+    message.error(res.error || "Unknown error");
+  }
+}
 
-    setTotalPrice(sum);
-  }, [selectedSeats]);
-  return (
-    <>
-      <Header />
-      <div
-        style={{
-          flexDirection: "column",
-          display: "flex",
-          height: "100%",
+useEffect(() => {
+  if (currentUser == null && loading == false) {
+    toggleAuthModal(true, {
+      ...authModalProps,
+      phoneNumber: query.get("phoneNumber"),
+    });
+  } else if (
+    currentUser != null &&
+    loading == false &&
+    query.get("ref") == "tbot" &&
+    currentUser.phoneNumber != query.get("phoneNumber")
+  ) {
+    toggleAuthModal(true, {
+      ...authModalProps,
+      phoneNumber: query.get("phoneNumber"),
+    });
+  } else {
+    toggleAuthModal(false, { ...authModalProps, phoneNumber: null });
+  }
+}, [currentUser, loading]);
+function isSeatSelected(seat: any) {
+  return selectedSeats.find((e: any) => e.id == seat.id) ? true : false;
+}
+const toggleSelectSeat = (seat: any) => {
+  if (isSeatSelected(seat)) {
+    // Remove seat
+    let valueList = [...selectedSeats];
+    const seatToBeRemovedIdx = valueList.findIndex((e) => e.id == seat.id);
+    valueList.splice(seatToBeRemovedIdx, 1);
+    setSelectedSeats(valueList);
+  } else {
+    // Select seat
+    setSelectedSeats([...selectedSeats, seat]);
+  }
+};
+const [selectedSeats, setSelectedSeats] = useState<any>([]);
+const [totalPrice, setTotalPrice] = useState(0);
+useLayoutEffect(() => {
+  var sum = 0;
+  selectedSeats.forEach((e: any) => {
+    if (e.seatType == SeatType.Regular) {
+      sum += showtime?.EventSchedule.regularTicketPrice ?? 0;
+    } else {
+      // sum += showtime?.CinemaMovieSchedule.vipTicketPrice ?? 0;
+    }
+  });
+
+  setTotalPrice(sum);
+}, [selectedSeats]);
+return (
+  <>
+    <Header />
+    <div
+      style={{
+        flexDirection: "column",
+        display: "flex",
+        height: "100%",
+      }}
+    >
+      <SeatSelectionProvider
+        value={{
+          regularTicketPrice: showtime?.EventSchedule.regularTicketPrice ?? 0,
+          // vipTicketPrice: showtime?.EventSchedule.vipTicketPrice ?? 0,
+          selectedSeats,
+          totalPrice,
+          toggleSelect: toggleSelectSeat,
+          isSeatSelected,
         }}
       >
-        <SeatSelectionProvider
-          value={{
-            regularTicketPrice: showtime?.EventSchedule.regularTicketPrice ?? 0,
-            // vipTicketPrice: showtime?.EventSchedule.vipTicketPrice ?? 0,
-            selectedSeats,
-            totalPrice,
-            toggleSelect: toggleSelectSeat,
-            isSeatSelected,
-          }}
-        >
-          {isLoading ? (
-            <ChooseSeatSkeleton />
-          ) : (
-            <div
-              className="container"
-              style={{
-                margin: "15px 0px",
-                flexDirection: "column",
-                display: "flex",
-                flexGrow: 1,
-              }}
-            >
-              <Row align="middle">
-                <img
-                  src="/images/logo.png"
-                  style={{
-                    width: 50,
-                    height: 50,
-                    marginRight: 5,
-                  }}
-                />
-                <Breadcrumb
-                  separator={">"}
-                  style={{ fontWeight: "bold", fontSize: 16 }}
-                >
-                  <Breadcrumb.Item key="home">
-                    <Link to="/">Century Cinema</Link>
-                  </Breadcrumb.Item>
-                  <Breadcrumb.Item key={pathSnippets[2]}>
-                    <Link to={`/${pathSnippets[0]}/${pathSnippets[1]}`}>
-                      {showtime?.EventSchedule?.event?.title}
-                    </Link>
-                  </Breadcrumb.Item>
-                  <Breadcrumb.Item key={pathSnippets[3]}>
-                    <Link
-                      to={`/${pathSnippets[0]}/${pathSnippets[1]}/${pathSnippets[2]}/${pathSnippets[3]}`}
-                    >
-                      {"Seat selection"}
-                    </Link>
-                  </Breadcrumb.Item>
-                </Breadcrumb>
-              </Row>
-              {/* halllllllllllllll */}
-              <Row className={styles["content-container"]}>
-                <ShowtimeDetail
-                  showtime={showtime}
-                  currentHall={currentHall}
-                  setCurrentHall={setCurrentHall}
-                />
-              </Row>
-
-              <Row
-                className={styles["content-container"]}
-                style={{ margin: "25px 0px" }}
+        {isLoading ? (
+          <ChooseSeatSkeleton />
+        ) : (
+          <div
+            className="container"
+            style={{
+              margin: "15px 0px",
+              flexDirection: "column",
+              display: "flex",
+              flexGrow: 1,
+            }}
+          >
+            <Row align="middle">
+              <img
+                src="/images/logo.png"
+                style={{
+                  width: 50,
+                  height: 50,
+                  marginRight: 5,
+                }}
+              />
+              <Breadcrumb
+                separator={">"}
+                style={{ fontWeight: "bold", fontSize: 16 }}
               >
-                <Typography.Title level={4}>Seat selection</Typography.Title>
-                {showtime != null ? (
-                  <SeatMap
-                    seatMap={
-                      showtime.eventHall[
-                        currentHall == SeatType.Regular
-                          ? "regularSeats"
-                          : ""//"vipSeats"
-                      ]
-                    }
-                  />
-                  
-                ) : null}
-
-              </Row>
-              
-              <Row className={styles["content-container"]}>
-                <SeatsDetail showtime={showtime} />
-              </Row>
-              <Row
-                className={styles["content-row"]}
-                style={{ flexDirection: "column" }}
-              >
-                <Row style={{ color: "red" }}>Tickets are non refundable</Row>
-                <Row>
-                  <Row
-                    style={{
-                      backgroundColor: colors.PRIMARY,
-                      padding: "10px 15px",
-                      borderRadius: 5,
-                    }}
-                    justify="space-between"
-                    align="middle"
+                <Breadcrumb.Item key="home">
+                  <Link to="/">Meda|Ticket</Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item key={pathSnippets[2]}>
+                  <Link to={`/${pathSnippets[0]}/${pathSnippets[1]}`}>
+                    {showtime?.EventSchedule?.event?.title}
+                  </Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item key={pathSnippets[3]}>
+                  <Link
+                    to={`/${pathSnippets[0]}/${pathSnippets[1]}/${pathSnippets[2]}/${pathSnippets[3]}`}
                   >
-                    <Typography.Text
-                      strong
-                      style={{ color: "white", fontSize: 16 }}
-                    >
-                      {selectedSeats.length} Tickets | {totalPrice} Birr
-                    </Typography.Text>
-                    <Button
-                      type="primary"
-                      style={{
-                        backgroundColor: "#FFEC00",
-                        borderRadius: 5,
-                        color: "black",
-                        fontWeight: "bold",
-                        fontSize: 16,
-                        minWidth: 100,
-                        padding: 0,
-                        marginLeft: 10,
-                      }}
-                      loading={buyLoading}
-                      onClick={async () => {
-                        if (selectedSeats.length == 0) {
-                          message.error("You have not selected your seats");
-                        }
-                        if (
-                          loading == false &&
-                          ((currentUser != null &&
-                            query.get("ref") == "tbot" &&
-                            currentUser.phoneNumber !=
-                              query.get("phoneNumber")) ||
-                            currentUser == null)
-                        ) {
-                          toggleAuthModal(true, {
-                            ...authModalProps,
-                            phoneNumber: query.get("phoneNumber"),
-                          });
-                        } else {
-                          setBuyLoading(true);
-                          try {
-                            await buySeats(totalPrice);
-                          } catch (error) {
-                            console.log(error);
+                    {"Seat selection"}
+                  </Link>
+                </Breadcrumb.Item>
+              </Breadcrumb>
+            </Row>
+            {/* halllllllllllllll */}
+            <Row className={styles["content-container"]}>
+              <ShowtimeDetail
+                showtime={showtime}
+                currentHall={currentHall}
+                setCurrentHall={setCurrentHall}
+              />
+            </Row>
 
-                            message.error(`${error}` as any);
-                          }
-                          setBuyLoading(false);
+            <Row
+              className={styles["content-container"]}
+              style={{ margin: "25px 0px" }}
+            >
+              <Typography.Title level={4}>Seat selection</Typography.Title>
+              {showtime != null ? (
+                <SeatMap
+                  seatMap={
+                    showtime.eventHall[
+                      currentHall == SeatType.Regular ? "regularSeats" : "" //"vipSeats"
+                    ]
+                  }
+                />
+              ) : null}
+            </Row>
+
+            <Row className={styles["content-container"]}>
+              <SeatsDetail showtime={showtime} />
+            </Row>
+            <Row
+              className={styles["content-row"]}
+              style={{ flexDirection: "column" }}
+            >
+              <Row style={{ color: "red" }}>Tickets are non refundable</Row>
+              <Row>
+                <Row
+                  style={{
+                    backgroundColor: colors.PRIMARY,
+                    padding: "10px 15px",
+                    borderRadius: 5,
+                  }}
+                  justify="space-between"
+                  align="middle"
+                >
+                  <Typography.Text
+                    strong
+                    style={{ color: "white", fontSize: 16 }}
+                  >
+                    {selectedSeats.length} Tickets | {totalPrice} Birr
+                  </Typography.Text>
+                  <Button
+                    type="primary"
+                    style={{
+                      backgroundColor: "#FFEC00",
+                      borderRadius: 5,
+                      color: "black",
+                      fontWeight: "bold",
+                      fontSize: 16,
+                      minWidth: 100,
+                      padding: 0,
+                      marginLeft: 10,
+                    }}
+                    loading={buyLoading}
+                    onClick={async () => {
+                      if (selectedSeats.length == 0) {
+                        message.error("You have not selected your seats");
+                      }
+                      if (
+                        loading == false &&
+                        ((currentUser != null &&
+                          query.get("ref") == "tbot" &&
+                          currentUser.phoneNumber !=
+                            query.get("phoneNumber")) ||
+                          currentUser == null)
+                      ) {
+                        toggleAuthModal(true, {
+                          ...authModalProps,
+                          phoneNumber: query.get("phoneNumber"),
+                        });
+                      } else {
+                        setBuyLoading(true);
+                        try {
+                          await buySeats(totalPrice);
+                        } catch (error) {
+                          console.log(error);
+
+                          message.error(`${error}` as any);
                         }
-                      }}
-                    >
-                      Pay
-                    </Button>
-                  </Row>
+                        setBuyLoading(false);
+                      }
+                    }}
+                  >
+                    Pay
+                  </Button>
                 </Row>
               </Row>
-            </div>
-          )}
-        </SeatSelectionProvider>
-      </div>
-    </>
-  );
+            </Row>
+          </div>
+        )}
+      </SeatSelectionProvider>
+    </div>
+  </>
+);
 }
 
 const regularTextStyle = {

@@ -1,4 +1,4 @@
-import { Application, urlencoded, json, static as estatic } from 'express';
+import express, { Application, urlencoded, json, static as estatic } from 'express';
 import * as morgan from 'morgan';
 import * as fs from 'fs';
 import { WriteStream } from 'fs';
@@ -16,7 +16,7 @@ import logger from './logger';
 import * as cors from 'cors';
 // app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 
-const multer = require("multer");
+
 export default class Server {
   constructor(app: Application) {
     this.config(app);
@@ -25,23 +25,11 @@ export default class Server {
 
   public config(app: Application): void {
 
-//    const storage = multer.diskStorage({
-//      destination:(req,file,cb)=>{
-//        cb(null,'public/images/'){
- //         
- //       }
- //     },
- //     filename: (req,file,cb)=>{
- //       cb(null,file.originalname)
- //     }
- //   })
-  //  const upload = multer({storage:storage})
-
     const accessLogStream: WriteStream = fs.createWriteStream(
       path.join(__dirname, '../logs/access.log'),
       { flags: 'a' }
     );
-  
+    app.use(estatic('public'))
     app.use(morgan('combined', { stream: accessLogStream }));
     app.use(urlencoded({ extended: true }));
     app.use(json());

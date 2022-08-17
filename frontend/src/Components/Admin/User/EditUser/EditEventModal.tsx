@@ -26,11 +26,13 @@ import { useAsyncEffect } from "use-async-effect";
 import "./edit.user.css";
 import {
   getUser,
-  searchMovie,
+  searchEvent,
   resetPassword,
-  updateUser,
+  updateEvent
 } from "../../../../helpers/httpCalls";
 import NumberOnlyPasswordField from "../../../global/NumberOnlyPasswordField";
+import axios from 'axios'
+
 const { Option } = Select;
 const { Text, Title } = Typography;
 type Props = {
@@ -45,6 +47,8 @@ export const EditEventModal = (props: Props) => {
   const [visible, setVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [password, setPassword] = useState("");
+  const [posterImgval, setposterImg] = useState("");
+  const [initialposterImgval, setinitialPosterImg] = useState("");
   const formItemLayout = {
     labelCol: {
       span: "auto",
@@ -81,12 +85,13 @@ export const EditEventModal = (props: Props) => {
   });
   async function populateInitialData() {
     console.log("proppspspspsp", props)
-    let response = await searchMovie(props.title);
+    let response = await searchEvent(props.id);
     console.log(response)
     if (response.error) {
       setError("Internal Server Error, Please Try again.");
       setShow(true);
     } else {
+      setinitialPosterImg(response.posterImg);
       setInitialFormState({
         title: response.title,
         synopsis: response.synopsis,
@@ -102,7 +107,7 @@ export const EditEventModal = (props: Props) => {
   async function onFinish(data: any) {
     setIsLoading(true);
     setShow(false);
-    let response = await updateUser(props.id, data);
+    let response = await updateEvent(props.id, data);
     if (response.error) {
       setError(response.error);
       setShow(true);
@@ -141,6 +146,25 @@ export const EditEventModal = (props: Props) => {
     await populateInitialData();
   }, []);
 
+  const uploadHandler = (e: any) => {
+    const file = e.target.files[0];
+    
+    const formData = new FormData();
+    formData.append('logo',file)
+    console.log("fileee",formData)
+  
+  
+    axios.post('http://localhost:3000/upload/', formData)
+    .then((res) => {
+      console.log("yesssss",res)
+      setposterImg(res.data.name);
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+  }
+  
+
   return (
     <div className="customModalCtx">
       <Modal
@@ -163,7 +187,7 @@ export const EditEventModal = (props: Props) => {
         ) : (
           <>
             <Row justify="start" style={{ marginBottom: "10px" }}>
-              <Title level={4}> {"Edit user"}</Title>{" "}
+              <Title level={4}> {"Edit Event"}</Title>{" "}
             </Row>
             <Form
               {...formItemLayout}
@@ -172,7 +196,7 @@ export const EditEventModal = (props: Props) => {
               validateMessages={validateMessages}
               initialValues={initialFormState}
               onFinish={(data: any) => {
-                onFinish({ ...data, accountLockedOut: !data.accountLockedOut });
+                onFinish({ ...data, posterImg: posterImgval? posterImgval : initialposterImgval });
               }}
             >
               {show ? (
@@ -233,9 +257,14 @@ export const EditEventModal = (props: Props) => {
                   <Form.Item
                     label="Poster Image"
                     name="posterImg"
-                    rules={[{ required: true }]}
+                    rules={[{ required: false }]}
                   >
-                    <Input />
+                    {/* <Input /> */}
+                    <h5>Choose file if you want to change the image </h5>
+                    <form action="#" method= "POST" encType="multipart/form-data">
+                      <input type="file" name="logo" onChange={uploadHandler} />
+                    </form>
+
                   </Form.Item>
                 </Col>
                 <Col span={12}>

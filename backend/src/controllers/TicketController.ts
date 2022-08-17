@@ -902,15 +902,15 @@ export default class TicketController {
       body: JSON.stringify({
         purchaseDetails: {
           orderId: 'Not Required',
-          description: 'Century Event Tickets',
+          description: 'Meda|Tickets',
           amount: amount,
           customerName: name,
           customerPhoneNumber: phoneNumber.substring(1),
         },
         redirectUrls: {
-          returnUrl: `http://localhost:3000/tickets/${ticketId}`,
+          returnUrl: `http://3.70.8.102:3000/tickets/${ticketId}`,
           cancelUrl: 'NaN',
-          callbackUrl: 'http://localhost:3000/api/ticket/meda-pay-callback',
+          callbackUrl: 'http://3.70.8.102:3000/api/ticket/meda-pay-callback',
           // returnUrl: `http://165.227.142.142/tickets/${ticketId}`,
           // cancelUrl: 'NaN',
           // callbackUrl: 'http://165.227.142.142/api/ticket/meda-pay-callback',

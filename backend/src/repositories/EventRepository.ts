@@ -48,6 +48,34 @@ class EventRepository {
       },
     });
   }
+
+
+   async UpdateEvent(id: string, {  title, synopsis, eventOrganizer, tags, runtime, posterImg,  eventAdderId, trailerLink, }: { title: string, synopsis: string, eventOrganizer: string, tags: string[], runtime: number, posterImg: string, eventAdderId: string, trailerLink: string | null,}) {
+        return await prisma?.event.update({
+            where: {
+                id: id
+            },
+            data: {
+              title,
+              synopsis,
+              eventOrganizer,
+              tags,
+              runtime,
+              posterImg,
+              eventAdderId,
+              trailerLink,
+            },
+        }
+        );
+    }
+
+
+
+
+
+
+
+
 }
 
 export default new EventRepository();

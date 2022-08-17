@@ -44,7 +44,7 @@ export const addMovieSchema = Joi.object().keys({
   // tslint:disable-next-line:no-null-keyword
   runtime: Joi.number().required(),
   // tslint:disable-next-line:no-null-keyword
-  posterImg: Joi.string().uri().required(),
+  posterImg: Joi.string().required(),
   // coverImg: Joi.string().uri(),
   trailerLink: Joi.string(),
   // rating: Joi.number().required(),

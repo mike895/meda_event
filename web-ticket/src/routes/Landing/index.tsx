@@ -114,7 +114,7 @@ function Landing() {
                   return (
                     <ErrorBoundary key={e.id}>
                       <MovieCard
-                        src={e.event.posterImg}
+                        src={`${process.env.REACT_APP_BASE_URL_BACKEND}/images/${e.event.posterImg}`}
                         title={e.event.title}
                         runtime={`${Math.floor(e.event.runtime / 60)}h ${
                           e.event.runtime % 60

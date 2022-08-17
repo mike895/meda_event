@@ -47,7 +47,7 @@ function ImageCard( {schedule}: any) {
             width: 200,
             height: 280,
             borderRadius: 5,
-            backgroundImage: `url(${schedule?.event?.posterImg})`,
+            backgroundImage: `url(${process.env.REACT_APP_BASE_URL_BACKEND}/images/${schedule?.event?.posterImg})`,
             backgroundSize: "cover",
             boxShadow:
               "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)",

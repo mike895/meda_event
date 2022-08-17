@@ -86,6 +86,7 @@ model EventHall {
   // ShowTime     ShowTime[]
 
   ShowTime ShowTime[]
+
   @@map("eventhall")
 }
 
@@ -94,7 +95,7 @@ model Speakers {
   firstName       String
   lastName        String
   biography       String
-  posterImg      String
+  posterImg       String
   ShowTime        ShowTime[]
   EventSchedule   EventSchedule? @relation(fields: [eventScheduleId], references: [id])
   eventScheduleId String?
@@ -180,6 +181,7 @@ model EventTicket {
 
   showTime   ShowTime? @relation(fields: [showTimeId], references: [id])
   showTimeId String?
+
   // This is the Phonenumber(Buyers)
   @@map("eventticket")
 }

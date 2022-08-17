@@ -4,11 +4,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Landing from "./routes/Landing";
 import ChooseShowtime from "./routes/ChooseShowtime";
 import ChooseSeat from "./routes/ChooseSeat";
+import Bot from "./routes/bot";
 import { AuthProvider } from "./context/authContext";
 import AuthModal from "./components/auth/authModal";
 import Tickets from "./routes/Tickets";
 import Custom404 from "./routes/404";
 import MyTickets from "./routes/myTickets";
+
 function App() {
   return (
     <AuthProvider>
@@ -18,6 +20,10 @@ function App() {
           <Route path="*" element={<Custom404 />} />
           <Route path="/" element={<Landing />}></Route>
           <Route path="/schedule/:id" element={<ChooseShowtime />}></Route>
+          <Route
+            path="/bot/:scheduleId/:showTimeId/:token"
+            element={<Bot />}
+          ></Route>
           <Route
             path="/schedule/:id/showtime/:st"
             element={<ChooseSeat />}
