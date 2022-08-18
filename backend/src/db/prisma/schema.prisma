@@ -178,6 +178,7 @@ model EventTicket {
   amount          Float
   paymentMethod   String?
   paymentStatus   PaymentStatus
+  chatid          String?
 
   showTime   ShowTime? @relation(fields: [showTimeId], references: [id])
   showTimeId String?

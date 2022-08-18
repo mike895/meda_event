@@ -49,7 +49,6 @@ export default class TicketController {
         chatid: string;
       } = req.body;
 
-
       
     
       const ticketId = uuidv4();
@@ -130,6 +129,7 @@ export default class TicketController {
           showTimeId,
           amount: amount,
           paymentStatus: PaymentStatus.PENDING,
+          chatid: chatid,
           TicketsOnSeats: {
             createMany: {
               data: seatTicketArray,
@@ -852,7 +852,16 @@ export default class TicketController {
 
 
           // Send the user a notification and a url to checkout his link
-          const msg = `Meda|Ticket \nDear user, \nYou have bought ${eventTicket.TicketsOnSeats.length} tickets for the event ${eventTicket.showTime!.EventSchedule?.event.title}\nhall name: ${eventTicket.showTime!.eventHall.name}\nseats: ${seatNames}\nreference number: ${eventTicket.}\ntime: ${dayjs(eventTicket.showTime?.time).format('h:mm A')} ${dayjs(eventTicket.showTime?.EventSchedule?.date).format('MMM DD, YYYY')}\n\nyou can get your ticket on Meda mobile app or at ${webClientHostedUrl}/tickets/${eventTicket.id}`
+          const msg = `Meda|Ticket \nDear user, \nYou have bought ${
+          eventTicket.TicketsOnSeats.length
+          } tickets for the event ${
+          eventTicket.showTime!.EventSchedule?.event.title
+          }\nhall name: ${eventTicket.showTime!.eventHall.name
+          }\nseats: ${seatNames
+          }\nreference number: ${eventTicket.referenceNumber
+          }\ntime: ${dayjs(eventTicket.showTime?.time).format('h:mm A')} ${dayjs(eventTicket.showTime?.EventSchedule?.date).format('MMM DD, YYYY')
+          }\n\nyou can get your ticket on Meda mobile app or at ${webClientHostedUrl}/tickets/${eventTicket.id
+          }` ;
           
           await sendMessage(
             eventTicket.userId,
@@ -861,7 +870,7 @@ export default class TicketController {
 
           // Send message to telegram bot
           const tickets_on_seats  = eventTicket.TicketsOnSeats 
-          sendToBot(chatid, tickets_on_seats , msg)
+          sendToBot(eventTicket.chatid, tickets_on_seats , msg)
 
           // Notify the telegram bot server
           // const io: Server = req.app.get('io');
