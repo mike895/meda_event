@@ -20,6 +20,13 @@ import { webClientHostedUrl } from '../config';
 import { Server } from 'socket.io';
 import * as fetch from 'node-fetch';
 import { v4 as uuidv4 } from 'uuid';
+// const { Telegraf } = require("telegraf")
+// require("dotenv").config();
+// const bot = new Telegraf(process.env.BOT_TOKEN);
+
+import sendToBot from '../utils/bot.js'
+
+
 dayjs.extend(duration);
 
 
@@ -32,13 +39,19 @@ export default class TicketController {
         seats,
         amount,
         showTimeId,
+        chatid,
         // referenceNumber,
       }: {
         amount: number;
         // referenceNumber: string;
         showTimeId: string;
         seats: string[];
+        chatid: string;
       } = req.body;
+
+
+      
+    
       const ticketId = uuidv4();
       const curuser = req.user as any;
       const { href, billReferenceNumber } =
@@ -821,6 +834,8 @@ export default class TicketController {
               },
             },
           });
+
+
           await sendSmsMessage(
             allFinance.map((e) => e.phoneNumber),
             `Meda|Ticket: ${
@@ -834,32 +849,28 @@ export default class TicketController {
           eventTicket.TicketsOnSeats.forEach((e) => {
             seatNames += `${e.ticketKey}, `;
           });
+
+
           // Send the user a notification and a url to checkout his link
+          const msg = `Meda|Ticket \nDear user, \nYou have bought ${eventTicket.TicketsOnSeats.length} tickets for the event ${eventTicket.showTime!.EventSchedule?.event.title}\nhall name: ${eventTicket.showTime!.eventHall.name}\nseats: ${seatNames}\nreference number: ${eventTicket.}\ntime: ${dayjs(eventTicket.showTime?.time).format('h:mm A')} ${dayjs(eventTicket.showTime?.EventSchedule?.date).format('MMM DD, YYYY')}\n\nyou can get your ticket on Meda mobile app or at ${webClientHostedUrl}/tickets/${eventTicket.id}`
+          
           await sendMessage(
             eventTicket.userId,
-            `Meda|Ticket: Dear user You have bought ${
-              eventTicket.TicketsOnSeats.length
-            } tickets for the event ${
-              eventTicket.showTime!.EventSchedule?.event.title
-            }\n
-            hall name: ${eventTicket.showTime!.eventHall.name}\n
-            seats: ${seatNames}\n
-            reference number: ${eventTicket.referenceNumber}\n
-            time: ${dayjs(eventTicket.showTime?.time).format('h:mm A')} ${dayjs(
-              eventTicket.showTime?.EventSchedule?.date
-            ).format('MMM DD, YYYY')}
+            msg
+          );
 
-            you can get your ticket on Meda mobile app or at ${webClientHostedUrl}/tickets/${
-              eventTicket.id
-            }`
-          );
+          // Send message to telegram bot
+          const tickets_on_seats  = eventTicket.TicketsOnSeats 
+          sendToBot(chatid, tickets_on_seats , msg)
+
           // Notify the telegram bot server
-          const io: Server = req.app.get('io');
-          const ticketNotificationNamespace = io.of('/ticket-notification');
-          ticketNotificationNamespace.emit(
-            'onTicketPaymentComplete',
-            updatedTicket
-          );
+          // const io: Server = req.app.get('io');
+          // const ticketNotificationNamespace = io.of('/ticket-notification');
+          // ticketNotificationNamespace.emit(
+          //   'onTicketPaymentComplete',
+          //   updatedTicket
+          // );
+
         }
       } else if (status == 'CANCELED') {
         // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING

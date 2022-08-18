@@ -21,7 +21,7 @@ function App() {
           <Route path="/" element={<Landing />}></Route>
           <Route path="/schedule/:id" element={<ChooseShowtime />}></Route>
           <Route
-            path="/bot/:scheduleId/:showTimeId/:token"
+            path="/bot/:chatid/:scheduleId/:showTimeId/:token"
             element={<Bot />}
           ></Route>
           <Route

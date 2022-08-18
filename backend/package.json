@@ -68,9 +68,11 @@
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "pg": "^8.6.0",
+    "qrcode": "^1.5.1",
     "socket.io": "^4.5.1",
     "swagger-jsdoc": "^6.2.0",
     "swagger-ui-express": "^4.3.0",
+    "telegraf": "^4.8.6",
     "toad-scheduler": "^1.6.0",
     "uuid": "^8.3.2",
     "winston": "^3.3.3"

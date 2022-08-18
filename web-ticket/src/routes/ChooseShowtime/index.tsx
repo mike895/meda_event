@@ -173,7 +173,8 @@ export default function ChooseShowtime() {
                           return (
                             <Card
                             hoverable
-                            style={{ width: 260, height: 750 }}
+                            // style={{ width: 700, wordWrap: 'break-word'}}
+                            style={{ width: 300, height: 750 }}
                             cover={<img alt="Speaker Image" src={`${process.env.REACT_APP_BASE_URL_BACKEND}/images/${e.posterImg}`} />}
                           >
                             <Meta title= {e.firstName+" "+ e.lastName} description= {e.biography} />

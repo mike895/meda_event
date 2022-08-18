@@ -34,7 +34,7 @@ import ChooseSeatSkeleton from "./chooseSeatSkeletion";
 
 export default function ChooseSeat() {
   let { id, st } = useParams();
-  let { scheduleId, showTimeId, token } = useParams();
+  let { scheduleId, showTimeId, token , chatid } = useParams();
 
   const location = useLocation();
 
@@ -86,6 +86,7 @@ export default function ChooseSeat() {
       showTimeId: showTimeId,
       seats: selectedSeats.map((e: any) => e.id),
       amount: 1,
+      chatid
     });
     if (res.error == undefined) {
       //Success
@@ -160,7 +161,6 @@ export default function ChooseSeat() {
           height: "100%",
         }}
       >
-        <Button onClick={() => loginUser()}>Login</Button>
         <SeatSelectionProvider
           value={{
             regularTicketPrice: showtime?.EventSchedule.regularTicketPrice ?? 0,

@@ -1,4 +1,4 @@
-import express, { Application, urlencoded, json, static as estatic } from 'express';
+import { Application, urlencoded, json, static as estatic } from 'express';
 import * as morgan from 'morgan';
 import * as fs from 'fs';
 import { WriteStream } from 'fs';

@@ -89,7 +89,7 @@ function MyTickets() {
                             <List.Item.Meta
                               avatar={<Avatar src={"/images/logo.png"} />}
                               title={
-                                item.showTime?.CinemaMovieSchedule?.movie
+                                item.showTime?.EventSchedule?.event
                                   ?.title || (
                                   <span style={{ color: "tomato" }}>
                                     Canceled
