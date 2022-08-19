@@ -612,9 +612,6 @@ export default class TicketController {
           },
         },
       });
-      // console.log('====================================');
-      // console.log(allTickets[0].showTime.EventSchedule?.event.title);
-      // console.log('====================================');
       return res.status(200).json({
         tickets: {
           ticketsSold: allTickets.length,
@@ -716,7 +713,6 @@ export default class TicketController {
     res: Response,
     next: NextFunction
   ) {
-    console.log(req.body);
     const {
       orderId,
       status,

@@ -62,43 +62,38 @@ export default function AddMovie() {
 
 const uploadHandler = (e: any) => {
   const file = e.target.files[0];
-  
+
   const formData = new FormData();
-  formData.append('logo',file)
-  console.log("fileee",formData)
+  formData.append("logo", file);
 
+  axios
+    .post(`${config.MEDA_URL}/upload/`, formData)
+    .then((res) => {
+      setposterImg(res.data.name);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
 
-  axios.post(`${config.MEDA_URL}/upload/`, formData)
-  .then((res) => {
-    console.log("yesssss",res)
-    setposterImg(res.data.name);
-  })
-  .catch((err) => {
-    console.error(err)
-  })
-}
-
-
-  const onFinish = async (values: any) => {
-  
-    setShow(false);
-    setIsLoading(true);
-    console.log(values)
-    let res = await addMovie({
-      ...values,
-      posterImg: posterImgval,
-      runtime:parseFloat(values.runtime),
-      tags:values.tags.split(",").map((item: string) => item.trim())
-    },); 
-    setIsLoading(false);
-    if (res.error) {
-      setError(`${res.error}`);
-      setShow(true);
-    } else {
-      message.success("Event Added.");
-      navigate("/admin/events/manage");
-    }
-  };
+const onFinish = async (values: any) => {
+  setShow(false);
+  setIsLoading(true);
+  let res = await addMovie({
+    ...values,
+    posterImg: posterImgval,
+    runtime: parseFloat(values.runtime),
+    tags: values.tags.split(",").map((item: string) => item.trim()),
+  });
+  setIsLoading(false);
+  if (res.error) {
+    setError(`${res.error}`);
+    setShow(true);
+  } else {
+    message.success("Event Added.");
+    navigate("/admin/events/manage");
+  }
+};
 
 
   const validateMessages = {

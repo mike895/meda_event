@@ -44,12 +44,6 @@ export default class Server {
     passportMiddleware(passport);
 
     app.use(unCaughtErrorHandler);
-//    app.use('/upload',(req,res)=>{
-//      console.log(req)
-//      res.status(200).json({
-//      success: 'Success',
- //     });                     
- //   })
   }
 
 }

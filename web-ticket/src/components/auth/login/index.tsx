@@ -48,8 +48,6 @@ function Login() {
           international
           countryCallingCodeEditable={false}
           onChange={(e) => {
-            console.log(e);
-
             setPhone(e as any);
           }}
           style={{
@@ -123,26 +121,23 @@ function Login() {
           if (otp.length < 6) {
             return message.error("Invalid OTP");
           }
-          async function logic(){
+          async function logic() {
             const res = await verifyOTP({ authRequestId, otp });
             if (res.error) {
               return message.error(res.error);
             }
             if (res.isNewUser == true) {
               setStep(0);
-              return message.error(
-                "You need to register first"
-              );
+              return message.error("You need to register first");
             }
             const { bearerToken } = res;
             setRegistrationToken(bearerToken);
-            await login({token:bearerToken});
+            await login({ token: bearerToken });
             toggleAuthModal(false, null);
-            
           }
-          setLoading2(true)
+          setLoading2(true);
           await logic();
-          setLoading2(false)
+          setLoading2(false);
         }}
       >
         Submit

@@ -103,9 +103,7 @@ export const getBuyHistory = async () => {
   })
     .then((res) => res.json())
     .catch((e) => {
-      console.log("====================================");
       console.log(e);
-      console.log("====================================");
       return { error: "Error connecting." };
     });
   if (res.error) {

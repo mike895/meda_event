@@ -27,20 +27,6 @@ app.set('io', io);
 httpServer
   .listen(port, function () {
     console.info(`Server running on PORT ${port}`);
-    // const taskId = '23213762173612736127';
-    // const task = new AsyncTask(
-    //   'task to release seats reserved',
-    //   async () => {
-    //     console.log('WOW TASK');
-    //     console.log(scheduler.removeById(taskId));
-    //   },
-    //   (err: Error) => {
-    //     /* handle error here */
-    //     console.log(scheduler.removeById(taskId));
-    //   }
-    // );
-    // const job = new SimpleIntervalJob({ seconds: 2 }, task, taskId);
-    // scheduler.addSimpleIntervalJob(job);
   })
   .on('error', (err: any) => {
     if (err.code === 'EADDRINUSE') {

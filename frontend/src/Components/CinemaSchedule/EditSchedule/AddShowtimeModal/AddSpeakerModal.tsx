@@ -51,56 +51,49 @@ export const AddSpeakerModal = (props: Props) => {
 
 
  const uploadHandler = (e: any) => {
-  const file = e.target.files[0];
-  
-  const formData = new FormData();
-  formData.append('logo',file)
-  console.log("fileee",formData)
+   const file = e.target.files[0];
 
+   const formData = new FormData();
+   formData.append("logo", file);
 
-  axios.post(`${config.MEDA_URL}/upload/`, formData)
-  .then((res) => {
-    console.log("yesssss",res)
-    // setposterImg(res.data.name);
-    posterImgval.push(res.data.name);
-  })
-  .catch((err) => {
-    console.error(err)
-  })
-}
+   axios
+     .post(`${config.MEDA_URL}/upload/`, formData)
+     .then((res) => {
+       // setposterImg(res.data.name);
+       posterImgval.push(res.data.name);
+     })
+     .catch((err) => {
+       console.error(err);
+     });
+ };
 
+ const loadFormData = async () => {
+   let movies = await getAllMovies();
+   let cinemaHalls = await getAllCinemaHalls();
+   if (movies.error || cinemaHalls.error) {
+     return message.error("Error Loading Form Data, Please refresh the page.");
+   }
+   setCinemaHallList(cinemaHalls);
+   setMoviesList(movies);
+ };
+ useAsyncEffect(async () => {
+   await loadFormData();
+ }, []);
 
-
-  
-  const loadFormData = async () => {
-    let movies = await getAllMovies();
-    let cinemaHalls = await getAllCinemaHalls();
-    if (movies.error || cinemaHalls.error) {
-      return message.error("Error Loading Form Data, Please refresh the page.");
-    }
-    setCinemaHallList(cinemaHalls);
-    setMoviesList(movies);
-  };
-  useAsyncEffect(async () => {
-    await loadFormData();
-  }, []);
-  
-  const onFinish = async (values: any) => {
-    if (!values.speakers)
-      return message.error("You need to add at least 1 speaker!");
-    console.log("hgfskjhkhk",values)  
-    for (let i=0;i<posterImgval.length; i++){
-      values.speakers[i].posterImg = posterImgval[i];
-
-    }
-    await onFetch(async () => await addSpeakerToSchedule(props.id, values), {
-      errorCallback: (error: any) => message.error(`${error}`),
-      onSuccessCallback: (msg: any) => {
-        message.success("Speaker added.");
-        props.onUpdateSuccess();
-      },
-    });
-  };
+ const onFinish = async (values: any) => {
+   if (!values.speakers)
+     return message.error("You need to add at least 1 speaker!");
+   for (let i = 0; i < posterImgval.length; i++) {
+     values.speakers[i].posterImg = posterImgval[i];
+   }
+   await onFetch(async () => await addSpeakerToSchedule(props.id, values), {
+     errorCallback: (error: any) => message.error(`${error}`),
+     onSuccessCallback: (msg: any) => {
+       message.success("Speaker added.");
+       props.onUpdateSuccess();
+     },
+   });
+ };
   
   return (
     <div>

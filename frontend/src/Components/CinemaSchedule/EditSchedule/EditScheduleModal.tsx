@@ -215,8 +215,7 @@ export const EditSpeakersModal = (props: Props) => {
   const modal = useOnFetch();
   async function populateData() {
     await modal.onFetch(async () => {
-      const res = await getScheduleById(props.id)
-      console.log(res)
+      const res = await getScheduleById(props.id);
       return res
     });
  

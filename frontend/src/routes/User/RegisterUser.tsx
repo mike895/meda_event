@@ -51,19 +51,18 @@ export default function RegisterUser() {
   const [isLoading, setIsLoading] = useState(false);
   let navigate = useNavigate();
   const onFinish = async (values: any) => {
-    console.log(values);
-      setShow(false);
-      setIsLoading(true);
-      let res = await registerUser(values);
-      setIsLoading(false);
-      if (res.error) {
-        setError(`${res.error}`);
-        setShow(true);
-      } else {
-        message.success("Registered System User!");
-        navigate("/admin/user/manage");
-      }
-};
+    setShow(false);
+    setIsLoading(true);
+    let res = await registerUser(values);
+    setIsLoading(false);
+    if (res.error) {
+      setError(`${res.error}`);
+      setShow(true);
+    } else {
+      message.success("Registered System User!");
+      navigate("/admin/user/manage");
+    }
+  };
   const validateMessages = {
     required: "This felid is required!",
   };

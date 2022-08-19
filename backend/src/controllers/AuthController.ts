@@ -37,9 +37,6 @@ export default class AuthController {
           jwtSecret!,
           { expiresIn: '7 days' }
         );
-        // console.log('====================================');
-        // console.log(token);
-        // console.log('====================================');
         const result = {
           token: `Bearer ${token}`,
           expiryDate: moment().add(168, 'hours'),

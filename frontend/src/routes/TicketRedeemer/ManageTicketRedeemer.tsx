@@ -292,7 +292,6 @@ export default function ManageTicketRedeemer() {
     },
   ];
   const loadTicketRedeemerUsers = async () => {
-    console.log("Populating table");
     setTableLoading(true);
     const res = await getAllTicketRedeemerUsers();
     if (res.error) {

@@ -64,7 +64,6 @@ export default function Login(props: any) {
     }
   }
   const onFinish = async (values: any) => {
-    console.log(values);
     setShow(false);
     setIsLoading(true);
     await SignIn(values["username"], values["password"]);

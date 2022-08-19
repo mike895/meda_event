@@ -19,7 +19,6 @@ export default function useOnNodeFetch() {
     setIsLoading(true);
     try {
       const data = await fetchingFn();
-      console.log(data.error)
       // return
       if (data.error) {
         // Fetching error then

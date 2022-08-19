@@ -494,7 +494,6 @@ async DeleteSpeaker(req: Request, res: Response, next: NextFunction) {
           id: speakerId,
         },
       });
-      console.log(speaker)
 
       if (!speaker) {
         return res.status(404).json({ error: "Couldn't find speaker!" });

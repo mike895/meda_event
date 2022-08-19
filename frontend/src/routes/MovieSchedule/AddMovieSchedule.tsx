@@ -43,65 +43,57 @@ const AddMovieSchedule = () => {
 
 const uploadHandler = (e: any) => {
   const file = e.target.files[0];
-  
+
   const formData = new FormData();
-  formData.append('logo',file)
-  console.log("fileee",formData)
+  formData.append("logo", file);
 
+  axios
+    .post(`${config.MEDA_URL}/upload/`, formData)
+    .then((res) => {
+      posterImgval.push(res.data.name);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
 
-  axios.post(`${config.MEDA_URL}/upload/`, formData)
-  .then((res) => {
-    console.log("yesssss",res)
-    // setposterImg(res.data.name);
-    posterImgval.push(res.data.name);
-  })
-  .catch((err) => {
-    console.error(err)
-  })
-}
+const rangeConfig = {
+  rules: [
+    {
+      type: "array" as const,
+      required: true,
+      message: "Please select a date range!",
+    },
+  ],
+};
 
-  
-  const rangeConfig = {
-    rules: [
-      {
-        type: "array" as const,
-        required: true,
-        message: "Please select a date range!",
-      },
-    ],
-  };
+const loadFormData = async () => {
+  let events = await getAllMovies();
+  let cinemaHalls = await getAllCinemaHalls();
+  if (events.error || cinemaHalls.error) {
+    return message.error("Error Loading Form Data, Please refresh the page.");
+  }
+  setCinemaHallList(cinemaHalls);
+  setMoviesList(events);
+};
 
-  const loadFormData = async () => {
-    
-    let events = await getAllMovies();
-    let cinemaHalls = await getAllCinemaHalls();
-    if (events.error || cinemaHalls.error) {
-      return message.error("Error Loading Form Data, Please refresh the page.");
-    }
-    setCinemaHallList(cinemaHalls);
-    setMoviesList(events);
-  };
-  
-  const onFinish = async (values: any) => {
-
-    if (!values.showTimes)
+const onFinish = async (values: any) => {
+  if (!values.showTimes)
     return message.error("You need to add at least 1 show time!");
-    setIsLoading(true);
-    for (let i=0;i<posterImgval.length; i++){
-      values.speakers[i].posterImg = posterImgval[i];
+  setIsLoading(true);
+  for (let i = 0; i < posterImgval.length; i++) {
+    values.speakers[i].posterImg = posterImgval[i];
+  }
 
-    }
-
-    let res = await addMovieSchedule(values);
-    setIsLoading(false);
-    if (res.error) {
-      message.error(`${res.error}`);
-    } else {
-      message.success("Schedule Added.");
-      navigate("/admin/schedules/manage");
-    }
-    console.log("Received values of form:", JSON.stringify(values));
-  };
+  let res = await addMovieSchedule(values);
+  setIsLoading(false);
+  if (res.error) {
+    message.error(`${res.error}`);
+  } else {
+    message.success("Schedule Added.");
+    navigate("/admin/schedules/manage");
+  }
+};
   useAsyncEffect(async () => {
     await loadFormData();
   }, []);

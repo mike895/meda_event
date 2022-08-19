@@ -20,7 +20,6 @@ const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
 function Admin(props: any) {
-  console.log("Admin Dashboard reload");
   const [collapsed, setCollapsed] = useState(false);
   const toggle = () => {
     setCollapsed(!collapsed);
@@ -63,11 +62,7 @@ function Admin(props: any) {
                 <Link to="events/manage">{"Manage"}</Link>
               </Menu.Item>
             </SubMenu>
-            <SubMenu
-              key="venues"
-              icon={<AliyunOutlined />}
-              title={"Venues"}
-            >
+            <SubMenu key="venues" icon={<AliyunOutlined />} title={"Venues"}>
               <Menu.Item key="add-venues">
                 <Link to="venues/add">{"Add"}</Link>
               </Menu.Item>

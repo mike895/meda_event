@@ -86,9 +86,7 @@ export const EditEventModal = (props: Props) => {
 
   });
   async function populateInitialData() {
-    console.log("proppspspspsp", props)
     let response = await searchEvent(props.id);
-    console.log(response)
     if (response.error) {
       setError("Internal Server Error, Please Try again.");
       setShow(true);
@@ -150,21 +148,19 @@ export const EditEventModal = (props: Props) => {
 
   const uploadHandler = (e: any) => {
     const file = e.target.files[0];
-    
+
     const formData = new FormData();
-    formData.append('logo',file)
-    console.log("fileee",formData)
-  
-  
-    axios.post(`${config.MEDA_URL}/upload/`, formData)
-    .then((res) => {
-      console.log("yesssss",res)
-      setposterImg(res.data.name);
-    })
-    .catch((err) => {
-      console.error(err)
-    })
-  }
+    formData.append("logo", file);
+
+    axios
+      .post(`${config.MEDA_URL}/upload/`, formData)
+      .then((res) => {
+        setposterImg(res.data.name);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   
 
   return (

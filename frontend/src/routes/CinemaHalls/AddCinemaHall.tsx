@@ -50,7 +50,6 @@ const CinemaHalls = () => {
     if (res.error) {
       message.error(`${res.error}`, 2.5);
     } else {
-      console.log(res);
       message.success("Venue Added.");
       navigate("/admin/venues/manage");
     }

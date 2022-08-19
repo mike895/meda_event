@@ -52,7 +52,6 @@ export default function ChooseShowtime() {
         navigate("/404", { replace: true });
       },
       onSuccessCallback: (data: any) => {
-        console.log(data)
         setSchedule(data);
       },
     });
@@ -118,7 +117,12 @@ export default function ChooseShowtime() {
                     </Typography.Title>
                     <ErrorBoundary>
                       <Row align="middle">
-                        <Typography.Text strong style={{marginRight:10,marginBottom:2}}>{"Tags"}</Typography.Text>
+                        <Typography.Text
+                          strong
+                          style={{ marginRight: 10, marginBottom: 2 }}
+                        >
+                          {"Tags"}
+                        </Typography.Text>
                         {schedule?.event.tags.map((e: any) => {
                           return (
                             <Tag key={`k ${e}`} color="#EDEDED">
@@ -165,25 +169,29 @@ export default function ChooseShowtime() {
                     className={styles["content-container"]}
                     style={{ margin: "25px 0px" }}
                   >
-
-                      <Space direction="horizontal">
-                        {console.log("sleelellee", selectedShowtime)}
-                        {schedule?.speakers?.map((e: any) => {
-                          console.log("test", e)
-                          return (
-                            <Card
+                    <Space direction="horizontal">
+                      {schedule?.speakers?.map((e: any) => {
+                        return (
+                          <Card
                             hoverable
                             // style={{ width: 700, wordWrap: 'break-word'}}
                             style={{ width: 300, height: 750 }}
-                            cover={<img alt="Speaker Image" src={`${process.env.REACT_APP_BASE_URL_BACKEND}/images/${e.posterImg}`} />}
+                            cover={
+                              <img
+                                alt="Speaker Image"
+                                src={`${process.env.REACT_APP_BASE_URL_BACKEND}/images/${e.posterImg}`}
+                              />
+                            }
                           >
-                            <Meta title= {e.firstName+" "+ e.lastName} description= {e.biography} />
+                            <Meta
+                              title={e.firstName + " " + e.lastName}
+                              description={e.biography}
+                            />
                           </Card>
-
-                          );
-                        })}
-                      </Space>
-                      <div style={{ margin: "25px 0px" }}> </div>
+                        );
+                      })}
+                    </Space>
+                    <div style={{ margin: "25px 0px" }}> </div>
                     <Typography.Title level={2}>Buy Ticket</Typography.Title>
                     <Row style={{ flexDirection: "column", maxWidth: 500 }}>
                       <Typography.Title
@@ -209,8 +217,6 @@ export default function ChooseShowtime() {
                         international
                         countryCallingCodeEditable={false}
                         onChange={(e) => {
-                          console.log(e);
-
                           // setPhone(e as any);
                         }}
                         style={{
@@ -239,9 +245,7 @@ export default function ChooseShowtime() {
                         {"Select your preferred showtime"}
                       </Typography.Text>
                       <Space direction="vertical">
-                        {console.log("sleelellee", selectedShowtime)}
                         {schedule?.showTimes?.map((e: any) => {
-                          console.log("test", e)
                           return (
                             <ShowtimeSelectButton
                               value={e.id}

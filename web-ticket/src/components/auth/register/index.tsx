@@ -51,8 +51,6 @@ function Register() {
           international
           countryCallingCodeEditable={false}
           onChange={(e) => {
-            console.log(e);
-
             setPhone(e as any);
           }}
           style={{

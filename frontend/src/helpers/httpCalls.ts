@@ -303,63 +303,27 @@ export const updateMovie = async (data: any) => {
 
 }
 
-
-// export const addImage = async (data: any) => {
-//   console.log("aaaaaaa", data)
-
-//   const res = await fetch(`${baseUrl}/upload/`, {
-//     method: 'POST',
-//     headers: {
-//       // 'Content-Type': 'multipart/form-data',
-//       "Authorization": Cookies.get("jwt_auth") || ""
-//     },
-//     body: data,
-//   });
-//   if (res.status == 201) {
-//     return await res.json();
-//   }
-//   else if (res.status == 400) {
-//     return { error: "Please make sure you've filled all the required values." }
-//   }
-//   else {
-//     let json = await res.json();
-//     if (json.error) {
-//       return { error: json.error };
-//     }
-//     return { error: "Internal server error." }
-//   }
-
-// }
-
-
-
 export const addMovie = async (data: any) => {
-  // data.posterImg = im_name;
-  console.log("kjsdfhk",data)
   const res = await fetch(`${baseUrl}/api/event/`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
     body: JSON.stringify(data),
   });
   if (res.status == 201) {
     return await res.json();
-  }
-  else if (res.status == 400) {
-    return { error: "Please make sure you've filled all the required values." }
-  }
-  else {
+  } else if (res.status == 400) {
+    return { error: "Please make sure you've filled all the required values." };
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-
-}
-
+};
 
 // export const getMovie = async (data: any) => {
 //   const res = await fetch(`${baseUrl}/api/event/searche/${data}`, {
@@ -386,240 +350,219 @@ export const addMovie = async (data: any) => {
 
 // }
 
-
 export const searchMovie = async (title: string) => {
-  console.log(title)
   const res = await fetch(`${baseUrl}/api/event/search/${title}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
   });
-  console.log(res)
   if (res.status == 200) {
     return await res.json();
-  }
-  else {
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-
-}
+};
 
 export const searchEvent = async (id: string) => {
   const res = await fetch(`${baseUrl}/api/event/search2/${id}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
   });
-  console.log(res)
   if (res.status == 200) {
     return await res.json();
-  }
-  else {
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-
-}
+};
 
 export const updateEvent = async (id: string, data: any) => {
   const res = await fetch(`${baseUrl}/api/event/${id}`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
     body: JSON.stringify(data),
   });
   if (res.status == 201) {
     return await res.json();
-  }
-  else if (res.status == 400) {
-    return { error: "Please make sure you've filled all the required values." }
-  }
-  else {
+  } else if (res.status == 400) {
+    return { error: "Please make sure you've filled all the required values." };
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-}
+};
 
 export const getAllMovies = async () => {
   const res = await fetch(`${baseUrl}/api/event/`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
   });
   if (res.status == 200) {
     return await res.json();
-  }
-  else {
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-
-}
+};
 export const addCinemaHall = async (data: any) => {
   const res = await fetch(`${baseUrl}/api/venue/`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
     body: JSON.stringify(data),
   });
   if (res.status == 201) {
     return await res.json();
-  }
-  else if (res.status == 400) {
-    return { error: "Couldn't create cinema hall, Data not formatted properly." }
-  }
-  else {
+  } else if (res.status == 400) {
+    return {
+      error: "Couldn't create cinema hall, Data not formatted properly.",
+    };
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-
-}
+};
 export const getAllCinemaHalls = async () => {
   const res = await fetch(`${baseUrl}/api/venue/`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
   });
   if (res.status == 200) {
     return await res.json();
-  }
-  else {
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-}
+};
 export const getCinemaHall = async (id: string) => {
   const res = await fetch(`${baseUrl}/api/venue/${id}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
   });
   if (res.status == 200) {
     return await res.json();
-  }
-  else {
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-}
+};
 export const addMovieSchedule = async (data: any) => {
   const res = await fetch(`${baseUrl}/api/event-schedule/`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
     body: JSON.stringify(data),
   });
   if (res.status == 201) {
     return await res.json();
-  }
-  else if (res.status == 400) {
-    return { error: "Couldn't create schedule, Data not formatted properly." }
-  }
-  else {
+  } else if (res.status == 400) {
+    return { error: "Couldn't create schedule, Data not formatted properly." };
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-}
+};
 export const getAllMovieSchedules = async () => {
   const res = await fetch(`${baseUrl}/api/event-schedule/`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
   });
   if (res.status == 200) {
     return await res.json();
-  }
-  else {
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-}
+};
 export const getAllRedeemerUsers = async () => {
   const res = await fetch(`${baseUrl}/api/redeemer-users/`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
   });
   if (res.status == 200) {
     return await res.json();
-  }
-  else {
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-}
+};
 export const getSalesReport = async (data: any) => {
   const res = await fetch(`${baseUrl}/api/ticket/sales-report`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      "Authorization": Cookies.get("jwt_auth") || ""
+      "Content-Type": "application/json",
+      Authorization: Cookies.get("jwt_auth") || "",
     },
     body: JSON.stringify(data),
   });
-  console.log(res)
   if (res.status == 200) {
     return await res.json();
-  }
-  else {
+  } else {
     let json = await res.json();
     if (json.error) {
       return { error: json.error };
     }
-    return { error: "Internal server error." }
+    return { error: "Internal server error." };
   }
-}
+};
 export const getAllTickets = async () => {
   const res = await fetch(`${baseUrl}/api/ticket/`, {
     method: 'GET',

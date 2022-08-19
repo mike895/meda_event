@@ -11,7 +11,6 @@ export const getCurrentUser = async () => {
   })
     .then((res) => res.json())
     .catch((e) => {
-      console.log(e);
       return { error: "Error connecting." };
     });
   if (res.error) {
@@ -31,13 +30,11 @@ export const getBotUser = async (token: any) => {
   })
     .then((res) => res.json())
     .catch((e) => {
-      console.log("errrrrrrrrrrrr: ", e);
       return { error: "Error connecting." };
     });
   if (res.error) {
     return { error: res.error };
   }
-  console.log(res);
   return res;
 };
 

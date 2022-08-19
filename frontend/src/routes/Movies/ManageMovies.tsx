@@ -283,17 +283,14 @@ const showTitle = (val: any) => {
     },
   ];
   const loadMovies = async () => {
-    console.log("Populating table");
     setTableLoading(true);
     const res = await getAllMovies();
     if (res.error) {
       setMoviesList([]);
       message.error("Error Loading data please refresh the page.");
     } else {
-      console.log("elelelelelele", res)
       setMoviesList(
         res.map((element: any) => ({
-          
           ...element,
           addedBy: `${element.addedBy?.firstName} ${element.addedBy?.lastName}`,
         }))

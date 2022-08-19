@@ -51,7 +51,6 @@ async function loadData() {
       navigate("/404", { replace: true });
     },
     onSuccessCallback: (data: any) => {
-      console.log("ddddddddd", data);
       setShowtime(data);
     },
   });

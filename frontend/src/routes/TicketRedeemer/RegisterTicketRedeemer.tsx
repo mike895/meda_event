@@ -46,7 +46,6 @@ export default function RegisterTicketRedeemerUser() {
   const [isLoading, setIsLoading] = useState(false);
   let navigate = useNavigate();
   const onFinish = async (values: any) => {
-    console.log(values);
     setShow(false);
     setIsLoading(true);
     let res = await registerTicketRedeemer(values);

@@ -83,7 +83,6 @@ function TicketSlider({ ticket }: Props) {
       if (all) {
         let photosB64: { image: string; name: string }[] = [];
         for (const [i, iet] of (itemsRef.current as any).entries()) {
-          console.log(i);
           photosB64.push({
             name: ticket?.TicketsOnSeats[i].ticketKey,
             image: await takeScreenshot(iet),

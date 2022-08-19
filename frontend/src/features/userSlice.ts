@@ -44,10 +44,9 @@ export const userSlice = createSlice({
 
         })
         builder.addCase(getCurrentUserThunk.fulfilled, (state, action) => {
-            console.log(action);
-            state.user = action.payload.result
-            state.loading = false;
-        })
+          state.user = action.payload.result;
+          state.loading = false;
+        });
         builder.addCase(getCurrentUserThunk.pending, (state) => {
             state.loading = true;
         })

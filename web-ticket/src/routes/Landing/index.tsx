@@ -61,7 +61,6 @@ function Landing() {
           Buy Event tickets
         </div>
       </div>
-      {/* {console.log('yesssss',schedules)} */}
       {isLoading ? (
         <LandingSkeleton />
       ) : (
@@ -120,7 +119,7 @@ function Landing() {
                           e.event.runtime % 60
                         }min`}
                         trailerLink={e.event.trailerLink}
-                        scheduleId= {e.id}
+                        scheduleId={e.id}
                       />
                     </ErrorBoundary>
                   );

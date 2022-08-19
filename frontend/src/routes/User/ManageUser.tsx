@@ -306,7 +306,6 @@ export default function ManageUser() {
     },
   ];
   const loadUsers = async () => {
-    console.log("Populating table");
     setTableLoading(true);
     const res = await getAllUsers();
     if (res.error) {
