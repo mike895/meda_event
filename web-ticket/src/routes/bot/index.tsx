@@ -11,7 +11,7 @@ import {
   Button,
 } from "antd";
 import dayjs from "dayjs";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState, useMemo } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import SeatMap from "../../components/ChooseSeat/SeatMap/seatMap";
 import SeatsDetail from "../../components/ChooseSeat/seatsDetail";
@@ -52,9 +52,13 @@ export default function ChooseSeat() {
     login,
     botlogin,
   } = useAuth();
+  
+    const userObject = useMemo(() => {
+      return { scheduleId:scheduleId, showTimeId:showTimeId, token:token , chatid:chatid  };
+    }, [scheduleId, showTimeId, token , chatid]); 
 
   async function loadData() {
-    await onFetch(async () => await getShowtimeWithHallById(showTimeId), {
+    await onFetch(async () => await getShowtimeWithHallById(userObject.showTimeId), {
       errorCallback: (error: any) => {
         message.error(`${error}`);
         navigate("/404", { replace: true });
@@ -64,17 +68,14 @@ export default function ChooseSeat() {
       },
     });
   }
-  const loginUser = () => {
-    botlogin(token);
-  };
 
   useEffect(() => {
     loadData();
   }, []);
 
   useEffect(() => {
-    if (token && !currentUser) {
-      loginUser();
+    if (userObject.token && !currentUser) {
+      botlogin(userObject.token);
     }
   }, []);
 
@@ -83,10 +84,10 @@ export default function ChooseSeat() {
   //amount error
   async function buySeats(price: any) {
     let res = await buyTicket({
-      showTimeId: showTimeId,
+      showTimeId: userObject.showTimeId,
       seats: selectedSeats.map((e: any) => e.id),
       amount: 1,
-      chatid
+      chatid: userObject.chatid
     });
     if (res.error == undefined) {
       //Success

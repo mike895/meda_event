@@ -56,6 +56,7 @@ export function AuthProvider({ children }: any) {
 
   // Bot
   async function botlogin(token: any) {
+
     Cookies.set("jwt_auth", `Bearer ${token}`, {
       path: "/",
       expires: new Date(8640000000000000),

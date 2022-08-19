@@ -69,6 +69,7 @@ async function buySeats(price: any) {
     seats: selectedSeats.map((e: any) => e.id),
     amount: 1,
   });
+  
   if (res.error == undefined) {
     //Success
     window.open(res.href, "_blank");
