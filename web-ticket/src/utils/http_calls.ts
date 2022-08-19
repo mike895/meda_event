@@ -1,13 +1,6 @@
 import Cookies from "js-cookie";
-
 export const baseUrl = process.env.REACT_APP_BASE_URL_BACKEND;
-// let baseUrl: string;
 
-// if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-//   baseUrl = "http://localhost:3000"
-// } else {
-//   baseUrl = "http://165.227.142.142"
-// }
 export const getMovieSchedules = async () => {
   const res = await fetch(`${baseUrl}/api/event-schedule/schedules-preview`, {
     method: "GET",

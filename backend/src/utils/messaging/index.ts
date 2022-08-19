@@ -11,6 +11,11 @@ const credentials = {
     '114d3daf3d5a88d146b68c7361ecbb9a537ff28ad30cce528e8b7326d369bbfa', // use your sandbox app API key for development in the test environment
   username: process.env.AFRICAS_TALKING_SMS_USERNAME || 'meda', // "century-cinema-app", // use 'sandbox' for development in the test environment
 };
+const { Telegraf } = require("telegraf")
+// require("dotenv").config();
+const QRCode = require('qrcode')
+
+const bot = new Telegraf(process.env.BOT_TOKEN);
 const Africastalking = require('africastalking')(credentials);
 
 const sms = Africastalking.SMS;
@@ -38,4 +43,17 @@ async function sendMessage(recipient, message) {
     console.log('Error sending a message');
   }
 }
-export { sendSmsMessage, sendMessage };
+
+async function sendToBot(chatid, tickets_on_seats , msg){
+  const images = []
+
+  tickets_on_seats.map(ticketKey=>{
+       QRCode.toDataURL(ticketKey, function (err, url) {
+          let image = url.split(",")[1]
+          bot.telegram.sendPhoto(chatid, {source: Buffer.from(image, "base64"),})
+      })
+  })
+  await bot.telegram.sendMessage(chatid, msg)
+}        
+
+export { sendSmsMessage, sendMessage, sendToBot };

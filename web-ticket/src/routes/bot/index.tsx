@@ -279,6 +279,7 @@ export default function ChooseSeat() {
                       onClick={async () => {
                         if (selectedSeats.length == 0) {
                           message.error("You have not selected your seats");
+                          return
                         }
                         if (
                           loading == false &&

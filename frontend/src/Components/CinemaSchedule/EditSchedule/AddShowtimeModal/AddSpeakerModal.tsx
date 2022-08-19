@@ -28,6 +28,7 @@ import {
   getAllMovies,
 } from "../../../../helpers/httpCalls";
 import axios from 'axios'
+import config from "../../../../config"
 
 
 
@@ -57,7 +58,7 @@ export const AddSpeakerModal = (props: Props) => {
   console.log("fileee",formData)
 
 
-  axios.post('http://localhost:3000/upload/', formData)
+  axios.post(`${config.MEDA_URL}/upload/`, formData)
   .then((res) => {
     console.log("yesssss",res)
     // setposterImg(res.data.name);

@@ -32,6 +32,8 @@ import {
 } from "../../../../helpers/httpCalls";
 import NumberOnlyPasswordField from "../../../global/NumberOnlyPasswordField";
 import axios from 'axios'
+import config from "../../../../config"
+
 
 const { Option } = Select;
 const { Text, Title } = Typography;
@@ -154,7 +156,7 @@ export const EditEventModal = (props: Props) => {
     console.log("fileee",formData)
   
   
-    axios.post('http://3.70.8.102:3000/upload/', formData)
+    axios.post(`${config.MEDA_URL}/upload/`, formData)
     .then((res) => {
       console.log("yesssss",res)
       setposterImg(res.data.name);

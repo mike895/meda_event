@@ -12,7 +12,7 @@ import prisma from '../db/db';
 import dayjs = require('dayjs');
 import * as duration from 'dayjs/plugin/duration';
 import { generateUID } from '../utils/uid/index';
-import { sendMessage, sendSmsMessage } from '../utils/messaging';
+import { sendMessage, sendSmsMessage, sendToBot } from '../utils/messaging';
 import Roles from '../data/roles';
 import { scheduler } from '../scheduler';
 import { AsyncTask, SimpleIntervalJob } from 'toad-scheduler';
@@ -20,12 +20,6 @@ import { webClientHostedUrl } from '../config';
 import { Server } from 'socket.io';
 import * as fetch from 'node-fetch';
 import { v4 as uuidv4 } from 'uuid';
-// const { Telegraf } = require("telegraf")
-// require("dotenv").config();
-// const bot = new Telegraf(process.env.BOT_TOKEN);
-
-import sendToBot from '../utils/bot.js'
-
 
 dayjs.extend(duration);
 
@@ -869,9 +863,11 @@ export default class TicketController {
           );
 
           // Send message to telegram bot
+          // if(eventTicket.chatid)
+          if (eventTicket.chatid){
           const tickets_on_seats  = eventTicket.TicketsOnSeats 
           sendToBot(eventTicket.chatid, tickets_on_seats , msg)
-
+          }
           // Notify the telegram bot server
           // const io: Server = req.app.get('io');
           // const ticketNotificationNamespace = io.of('/ticket-notification');
@@ -928,18 +924,15 @@ export default class TicketController {
           customerPhoneNumber: phoneNumber.substring(1),
         },
         redirectUrls: {
-          returnUrl: `http://3.70.8.102:3000/tickets/${ticketId}`,
+          returnUrl: `https://meda.et/tickets/${ticketId}`,
           cancelUrl: 'NaN',
-          callbackUrl: 'http://3.70.8.102:3000/api/ticket/meda-pay-callback',
-          // returnUrl: `http://165.227.142.142/tickets/${ticketId}`,
-          // cancelUrl: 'NaN',
-          // callbackUrl: 'http://165.227.142.142/api/ticket/meda-pay-callback',
+          callbackUrl: 'https://meda.et/api/ticket/meda-pay-callback',
         },
         metaData: {},
       }),
     });
     const mpayRes = await mpay.json();
-    console.log("meda payyyyy", mpayRes)
+
     if (mpayRes.error) {
       throw new Error(mpayRes.error);
     }

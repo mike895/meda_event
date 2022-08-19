@@ -1,14 +1,14 @@
 // TODO BIG - Catch timeouts and 404's
 import Cookies from "js-cookie";
+import config from "../config"
 
 let baseUrl: string;
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  baseUrl = "http://3.70.8.102:3000"
+  baseUrl = config.MEDA_URL
 } else {
   baseUrl = ""
 }
-// baseUrl="http://localhost:3000";
 export const loginUser = async (data: any) => {
   const res = await fetch(`${baseUrl}/api/auth/login-user`, {
     method: 'POST',

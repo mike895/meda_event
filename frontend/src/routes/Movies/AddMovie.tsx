@@ -20,6 +20,8 @@ import { InfoCircleOutlined, InfoCircleTwoTone, PlusOutlined,UploadOutlined } fr
 import Search from "antd/lib/input/Search";
 import { MovieSearchResponse } from "../../types/movieDataRes";
 import axios from 'axios'
+import config from "../../config"
+
 
 const { Title } = Typography;
 const BODY: CSSProperties = {
@@ -66,7 +68,7 @@ const uploadHandler = (e: any) => {
   console.log("fileee",formData)
 
 
-  axios.post('http://3.70.8.102:3000/upload/', formData)
+  axios.post(`${config.MEDA_URL}/upload/`, formData)
   .then((res) => {
     console.log("yesssss",res)
     setposterImg(res.data.name);

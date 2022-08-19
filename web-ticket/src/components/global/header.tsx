@@ -17,18 +17,20 @@ function Header() {
       align="middle"
       justify="space-between"
     >
-      <div
-        style={{
-          display: "flex",
-          textAlign: "center",
-          alignItems: "center",
-          fontSize: 30,
-          fontWeight: "bold",
-          color: "white",
-        }}
-      >
-        meda <div style={{ marginLeft: 5, fontWeight: "300" }}>ticket</div>
-      </div>
+      <Link to="/"> 
+        <div
+          style={{
+            display: "flex",
+            textAlign: "center",
+            alignItems: "center",
+            fontSize: 30,
+            fontWeight: "bold",
+            color: "white",
+          }}
+          >
+          meda <div style={{ marginLeft: 5, fontWeight: "300" }}>ticket</div>
+        </div>
+      </Link>
       {currentUser != null ? (
         <Space>
           <Link to={"/my-tickets"}>
