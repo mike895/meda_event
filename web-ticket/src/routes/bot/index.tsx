@@ -73,11 +73,12 @@ export default function ChooseSeat() {
     loadData();
   }, []);
 
+  console.log(token)
   useEffect(() => {
-    if (userObject.token && !currentUser) {
-      botlogin(userObject.token);
+    if (token && !currentUser) {
+      botlogin(token);
     }
-  }, []);
+  }, [token]);
 
   const navigate = useNavigate();
 
