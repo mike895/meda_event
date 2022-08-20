@@ -32,7 +32,7 @@ export function AuthProvider({ children }: any) {
     setLoading(true);
 
     let res = await getCurrentUser();
-
+console.log("jhdshkjdsfhkj",res)
     if (res.error) {
       setCurrentUser(null);
       setLoading(false);
@@ -56,6 +56,7 @@ export function AuthProvider({ children }: any) {
 
   // Bot
   async function botlogin(token: any) {
+    console.log("whala")
 
     Cookies.set("jwt_auth", `Bearer ${token}`, {
       path: "/",
