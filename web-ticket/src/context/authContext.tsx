@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import React, { useContext, useState, useEffect } from "react";
-import { getCurrentUser } from "../utils/auth_http_calls";
+import { getCurrentUser, getBotUser } from "../utils/auth_http_calls";
 
 const AuthContext = React.createContext({
   currentUser: null,

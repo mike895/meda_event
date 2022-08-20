@@ -53,12 +53,12 @@ export default function ChooseSeat() {
     botlogin,
   } = useAuth();
   
-    const userObject = useMemo(() => {
-      return { scheduleId:scheduleId, showTimeId:showTimeId, token:token , chatid:chatid  };
-    }, [scheduleId, showTimeId, token , chatid]); 
+    // const userObject = useMemo(() => {
+    //   return { scheduleId:scheduleId, showTimeId:showTimeId, token:token , chatid:chatid  };
+    // }, [scheduleId, showTimeId, token , chatid]); 
 
   async function loadData() {
-    await onFetch(async () => await getShowtimeWithHallById(userObject.showTimeId), {
+    await onFetch(async () => await getShowtimeWithHallById(showTimeId), {
       errorCallback: (error: any) => {
         message.error(`${error}`);
         navigate("/404", { replace: true });
@@ -78,17 +78,17 @@ export default function ChooseSeat() {
     if (token && !currentUser) {
       botlogin(token);
     }
-  }, [token]);
+  }, []);
 
   const navigate = useNavigate();
 
   //amount error
   async function buySeats(price: any) {
     let res = await buyTicket({
-      showTimeId: userObject.showTimeId,
+      showTimeId: showTimeId,
       seats: selectedSeats.map((e: any) => e.id),
       amount: 1,
-      chatid: userObject.chatid
+      chatid
     });
     if (res.error == undefined) {
       //Success
