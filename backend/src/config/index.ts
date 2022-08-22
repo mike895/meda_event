@@ -5,7 +5,7 @@ let webClientHostedUrl = process.env.WEB_CLIENT_URL;
 const socketServerToken = process.env.SOCKET_SERVER_TOKEN;
 
 if (process.env.NODE_ENV !== 'production') {
-  webClientHostedUrl = 'http://localhost:3000';
+  webClientHostedUrl = 'http://meda.et';
 }
 export {
   jwtSecret,

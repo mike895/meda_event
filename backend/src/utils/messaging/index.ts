@@ -47,9 +47,12 @@ async function sendMessage(recipient, message) {
 async function sendToBot(chatid, tickets_on_seats , msg){
   const images = []
 
+//console.log("asdf",chatid,tickets_on_seats, msg);
   tickets_on_seats.map(ticketKey=>{
-       QRCode.toDataURL(ticketKey, function (err, url) {
-          let image = url.split(",")[1]
+     //  console.log("fghjk",ticketKey)
+       QRCode.toDataURL(ticketKey.ticketKey, function (err, url) {
+	//console.log(url)
+          let image = url.split(",")[1];
           bot.telegram.sendPhoto(chatid, {source: Buffer.from(image, "base64"),})
       })
   })

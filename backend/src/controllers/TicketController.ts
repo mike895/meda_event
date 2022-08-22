@@ -921,14 +921,14 @@ export default class TicketController {
         },
         redirectUrls: {
           returnUrl: `https://meda.et/tickets/${ticketId}`,
-          cancelUrl: 'NaN',
+          cancelUrl: 'https://meda.et',
           callbackUrl: 'https://meda.et/api/ticket/meda-pay-callback',
         },
         metaData: {},
       }),
     });
     const mpayRes = await mpay.json();
-
+	console.log(mpayRes)
     if (mpayRes.error) {
       throw new Error(mpayRes.error);
     }

@@ -1,0 +1,8 @@
+{
+    "apps": [{
+        "name": "meda-events",
+        "script": "npm",
+        "args": "start"
+    }]
+}
+
