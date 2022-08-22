@@ -151,6 +151,9 @@ class MovieRoutes {
     this.router
     .route('/:id')
     .put(
+        userAuth,
+        userTypeAuth(UserType.User),
+        userRoleAuth([Roles.Admin]),
       this.movieValidator.validateAdd(addMovieSchema),
       this.movieController.UpdateEventById
     );
