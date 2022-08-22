@@ -18,12 +18,13 @@ import "./index.css";
 import TicketWarning from "../../components/tickets/ticketWarning";
 import TicketSlider from "../../components/tickets/ticketSlider";
 const { Paragraph } = Typography;
-let siteUrl = "";
-if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-  siteUrl = "http://3.70.8.102:3000";
-} else {
-  siteUrl = "http://3.70.8.102";
-}
+let siteUrl = "https://meda.et";
+
+//if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+//  siteUrl = "http://3.70.8.102:3000";
+//} else {
+//  siteUrl = "http://3.70.8.102";
+//}
 
 export default function Tickets() {
   let { id } = useParams();
