@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import colors from "../../constants/colors";
 import { useAuth } from "../../context/authContext";
+import "./header.css";
 
 function Header() {
   const {
@@ -14,39 +15,15 @@ function Header() {
     logout,
   } = useAuth();
   return (
-    <Row
-      style={{
-        display: "flex",
-        backgroundColor: colors.PRIMARY,
-        padding: "10px 15px",
-      }}
-      align="middle"
-      justify="space-between"
-    >
+    <Row className="header-container" align="middle" justify="space-between">
       <Link to="/">
-        <div
-          style={{
-            display: "flex",
-            textAlign: "center",
-            alignItems: "center",
-            fontSize: 30,
-            fontWeight: "bold",
-            color: "white",
-          }}
-        >
+        <div className="header-brand">
           meda <div style={{ marginLeft: 5, fontWeight: "300" }}>ticket</div>
         </div>
       </Link>
       {currentUser != null ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "end",
-            width: "100%",
-          }}
-        >
-          <Space>
+        <div className="header-right">
+          <Space className="right-collapsable">
             <Link to={"/my-tickets"}>
               <div
                 style={{
@@ -58,10 +35,10 @@ function Header() {
                   color: "white",
                 }}
               >
-                My Tickets
+                My Tickets <span className="separator-line">|</span>
               </div>
             </Link>
-            <span style={{ color: "white" }}>|</span>
+
             <div
               style={{
                 display: "flex",
