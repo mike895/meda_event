@@ -5,8 +5,14 @@ import colors from "../../constants/colors";
 import { useAuth } from "../../context/authContext";
 
 function Header() {
-  const { currentUser, loading, toggleAuthModal, authModalProps, login } =
-    useAuth();
+  const {
+    currentUser,
+    loading,
+    toggleAuthModal,
+    authModalProps,
+    login,
+    logout,
+  } = useAuth();
   return (
     <Row
       style={{
@@ -17,7 +23,7 @@ function Header() {
       align="middle"
       justify="space-between"
     >
-      <Link to="/"> 
+      <Link to="/">
         <div
           style={{
             display: "flex",
@@ -27,43 +33,66 @@ function Header() {
             fontWeight: "bold",
             color: "white",
           }}
-          >
+        >
           meda <div style={{ marginLeft: 5, fontWeight: "300" }}>ticket</div>
         </div>
       </Link>
       {currentUser != null ? (
-        <Space>
-          <Link to={"/my-tickets"}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "end",
+            width: "100%",
+          }}
+        >
+          <Space>
+            <Link to={"/my-tickets"}>
+              <div
+                style={{
+                  display: "flex",
+                  textAlign: "center",
+                  alignItems: "center",
+                  fontSize: 16,
+                  fontWeight: "500",
+                  color: "white",
+                }}
+              >
+                My Tickets
+              </div>
+            </Link>
+            <span style={{ color: "white" }}>|</span>
             <div
               style={{
                 display: "flex",
                 textAlign: "center",
                 alignItems: "center",
-                fontSize: 16,
-                fontWeight: "500",
+                fontSize: 18,
+                fontWeight: "bold",
                 color: "white",
               }}
             >
-              My Tickets
+              Welcome{" "}
+              <div style={{ marginLeft: 5, fontWeight: "400" }}>
+                {currentUser.firstName}
+              </div>
             </div>
-          </Link>
-          <span style={{color:"white"}}>|</span>
+          </Space>
           <div
             style={{
               display: "flex",
               textAlign: "center",
               alignItems: "center",
-              fontSize: 18,
-              fontWeight: "bold",
+              fontSize: 15,
+              fontWeight: "500",
               color: "white",
+              cursor: "pointer",
             }}
+            onClick={() => logout()}
           >
-            Welcome{" "}
-            <div style={{ marginLeft: 5, fontWeight: "400" }}>
-              {currentUser.firstName}
-            </div>
+            Logout
           </div>
-        </Space>
+        </div>
       ) : null}
       {currentUser == null && loading == false ? (
         <div
@@ -74,6 +103,7 @@ function Header() {
             fontSize: 18,
             fontWeight: "bold",
             color: "white",
+            cursor: "pointer",
           }}
           onClick={() => toggleAuthModal(true, { activeTab: "LOGIN" })}
         >

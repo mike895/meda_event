@@ -9,7 +9,7 @@ import {
   Space,
   Tag,
   Typography,
-  Card
+  Card,
 } from "antd";
 import ErrorBoundary from "antd/lib/alert/ErrorBoundary";
 import React, { useEffect, useState } from "react";
@@ -34,7 +34,6 @@ import MoviesPreviewScroll from "../../components/global/moviesPreviewScroll";
 import ChooseShowtimeSkeleton from "./chooseShowtimeSkeleton";
 import { useAuth } from "../../context/authContext";
 export default function ChooseShowtime() {
-
   const { Meta } = Card;
   let { id } = useParams();
   const location = useLocation();
@@ -173,6 +172,7 @@ export default function ChooseShowtime() {
                       {schedule?.speakers?.map((e: any) => {
                         return (
                           <Card
+                            key={e.id}
                             hoverable
                             // style={{ width: 700, wordWrap: 'break-word'}}
                             style={{ width: 300, height: 750 }}
@@ -248,6 +248,7 @@ export default function ChooseShowtime() {
                         {schedule?.showTimes?.map((e: any) => {
                           return (
                             <ShowtimeSelectButton
+                              key={e.id}
                               value={e.id}
                               select={setSelectedShowtime}
                               selected={e.id == selectedShowtime}

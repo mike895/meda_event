@@ -49,8 +49,8 @@ export default function MoviesPreviewScroll() {
             size={"large"}
             style={{ marginBottom: 30 }}
           >
-            {[1, 2, 3].map((e) => (
-              <Space direction="vertical">
+            {[1, 2, 3].map((e, index) => (
+              <Space key={index} direction="vertical">
                 <Skeleton.Image style={{ width: 200, height: 280 }} />
                 <Skeleton.Button
                   block

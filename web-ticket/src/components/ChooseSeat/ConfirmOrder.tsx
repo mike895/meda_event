@@ -18,17 +18,7 @@ function ConfirmOrder({ onConfirm, onCloseModal, data, paymentInfo }: any) {
 
   return (
     <div className="confirm-container" onClick={() => onCloseModal(false)}>
-      <div
-        style={{
-          backgroundColor: "white",
-          width: "50%",
-          height: "500px",
-          borderRadius: "10px",
-          marginTop: "100px",
-          padding: "2%",
-          position: "relative",
-        }}
-      >
+      <div className="details">
         <div className="close-button" onClick={() => onCloseModal(false)}>
           X
         </div>
@@ -42,16 +32,7 @@ function ConfirmOrder({ onConfirm, onCloseModal, data, paymentInfo }: any) {
         >
           Confirm Order
         </h2>
-        <div
-          style={{
-            backgroundColor: "rgb(245, 106, 5)",
-            height: "3px",
-            width: "100px",
-            borderRadius: 5,
-            margin: "auto",
-            marginBottom: "30px",
-          }}
-        />
+        <div className="details-rows-container" />
 
         <div>
           <div className="detail-row">

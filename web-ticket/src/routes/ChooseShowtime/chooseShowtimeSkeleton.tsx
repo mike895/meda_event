@@ -29,7 +29,7 @@ function ChooseShowtimeSkeleton() {
               marginRight: 5,
             }}
           />
-          {[1, 2].map((e) => (
+          {[1, 2].map((e, index) => (
             <Skeleton.Button key={e} active={true} size={"small"} />
           ))}
         </Space>
@@ -82,8 +82,13 @@ function ChooseShowtimeSkeleton() {
               <Row style={{ flexDirection: "column", maxWidth: 500 }}>
                 <Skeleton paragraph={{ rows: 1 }} active />
                 <Space direction="vertical">
-                  {[1, 2, 3, 4].map((e) => (
-                    <Skeleton.Button active={true} size={"default"} block />
+                  {[1, 2, 3, 4].map((e, index) => (
+                    <Skeleton.Button
+                      key={e}
+                      active={true}
+                      size={"default"}
+                      block
+                    />
                   ))}
                 </Space>
               </Row>
