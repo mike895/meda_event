@@ -1,4 +1,3 @@
-import React from "react";
 import "./App.less";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Landing from "./routes/Landing";

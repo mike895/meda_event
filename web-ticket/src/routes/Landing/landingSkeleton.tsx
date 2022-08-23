@@ -1,13 +1,11 @@
-import { Row, Skeleton, Space } from "antd";
-import React from "react";
-import Header from "../../components/global/header";
-import styles from "./landing.module.css";
+import { Row, Skeleton } from "antd";
 function LandingSkeleton() {
   return (
     <>
       <Row justify="center" style={{ margin: "25px 0px" }}>
-        {[...Array(5)].map((e) => (
+        {[...Array(5)].map((e, index) => (
           <Skeleton.Button
+            key={index}
             style={{
               width: 70,
               height: 75,
@@ -27,13 +25,14 @@ function LandingSkeleton() {
           display: "flex",
         }}
       >
-        {[...Array(5)].map((e) => (
+        {[...Array(5)].map((e, index) => (
           <Skeleton.Button
+            key={index}
             style={{
               width: 200,
               height: 300,
               borderRadius: 5,
-              margin:10
+              margin: 10,
             }}
             active
           />

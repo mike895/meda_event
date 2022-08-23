@@ -31,10 +31,11 @@ import {
 import { getBotUser } from "../../utils/auth_http_calls";
 import styles from "./choose.set.module.css";
 import ChooseSeatSkeleton from "./chooseSeatSkeletion";
+import ConfirmOrder from "../../components/ChooseSeat/ConfirmOrder";
 
 export default function ChooseSeat() {
   let { id, st } = useParams();
-  let { scheduleId, showTimeId, token , chatid } = useParams();
+  let { scheduleId, showTimeId, token, chatid } = useParams();
 
   const location = useLocation();
 
@@ -52,10 +53,11 @@ export default function ChooseSeat() {
     login,
     botlogin,
   } = useAuth();
-  
-    // const userObject = useMemo(() => {
-    //   return { scheduleId:scheduleId, showTimeId:showTimeId, token:token , chatid:chatid  };
-    // }, [scheduleId, showTimeId, token , chatid]); 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // const userObject = useMemo(() => {
+  //   return { scheduleId:scheduleId, showTimeId:showTimeId, token:token , chatid:chatid  };
+  // }, [scheduleId, showTimeId, token , chatid]);
 
   async function loadData() {
     await onFetch(async () => await getShowtimeWithHallById(showTimeId), {
@@ -68,12 +70,40 @@ export default function ChooseSeat() {
       },
     });
   }
+  const payAction = async () => {
+    if (selectedSeats.length == 0) {
+      message.error("You have not selected your seats");
+      return;
+    }
+    if (
+      loading == false &&
+      ((currentUser != null &&
+        query.get("ref") == "tbot" &&
+        currentUser.phoneNumber != query.get("phoneNumber")) ||
+        currentUser == null)
+    ) {
+      toggleAuthModal(true, {
+        ...authModalProps,
+        phoneNumber: query.get("phoneNumber"),
+      });
+    } else {
+      setBuyLoading(true);
+      try {
+        await buySeats(totalPrice);
+      } catch (error) {
+        console.log(error);
+
+        message.error(`${error}` as any);
+      }
+      setBuyLoading(false);
+    }
+  };
 
   useEffect(() => {
     loadData();
   }, []);
 
-  console.log(token)
+  console.log(token);
   useEffect(() => {
     if (token && !currentUser) {
       botlogin(token);
@@ -88,7 +118,7 @@ export default function ChooseSeat() {
       showTimeId: showTimeId,
       seats: selectedSeats.map((e: any) => e.id),
       amount: 1,
-      chatid
+      chatid,
     });
     if (res.error == undefined) {
       //Success
@@ -100,27 +130,6 @@ export default function ChooseSeat() {
       message.error(res.error || "Unknown error");
     }
   }
-
-  // useEffect(() => {
-  //   if (currentUser == null && loading == false) {
-  //     toggleAuthModal(true, {
-  //       ...authModalProps,
-  //       phoneNumber: query.get("phoneNumber"),
-  //     });
-  //   } else if (
-  //     currentUser != null &&
-  //     loading == false &&
-  //     query.get("ref") == "tbot" &&
-  //     currentUser.phoneNumber != query.get("phoneNumber")
-  //   ) {
-  //     toggleAuthModal(true, {
-  //       ...authModalProps,
-  //       phoneNumber: query.get("phoneNumber"),
-  //     });
-  //   } else {
-  //     toggleAuthModal(false, { ...authModalProps, phoneNumber: null });
-  //   }
-  // }, [currentUser, loading]);
 
   function isSeatSelected(seat: any) {
     return selectedSeats.find((e: any) => e.id == seat.id) ? true : false;
@@ -155,167 +164,163 @@ export default function ChooseSeat() {
 
   return (
     <>
-      <Header />
-      <div
-        style={{
-          flexDirection: "column",
-          display: "flex",
-          height: "100%",
-        }}
-      >
-        <SeatSelectionProvider
-          value={{
-            regularTicketPrice: showtime?.EventSchedule.regularTicketPrice ?? 0,
-            // vipTicketPrice: showtime?.EventSchedule.vipTicketPrice ?? 0,
-            selectedSeats,
-            totalPrice,
-            toggleSelect: toggleSelectSeat,
-            isSeatSelected,
+      {modalVisible ? (
+        <ConfirmOrder
+          onConfirm={payAction}
+          onCloseModal={setModalVisible}
+          data={showtime}
+          paymentInfo={{
+            totalPrice: totalPrice,
+            selectedSeats: selectedSeats.length,
+          }}
+        />
+      ) : (
+        <></>
+      )}
+      <div>
+        <Header />
+        <div
+          style={{
+            flexDirection: "column",
+            display: "flex",
+            height: "100%",
           }}
         >
-          {isLoading ? (
-            <ChooseSeatSkeleton />
-          ) : (
-            <div
-              className="container"
-              style={{
-                margin: "15px 0px",
-                flexDirection: "column",
-                display: "flex",
-                flexGrow: 1,
-              }}
-            >
-              <Row align="middle">
-                <img
-                  alt=""
-                  src="/images/logo.png"
-                  style={{
-                    width: 50,
-                    height: 50,
-                    marginRight: 5,
-                  }}
-                />
-                <Breadcrumb
-                  separator={">"}
-                  style={{ fontWeight: "bold", fontSize: 16 }}
-                >
-                  <Breadcrumb.Item key="home">
-                    <Link to="/">Meda|Ticket</Link>
-                  </Breadcrumb.Item>
-                  <Breadcrumb.Item key={pathSnippets[2]}>
-                    <Link to={`/${pathSnippets[0]}/${pathSnippets[1]}`}>
-                      {showtime?.EventSchedule?.event?.title}
-                    </Link>
-                  </Breadcrumb.Item>
-                  <Breadcrumb.Item key={pathSnippets[3]}>
-                    <Link
-                      to={`/${pathSnippets[0]}/${pathSnippets[1]}/${pathSnippets[2]}/${pathSnippets[3]}`}
-                    >
-                      {"Seat selection"}
-                    </Link>
-                  </Breadcrumb.Item>
-                </Breadcrumb>
-              </Row>
-
-              <Row className={styles["content-container"]}>
-                <ShowtimeDetail
-                  showtime={showtime}
-                  currentHall={currentHall}
-                  setCurrentHall={setCurrentHall}
-                />
-              </Row>
-
-              <Row
-                className={styles["content-container"]}
-                style={{ margin: "25px 0px" }}
+          <SeatSelectionProvider
+            value={{
+              regularTicketPrice:
+                showtime?.EventSchedule.regularTicketPrice ?? 0,
+              // vipTicketPrice: showtime?.EventSchedule.vipTicketPrice ?? 0,
+              selectedSeats,
+              totalPrice,
+              toggleSelect: toggleSelectSeat,
+              isSeatSelected,
+            }}
+          >
+            {isLoading ? (
+              <ChooseSeatSkeleton />
+            ) : (
+              <div
+                className="container"
+                style={{
+                  margin: "15px 0px",
+                  flexDirection: "column",
+                  display: "flex",
+                  flexGrow: 1,
+                }}
               >
-                <Typography.Title level={4}>Seat selection</Typography.Title>
-                {showtime != null ? (
-                  <SeatMap
-                    seatMap={
-                      showtime.eventHall[
-                        currentHall == SeatType.Regular ? "regularSeats" : "" //"vipSeats"
-                      ]
-                    }
-                  />
-                ) : null}
-              </Row>
-
-              <Row className={styles["content-container"]}>
-                <SeatsDetail showtime={showtime} />
-              </Row>
-              <Row
-                className={styles["content-row"]}
-                style={{ flexDirection: "column" }}
-              >
-                <Row style={{ color: "red" }}>Tickets are non refundable</Row>
-                <Row>
-                  <Row
+                <Row align="middle">
+                  <img
+                    alt=""
+                    src="/images/logo.png"
                     style={{
-                      backgroundColor: colors.PRIMARY,
-                      padding: "10px 15px",
-                      borderRadius: 5,
+                      width: 50,
+                      height: 50,
+                      marginRight: 5,
                     }}
-                    justify="space-between"
-                    align="middle"
+                  />
+                  <Breadcrumb
+                    separator={">"}
+                    style={{ fontWeight: "bold", fontSize: 16 }}
                   >
-                    <Typography.Text
-                      strong
-                      style={{ color: "white", fontSize: 16 }}
-                    >
-                      {selectedSeats.length} Tickets | {totalPrice} Birr
-                    </Typography.Text>
-                    <Button
-                      type="primary"
-                      style={{
-                        backgroundColor: "#FFEC00",
-                        borderRadius: 5,
-                        color: "black",
-                        fontWeight: "bold",
-                        fontSize: 16,
-                        minWidth: 100,
-                        padding: 0,
-                        marginLeft: 10,
-                      }}
-                      loading={buyLoading}
-                      onClick={async () => {
-                        if (selectedSeats.length == 0) {
-                          message.error("You have not selected your seats");
-                          return
-                        }
-                        if (
-                          loading == false &&
-                          ((currentUser != null &&
-                            query.get("ref") == "tbot" &&
-                            currentUser.phoneNumber !=
-                              query.get("phoneNumber")) ||
-                            currentUser == null)
-                        ) {
-                          toggleAuthModal(true, {
-                            ...authModalProps,
-                            phoneNumber: query.get("phoneNumber"),
-                          });
-                        } else {
-                          setBuyLoading(true);
-                          try {
-                            await buySeats(totalPrice);
-                          } catch (error) {
-                            console.log(error);
+                    <Breadcrumb.Item key="home">
+                      <Link to="/">Meda|Ticket</Link>
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item key={pathSnippets[2]}>
+                      <Link to={`/${pathSnippets[0]}/${pathSnippets[1]}`}>
+                        {showtime?.EventSchedule?.event?.title}
+                      </Link>
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item key={pathSnippets[3]}>
+                      <Link
+                        to={`/${pathSnippets[0]}/${pathSnippets[1]}/${pathSnippets[2]}/${pathSnippets[3]}`}
+                      >
+                        {"Seat selection"}
+                      </Link>
+                    </Breadcrumb.Item>
+                  </Breadcrumb>
+                </Row>
 
-                            message.error(`${error}` as any);
-                          }
-                          setBuyLoading(false);
-                        }
+                <Row className={styles["content-container"]}>
+                  <ShowtimeDetail
+                    showtime={showtime}
+                    currentHall={currentHall}
+                    setCurrentHall={setCurrentHall}
+                  />
+                </Row>
+
+                <Row
+                  className={styles["content-container"]}
+                  style={{ margin: "25px 0px" }}
+                >
+                  <Typography.Title level={4}>Seat selection</Typography.Title>
+                  {showtime != null ? (
+                    <SeatMap
+                      seatMap={
+                        showtime.eventHall[
+                          currentHall == SeatType.Regular ? "regularSeats" : "" //"vipSeats"
+                        ]
+                      }
+                    />
+                  ) : null}
+                </Row>
+
+                <Row className={styles["content-container"]}>
+                  <SeatsDetail showtime={showtime} />
+                </Row>
+                <Row
+                  className={styles["content-row"]}
+                  style={{ flexDirection: "column" }}
+                >
+                  <Row style={{ color: "red" }}>Tickets are non refundable</Row>
+                  <Row>
+                    <Row
+                      style={{
+                        backgroundColor: colors.PRIMARY,
+                        padding: "10px 15px",
+                        borderRadius: 5,
                       }}
+                      justify="space-between"
+                      align="middle"
                     >
-                      Pay
-                    </Button>
+                      <Typography.Text
+                        strong
+                        style={{ color: "white", fontSize: 16 }}
+                      >
+                        {selectedSeats.length} Tickets | {totalPrice} Birr
+                      </Typography.Text>
+                      <Button
+                        type="primary"
+                        style={{
+                          backgroundColor: "#FFEC00",
+                          borderRadius: 5,
+                          color: "black",
+                          fontWeight: "bold",
+                          fontSize: 16,
+                          minWidth: 100,
+                          padding: 0,
+                          marginLeft: 10,
+                        }}
+                        loading={buyLoading}
+                        onClick={() => {
+                          if (selectedSeats.length == 0) {
+                            message.error("You have not selected your seats");
+                            return;
+                          } else {
+                            window.scrollTo(0, 0);
+                            setModalVisible(true);
+                          }
+                        }}
+                      >
+                        Pay
+                      </Button>
+                    </Row>
                   </Row>
                 </Row>
-              </Row>
-            </div>
-          )}
-        </SeatSelectionProvider>
+              </div>
+            )}
+          </SeatSelectionProvider>
+        </div>
       </div>
     </>
   );
