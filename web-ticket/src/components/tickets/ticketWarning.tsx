@@ -3,18 +3,18 @@ import React from "react";
 
 function TicketWarning() {
   return (
-    <div
+    <ol
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        textAlign: "start",
       }}
       className="paragraph-col"
     >
-      <Paragraph>1. Keep this ticket private</Paragraph>
-      <Paragraph>2. Do not share or duplicate this ticket.</Paragraph>
-      <Paragraph>3. The above ticket is valid for only one use</Paragraph>
-    </div>
+      <li>Keep this ticket private</li>
+      <li>Do not share or duplicate this ticket</li>
+      <li>The above ticket is valid for only one use</li>
+    </ol>
   );
 }
 

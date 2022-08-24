@@ -1,5 +1,5 @@
-import { Col, message, Row, Spin, Typography } from "antd";
-import { useEffect, useState } from "react";
+import { Col, message, Popconfirm, Row, Spin, Typography } from "antd";
+import { useEffect, useRef, useState } from "react";
 
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/global/header";
@@ -9,29 +9,35 @@ import {
   CheckCircleTwoTone,
   ClockCircleTwoTone,
   CloseCircleTwoTone,
+  DownloadOutlined,
+  PrinterOutlined,
   QuestionCircleTwoTone,
 } from "@ant-design/icons";
 import "react-phone-number-input/style.css";
 import MoviesPreviewScroll from "../../components/global/moviesPreviewScroll";
-
-import "./index.css";
 import TicketWarning from "../../components/tickets/ticketWarning";
 import TicketSlider from "../../components/tickets/ticketSlider";
+import "./index.css";
+import colors from "../../constants/colors";
+const reactScreenshot = require("use-react-screenshot");
+
 const { Paragraph } = Typography;
 let siteUrl = "https://meda.et";
 
-//if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-//  siteUrl = "http://3.70.8.102:3000";
-//} else {
-//  siteUrl = "http://3.70.8.102";
-//}
-
 export default function Tickets() {
+  const [image, takeScreenshot] = reactScreenshot.useScreenshot();
+  const itemsRef = useRef<Array<HTMLDivElement | null>>([]);
+  const printRef = useRef();
+  const [currentTicket, setCurrentTicket] = useState(0);
+  const [allLoading, setAllLoading] = useState(false);
+  const [oneLoading, setOneLoading] = useState(false);
+
   let { id } = useParams();
   const location = useLocation();
   const [ticket, setTicket] = useState<any>();
   const navigate = useNavigate();
   const { error, isLoading, isSuccess, onFetch, result } = useOnFetch();
+
   async function loadData() {
     await onFetch(async () => await getTicketById(id), {
       errorCallback: (error: any) => {
@@ -43,6 +49,7 @@ export default function Tickets() {
       },
     });
   }
+
   function renderStatusIcon() {
     if (ticket?.paymentStatus == "PAYED") {
       return (
@@ -78,9 +85,45 @@ export default function Tickets() {
       );
     }
   }
+
+  const download = (
+    image: string,
+    { name = "img", extension = "png" } = {}
+  ) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = reactScreenshot.createFileName(extension, name);
+    a.click();
+  };
+
+  const captureTicket = async (ref: HTMLDivElement | null, all = false) => {
+    all ? setAllLoading(true) : setOneLoading(true);
+    try {
+      if (all) {
+        let photosB64: { image: string; name: string }[] = [];
+        for (const [i, iet] of (itemsRef.current as any).entries()) {
+          photosB64.push({
+            name: ticket?.TicketsOnSeats[i].ticketKey,
+            image: await takeScreenshot(iet),
+          });
+        }
+        photosB64.forEach((e) => download(e.image, { name: e.name }));
+      } else {
+        let image = await takeScreenshot(ref);
+        download(image, {
+          name: ticket?.TicketsOnSeats[currentTicket].ticketKey,
+        });
+      }
+    } catch (error) {
+      message.error((error as Error).message || "An error occurred");
+    }
+    all ? setAllLoading(false) : setOneLoading(false);
+  };
+
   useEffect(() => {
     loadData();
   }, []);
+
   const paid = ticket?.paymentStatus == "PAYED" ? true : false;
 
   return (
@@ -116,7 +159,6 @@ export default function Tickets() {
               }}
             >
               <Col
-                // span={8}
                 md={24}
                 lg={8}
                 style={{
@@ -128,21 +170,17 @@ export default function Tickets() {
                 <div className="ticket-status-info-col">
                   <div
                     style={{
-                      // display: "flex",
                       flexDirection: "column",
                       textAlign: "center",
                       alignItems: "center",
                       fontSize: 30,
                       fontWeight: "bold",
-                      // color: "white",
                     }}
                   >
-                    Meda Ticket{" "}
-                    <div style={{ fontWeight: "500" }}>Meda|Ticket</div>
+                    Meda|Ticket
                   </div>
                   <div
                     style={{
-                      // display: "flex",
                       flexDirection: "column",
                       textAlign: "center",
                       alignItems: "center",
@@ -157,9 +195,9 @@ export default function Tickets() {
                         fontWeight: "bold",
                       }}
                     >
-                      {`Payment Status: ${
-                        paid ? "Paid" : ticket?.paymentStatus
-                      } `}
+                      {paid
+                        ? "Order Completed"
+                        : `Payment Status: ${ticket?.paymentStatus}`}
                     </div>
                     {ticket?.showTime != null ? (
                       <div
@@ -182,23 +220,56 @@ export default function Tickets() {
                           fontSize: 16,
                         }}
                       >
-                        { (ticket?.paymentStatus == "PAYED") ?
-                  
-                        <Paragraph
-                          copyable={{
-                            text: `${siteUrl}/tickets/${ticket?.id}`,
-                          }}
-                          strong
-                        >
-                          Copy link :
-                        </Paragraph> :null
-                       }
+                        <div ref={printRef.current}>
+                          <TicketWarning />
+                        </div>
+                        {ticket?.paymentStatus == "PAYED" ? (
+                          <div className="action-buttons-wrapper">
+                            <ActionButton
+                              title={"Copy"}
+                              action={"copy"}
+                              ticket={ticket}
+                            />
+                            <ActionButton
+                              title={"Download"}
+                              action={"download"}
+                              captureTicket={captureTicket}
+                              currentTicket={currentTicket}
+                              itemsRef={itemsRef}
+                              oneLoading={oneLoading}
+                              allLoading={allLoading}
+                              ticket={ticket}
+                            />
+                            <ActionButton
+                              title={"Print"}
+                              action={"print"}
+                              ticket={ticket}
+                            />
+                            <ActionButton
+                              title={"Copy"}
+                              action={"copy"}
+                              ticket={ticket}
+                            />
+                            {/* <Button> */}
+                            <Paragraph
+                              copyable={{
+                                text: `${siteUrl}/tickets/${ticket?.id}`,
+                              }}
+                              strong
+                            >
+                              Copy link :
+                            </Paragraph>
+                            {/* </Button> */}
+                          </div>
+                        ) : null}
                       </div>
-                      <TicketWarning />
                     </>
                   ) : (
                     <>
-                      <Row style={{ fontSize: 16,marginTop:10 }} justify="center">
+                      <Row
+                        style={{ fontSize: 16, marginTop: 10 }}
+                        justify="center"
+                      >
                         <Col span={12}>
                           <Typography.Text style={{ color: "#595959" }}>
                             Reference Number
@@ -226,9 +297,19 @@ export default function Tickets() {
                   )}
                 </div>
               </Col>
-                    
-              {(ticket?.paymentStatus == "PAYED") && ticket?.showTime != null ? (
-                <TicketSlider ticket={ticket} />
+
+              {ticket?.paymentStatus == "PAYED" && ticket?.showTime != null ? (
+                <TicketSlider
+                  ticket={ticket}
+                  oneLoading={oneLoading}
+                  allLoading={allLoading}
+                  currentTicket={currentTicket}
+                  captureTicket={captureTicket}
+                  setOneLoading={setOneLoading}
+                  setAllLoading={setAllLoading}
+                  setCurrentTicket={setCurrentTicket}
+                  itemsRef={itemsRef}
+                />
               ) : null}
             </Row>
           </>
@@ -238,3 +319,73 @@ export default function Tickets() {
     </>
   );
 }
+
+const ActionButton = ({
+  title,
+  action,
+  ticket,
+  captureTicket = null,
+  currentTicket,
+  itemsRef,
+  oneLoading,
+  allLoading,
+}: any) => {
+  const renderItem = () => {
+    switch (action) {
+      case "copy":
+        return (
+          <Paragraph
+            className="action-button"
+            copyable={{
+              text: `${siteUrl}/tickets/${ticket?.id}`,
+            }}
+          >
+            Copy link
+          </Paragraph>
+        );
+
+      case "download":
+        return (
+          <Popconfirm
+            className="action-button"
+            onConfirm={async () => {
+              await captureTicket(null, true);
+            }}
+            title="Download Ticket"
+            icon={<DownloadOutlined />}
+            okButtonProps={{ loading: allLoading }}
+            okText="Download All Tickets"
+            cancelText="Download This Ticket"
+            cancelButtonProps={{ type: "primary", loading: oneLoading }}
+            onCancel={async () => {
+              await captureTicket(itemsRef.current[currentTicket]);
+            }}
+          >
+            Download
+            <DownloadOutlined
+              style={{ fontSize: "25px", color: "#fff", marginLeft: "5px" }}
+            />
+          </Popconfirm>
+        );
+
+      case "print":
+        return (
+          <div className="action-button">
+            Print
+            <PrinterOutlined style={{ marginLeft: "5px" }} />
+          </div>
+        );
+
+      default:
+        break;
+    }
+  };
+
+  const actionHandler = () => {};
+
+  return (
+    <div className="action-button-wrapper" onClick={actionHandler}>
+      {renderItem()}
+    </div>
+  );
+};

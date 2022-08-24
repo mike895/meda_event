@@ -10,9 +10,26 @@ import MoviesPreviewScroll from "../../components/global/moviesPreviewScroll";
 import useOnFetch from "../../hooks/useOnFetch";
 import { getBuyHistory } from "../../utils/http_calls";
 import styles from "./tickets.module.css";
+
+// Meda (QR) code 
+// event Title 
+// venue name, friendly location & Google map link 
+// start time/date 
+// end time/date 
+// Seat number 
+// Total price 
+// Payment mode 
+// Reference number 
+// Purchase date and time 
+// Transaction Number 
+// Payment status
+
+
 function MyTickets() {
   const { error, isLoading, isSuccess, onFetch, result } = useOnFetch();
   const [tickets, setTickets] = useState<Array<any>>();
+ 
+ 
   async function loadData() {
     await onFetch(async () => await getBuyHistory(), {
       errorCallback: (error: any) => {
@@ -23,9 +40,12 @@ function MyTickets() {
       },
     });
   }
+
+
   useEffect(() => {
     loadData();
   }, []);
+  
   const navigate = useNavigate();
   return (
     <>
@@ -61,8 +81,6 @@ function MyTickets() {
                   }}
                 >
                   <List
-                    //   loading={true}
-
                     itemLayout="horizontal"
                     dataSource={
                       isLoading

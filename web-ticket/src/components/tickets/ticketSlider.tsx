@@ -24,11 +24,29 @@ import colors from "../../constants/colors";
 const reactScreenshot = require("use-react-screenshot");
 interface Props {
   ticket: any;
+  currentTicket: any;
+  setCurrentTicket: any;
+  captureTicket: any;
+  oneLoading: any;
+  setOneLoading: any;
+  allLoading: any;
+  setAllLoading: any;
+  itemsRef: any;
 }
-function TicketSlider({ ticket }: Props) {
-  const itemsRef = useRef<Array<HTMLDivElement | null>>([]);
+function TicketSlider({
+  ticket,
+  currentTicket,
+  setCurrentTicket,
+  captureTicket,
+  oneLoading,
+  setOneLoading,
+  allLoading,
+  setAllLoading,
+  itemsRef,
+}: Props) {
+  // const itemsRef = useRef<Array<HTMLDivElement | null>>([]);
   const [image, takeScreenshot] = reactScreenshot.useScreenshot();
-  const [currentTicket, setCurrentTicket] = useState(0);
+  // const [currentTicket, setCurrentTicket] = useState(0);
   const settings = {
     dots: true,
     infinite: true,
@@ -39,15 +57,17 @@ function TicketSlider({ ticket }: Props) {
     dotsClass: "button__bar",
     afterChange: (current: number) => setCurrentTicket(current),
   };
-  const download = (
-    image: string,
-    { name = "img", extension = "png" } = {}
-  ) => {
-    const a = document.createElement("a");
-    a.href = image;
-    a.download = reactScreenshot.createFileName(extension, name);
-    a.click();
-  };
+
+  // const download = (
+  //   image: string,
+  //   { name = "img", extension = "png" } = {}
+  // ) => {
+  //   const a = document.createElement("a");
+  //   a.href = image;
+  //   a.download = reactScreenshot.createFileName(extension, name);
+  //   a.click();
+  // };
+
   useEffect(() => {
     if (ticket != null) {
       itemsRef.current = itemsRef.current.slice(
@@ -56,9 +76,11 @@ function TicketSlider({ ticket }: Props) {
       );
     }
   }, [ticket]);
-  const [allLoading, setAllLoading] = useState(false);
+
+  // const [allLoading, setAllLoading] = useState(false);
+  // const [oneLoading, setOneLoading] = useState(false);
   let sliderRef: any | null = null;
-  const [oneLoading, setOneLoading] = useState(false);
+
   const renderArrows = () => {
     return (
       <div className="slider-arrow">
@@ -77,37 +99,31 @@ function TicketSlider({ ticket }: Props) {
       </div>
     );
   };
-  const captureTicket = async (ref: HTMLDivElement | null, all = false) => {
-    all ? setAllLoading(true) : setOneLoading(true);
-    try {
-      if (all) {
-        let photosB64: { image: string; name: string }[] = [];
-        for (const [i, iet] of (itemsRef.current as any).entries()) {
-          photosB64.push({
-            name: ticket?.TicketsOnSeats[i].ticketKey,
-            image: await takeScreenshot(iet),
-          });
-        }
-        // await Promise.all(
-        //   itemsRef.current.map(async (e, i) => {
-        //     photosB64.push({
-        //       name: ticket?.TicketsOnSeats[i].ticketKey,
-        //       image: await takeScreenshot(e),
-        //     });
-        //   })
-        // );
-        photosB64.forEach((e) => download(e.image, { name: e.name }));
-      } else {
-        let image = await takeScreenshot(ref);
-        download(image, {
-          name: ticket?.TicketsOnSeats[currentTicket].ticketKey,
-        });
-      }
-    } catch (error) {
-      message.error((error as Error).message || "An error occurred");
-    }
-    all ? setAllLoading(false) : setOneLoading(false);
-  };
+
+  // const captureTicket = async (ref: HTMLDivElement | null, all = false) => {
+  //   all ? setAllLoading(true) : setOneLoading(true);
+  //   try {
+  //     if (all) {
+  //       let photosB64: { image: string; name: string }[] = [];
+  //       for (const [i, iet] of (itemsRef.current as any).entries()) {
+  //         photosB64.push({
+  //           name: ticket?.TicketsOnSeats[i].ticketKey,
+  //           image: await takeScreenshot(iet),
+  //         });
+  //       }
+  //       photosB64.forEach((e) => download(e.image, { name: e.name }));
+  //     } else {
+  //       let image = await takeScreenshot(ref);
+  //       download(image, {
+  //         name: ticket?.TicketsOnSeats[currentTicket].ticketKey,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     message.error((error as Error).message || "An error occurred");
+  //   }
+  //   all ? setAllLoading(false) : setOneLoading(false);
+  // };
+
   return (
     <Col
       // span={10}
@@ -147,7 +163,7 @@ function TicketSlider({ ticket }: Props) {
                 }}
                 ref={(el) => (itemsRef.current[i] = el)}
               >
-                <div
+                {/* <div
                   style={{
                     position: "absolute",
                     right: "0px",
@@ -158,8 +174,6 @@ function TicketSlider({ ticket }: Props) {
                     onConfirm={async () => {
                       await captureTicket(null, true);
                     }}
-                    // className={styles.deleteConfirm}
-                    // overlayClassName={styles.overlay}
                     title="Download Ticket"
                     icon={<DownloadOutlined />}
                     okButtonProps={{ loading: allLoading }}
@@ -174,7 +188,7 @@ function TicketSlider({ ticket }: Props) {
                       style={{ fontSize: "25px", color: colors.PRIMARY }}
                     />
                   </Popconfirm>
-                </div>
+                </div> */}
                 <Typography.Title
                   level={4}
                   style={{ fontWeight: "normal", marginTop: 10 }}
