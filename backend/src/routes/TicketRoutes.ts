@@ -311,8 +311,8 @@ class AuthRoutes {
     this.router
       .route('/')
       .get(
-        userAuth,
-        userTypeAuth(UserType.User),
+        // userAuth,
+        // userTypeAuth(UserType.User),
         this.ticketController.GetAllTickets
       );
     // ! Test

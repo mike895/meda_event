@@ -18,4 +18,17 @@ export class TicketValidator {
             }
         };
     }
+
+    validateCheckIn() {
+        return async (req: RegisterRequest, res: Response, next: NextFunction) => {
+            try {
+                if (!req.params.id) {
+                    throw 'Id not sent with request';
+                }
+                next();
+            } catch (error) {
+                res.status(400).json(error);
+            }
+        };
+    }
 }

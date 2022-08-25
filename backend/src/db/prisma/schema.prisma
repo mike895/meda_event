@@ -57,6 +57,8 @@ model TicketValidatorUser {
   createdAt            DateTime         @default(now())
   address              String?
   TicketsOnSeats       TicketsOnSeats[]
+  Attendant            Attendant[]
+  Attendance           Attendance[]
 
   @@map("ticketvalidatoruser")
 }
@@ -187,6 +189,63 @@ model EventTicket {
   @@map("eventticket")
 }
 
+model Attendant {
+  id                    String               @id @default(uuid())
+  category              String
+  subCategory           String?
+  memberCountry         String?
+  observerCountry       String?
+  signatoryCountry      String?
+  prospectiveCountry    String?
+  title                 String
+  firstName             String
+  lastName              String
+  organization          String
+  designation           String
+  email                 String
+  country               String
+  phoneNumber           String?
+  registrationDate      String?
+  participationMode     String
+  sideEvents            String?
+  // redeemdBy             TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
+  // redeemdAt             DateTime?
+  // ticketValidatorUserId String?
+  // session1              DateTime?
+  // session2              DateTime?
+  // session3              DateTime?
+  // session4              DateTime?
+  role                  String?
+  Attendance            Attendance[]
+  TicketValidatorUser   TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
+  ticketValidatorUserId String?
+
+  @@map("attendant")
+}
+
+model Attendance {
+  id                    String               @id @default(uuid())
+  attendant             Attendant            @relation(fields: [attendantId], references: [id])
+  attendantId           String
+  // session               Session              @relation(fields: [sessionId], references: [id])
+  sessionEvent          String?
+  redeemdBy             TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
+  redeemdAt             DateTime?
+  ticketValidatorUserId String?
+
+  @@map("attendance")
+}
+
+// model Session {
+//   id         String       @id @default(uuid())
+//   title      String
+//   startTime  DateTime
+//   endTime    DateTime
+//   Attendance Attendance[]
+
+//   @@map("session")
+// }
+
 // A single ticket
 model TicketsOnSeats {
   eventTicket           EventTicket          @relation(fields: [eventTicketId], references: [id])
@@ -215,6 +274,16 @@ enum SeatType {
   REGULAR
   VIP
 }
+
+// enum CategoryType {
+//   COUNTRY
+//   ISA
+// }
+
+// enum ObserverType {
+//   SIGNATORY
+//   PROSPECTIVE
+// }
 
 enum ReceiptStatus {
   ISSUED

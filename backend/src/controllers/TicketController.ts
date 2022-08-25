@@ -289,6 +289,8 @@ export default class TicketController {
       return apiErrorHandler(error, req, res, "Couldn't redeem ticket.");
     }
   }
+
+  
   async RedeemTicket(req: Request, res: Response, next: NextFunction) {
     try {
       const { ticketKey }: { ticketKey: string } = req.body;
@@ -622,6 +624,7 @@ export default class TicketController {
       return apiErrorHandler(error, req, res, "Couldn't get sales report.");
     }
   }
+
   async GetAllTickets(req: Request, res: Response, next: NextFunction) {
     try {
       const tickets = await prisma.ticketsOnSeats.findMany({

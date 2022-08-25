@@ -8,6 +8,7 @@ import UserType from '../data/userType';
 import Roles from '../data/roles';
 import AdminRoutes from './AdminRoutes';
 import MovieRoutes from './MovieRoutes';
+import AttendantRoutes from './AttendantRoutes';
 import CinemaHallRoutes from './CinemaHallRoutes';
 import CinemaScheduleRoutes from './CinemaScheduleRoutes';
 import TicketRoutes from './TicketRoutes';
@@ -18,7 +19,7 @@ import { swaggerDocs } from '../swagger/swagerConfig';
 const multer  = require('multer')
 // var path = require('path')
 var storeval;
-
+ 
 const storage = multer.diskStorage({
         destination: (req, file, cb) => {
                 cb(null, 'public/images')
@@ -69,6 +70,7 @@ export default class Routes {
       }, 3000);
     });
     app.use('/api/event', MovieRoutes);
+    app.use('/api/attendant', AttendantRoutes);
     app.use('/api/venue', CinemaHallRoutes);
     app.use('/api/event-schedule', CinemaScheduleRoutes);
     app.use('/api/ticket', TicketRoutes);
