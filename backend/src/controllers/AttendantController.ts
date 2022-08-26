@@ -225,7 +225,7 @@ export default class AdminController {
             res
               .status(200)
               // tslint:disable-next-line:no-null-keyword
-              .json({ error: null, message: 'Checked in successfully!',Status:1 })
+              .json({ error: null,attendant:{title: attendantselected.title,firstName: attendantselected.firstName, lastName: attendantselected.lastName, organization: attendantselected.organization, designation: attendantselected.designation} message: 'Checked in successfully!',Status:1 })
           );
         } catch (error) {
           return apiErrorHandler(error, req, res, "Couldn't check in ticket.");

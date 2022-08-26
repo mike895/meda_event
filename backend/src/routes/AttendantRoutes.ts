@@ -31,9 +31,9 @@ class AttendantRoutes {
       this.router
       .route('/fetch')
       .get(
-        // userAuth,
-        // userTypeAuth(UserType.User),
-        // userRoleAuth([Roles.Finanace]),
+        userAuth,
+        userTypeAuth(UserType.User),
+        userRoleAuth([Roles.Finanace]),
         this.attendantController.GetAllAttendance
       );
 

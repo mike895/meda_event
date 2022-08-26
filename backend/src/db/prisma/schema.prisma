@@ -206,7 +206,7 @@ model Attendant {
   country               String
   phoneNumber           String?
   registrationDate      String?
-  participationMode     String
+  participationMode     String?
   sideEvents            String?
   // redeemdBy             TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
   // redeemdAt             DateTime?
