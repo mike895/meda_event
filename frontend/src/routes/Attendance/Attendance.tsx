@@ -262,12 +262,7 @@ export default function TicketsList() {
         </>
       ),
       filterSearch: true,
-      // filters: [
-      //   { text: "Session 1", value: "session1" },
-      //   { text: "Session 2 ", value: "session2" },
-      //   { text: "Session 3", value: "session3" },
-      //   { text: "Session 4 ", value: "session4" },
-      // ],
+   
       onFilter: (value: any, record: any) => {
         return record["sessionEvent"] == value;
       },
@@ -325,25 +320,25 @@ export default function TicketsList() {
           );
         },
       },
-      filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.category}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.attendant) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        if (record.attendant) return record.attendant.id === value;
-        return false;
-        // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filterSearch: true,
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.category}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.attendant) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   if (record.attendant) return record.attendant.id === value;
+      //   return false;
+      //   // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return `${e.category}`;
         return <Tag color={"magenta"}>
@@ -365,25 +360,25 @@ export default function TicketsList() {
           );
         },
       },
-      filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.title}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.attendant) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        if (record.attendant) return record.attendant.id === value;
-        return false;
-        // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filterSearch: true,
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.title}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.attendant) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   if (record.attendant) return record.attendant.id === value;
+      //   return false;
+      //   // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return `${e.title}`;
         return <Tag color={"magenta"}>
@@ -406,25 +401,25 @@ export default function TicketsList() {
           );
         },
       },
-      filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.firstName}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.attendant) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        if (record.attendant) return record.attendant.id === value;
-        return false;
-        // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filterSearch: true,
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.firstName}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.attendant) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   if (record.attendant) return record.attendant.id === value;
+      //   return false;
+      //   // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return `${e.firstName}`;
         return <Tag color={"magenta"}>
@@ -449,25 +444,25 @@ export default function TicketsList() {
           );
         },
       },
-      filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.lastName}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.attendant) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        if (record.attendant) return record.attendant.id === value;
-        return false;
-        // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filterSearch: true,
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.lastName}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.attendant) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   if (record.attendant) return record.attendant.id === value;
+      //   return false;
+      //   // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return `${e.lastName}`;
         return <Tag color={"magenta"}>
@@ -492,25 +487,25 @@ export default function TicketsList() {
           );
         },
       },
-      filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.organization}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.attendant) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        if (record.attendant) return record.attendant.id === value;
-        return false;
-        // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filterSearch: true,
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.organization}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.attendant) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   if (record.attendant) return record.attendant.id === value;
+      //   return false;
+      //   // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return `${e.organization}`;
         return <Tag color={"magenta"}>
@@ -535,25 +530,25 @@ export default function TicketsList() {
           );
         },
       },
-      filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.designation}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.attendant) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        if (record.attendant) return record.attendant.id === value;
-        return false;
-        // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filterSearch: true,
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.designation}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.attendant) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   if (record.attendant) return record.attendant.id === value;
+      //   return false;
+      //   // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return `${e.designation}`;
         return <Tag color={"magenta"}>
@@ -578,25 +573,25 @@ export default function TicketsList() {
           );
         },
       },
-      filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.country}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.attendant) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        if (record.attendant) return record.attendant.id === value;
-        return false;
-        // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filterSearch: true,
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.country}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.attendant) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   if (record.attendant) return record.attendant.id === value;
+      //   return false;
+      //   // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return `${e.country}`;
         return <Tag color={"magenta"}>
@@ -621,25 +616,25 @@ export default function TicketsList() {
           );
         },
       },
-      filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.participationMode}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.attendant) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        if (record.attendant) return record.attendant.id === value;
-        return false;
-        // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filterSearch: true,
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.participationMode}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.attendant) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   if (record.attendant) return record.attendant.id === value;
+      //   return false;
+      //   // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return `${e.participationMode}`;
         return <Tag color={"magenta"}>
@@ -661,25 +656,25 @@ export default function TicketsList() {
           );
         },
       },
-      filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.role}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.attendant) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        if (record.attendant) return record.attendant.id === value;
-        return false;
-        // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filterSearch: true,
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.role}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.attendant) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   if (record.attendant) return record.attendant.id === value;
+      //   return false;
+      //   // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return `${e.role}`;
         return <Tag color={"magenta"}>
