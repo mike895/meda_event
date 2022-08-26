@@ -55,40 +55,40 @@ export default function TicketsList() {
   const columns = [
     {
       title: "Date Bought",         
-      dataIndex: [`movieTicket`, "createdAt"],
+      dataIndex: [`eventTicket`, "createdAt"],
       sorter: {
         compare: (a: any, b: any) =>
-          moment(a.movieTicket.createdAt).unix() -
-          moment(b.movieTicket.createdAt).unix(),
+          moment(a.eventTicket.createdAt).unix() -
+          moment(b.eventTicket.createdAt).unix(),
       },
       ellipsis: {
         showTitle: false,
       },
       ...columnFilters(
-        [`movieTicket`, "createdAt"],
+        [`eventTicket`, "createdAt"],
         "Date Added",
         ColumnDataType.DATE_RANGE
       ),
       defaultSortOrder: "descend",
     },
     {
-      title: "Movie",
+      title: "Event",
       ...columnFilters(
-        [`movieTicket`, "showTime", `CinemaMovieSchedule`, `movie`, `title`],
-        "Movie",
+        [`eventTicket`, "showTime", `EventSchedule`, `event`, `title`],
+        "Event",
         ColumnDataType.Text
       ),
       dataIndex: [
-        `movieTicket`,
+        `eventTicket`,
         "showTime",
-        `CinemaMovieSchedule`,
-        `movie`,
+        `EventSchedule`,
+        `event`,
         `title`,
       ],
       sorter: {
         compare: (a: any, b: any) =>
-          a.movieTicket.showTime.CinemaMovieSchedule.movie.title.localeCompare(
-            b.movieTicket.showTime.CinemaMovieSchedule.movie.title
+          a.eventTicket.showTime.EventSchedule.event.title.localeCompare(
+            b.eventTicket.showTime.EventSchedule.event.title
           ),
       },
       ellipsis: {
@@ -96,19 +96,19 @@ export default function TicketsList() {
       },
     },
     {
-      title: "Cinema Hall",
+      title: "venue",
       filterSearch: true,
       filters: cinemaList.map((e) => {
         return { text: e.name, value: e.name };
       }),
       onFilter: (value: any, record: any) => {
-        return record.movieTicket.showTime.cinemaHall.name == value;
+        return record.eventTicket.showTime.eventHall.name == value;
       },
       dataIndex: [`movieTicket`, "showTime", `cinemaHall`, `name`],
       sorter: {
         compare: (a: any, b: any) =>
-          a.movieTicket.showTime.cinemaHall.name.localeCompare(
-            b.movieTicket.showTime.cinemaHall.name
+          a.eventTicket.showTime.eventHall.name.localeCompare(
+            b.eventTicket.showTime.eventHall.name
           ),
       },
       ellipsis: {

@@ -31,6 +31,8 @@ import SalesReport from "./routes/SalesReport/SalesReport";
 import Roles from "./helpers/roles";
 import Finance from "./routes/Finance/index";
 import TicketsList from "./routes/TicketsList/TicketsList";
+import Attendance from "./routes/Attendance/Attendance";
+
 const AuthWrapperHOC = ({ children }: any) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -54,6 +56,7 @@ ReactDOM.render(
             <Route element={<Finance />} path={"/finance"}>
               <Route path="" element={<></>}></Route>
               <Route path="tickets" element={<TicketsList />}></Route>
+              <Route path="attendance" element={<Attendance />}></Route>
               <Route path="sales-report" element={<SalesReport />}></Route>
             </Route>
           </Route>
