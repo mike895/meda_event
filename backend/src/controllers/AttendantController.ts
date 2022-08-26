@@ -194,7 +194,7 @@ export default class AdminController {
           if (attendantselected == undefined)
             return res
               .status(404)
-              .json({ error: "Invalid badge, Attendant doesn't exist" });
+              .json({ error: "Invalid badge, Attendant doesn't exist", Status: 0 });
 
 
           
@@ -225,7 +225,7 @@ export default class AdminController {
             res
               .status(200)
               // tslint:disable-next-line:no-null-keyword
-              .json({ error: null, message: 'Checked in successfully!',ticketStatus:"correct" })
+              .json({ error: null, message: 'Checked in successfully!',Status:1 })
           );
         } catch (error) {
           return apiErrorHandler(error, req, res, "Couldn't check in ticket.");
