@@ -54,7 +54,7 @@ ReactDOM.render(
 
           <Route element={<RoleCheck role={Roles.Finanace} />} path={"/"}>
             <Route element={<Finance />} path={"/finance"}>
-              <Route path="" element={<></>}></Route>
+              <Route path="" element={<Attendance />}></Route>
               <Route path="tickets" element={<TicketsList />}></Route>
               <Route path="attendance" element={<Attendance />}></Route>
               <Route path="sales-report" element={<SalesReport />}></Route>
