@@ -176,7 +176,7 @@ export default class AdminController {
 
     async CheckBadge(req: Request, res: Response, next: NextFunction) {
         try {
-
+          console.log("hello badge")
           const session = req.params.session;
           const id = req.params.id;
           const attendantselected = await prisma.attendant.findUnique({
@@ -213,7 +213,7 @@ export default class AdminController {
           const redeemedTicket = await prisma.attendance.create({
             data: {
               attendantId: id,
-              // ticketValidatorUserId: (req.user as any).id,
+              ticketValidatorUserId: (req.user as any).id,
               redeemdAt: new Date(),
               sessionEvent: session,
             },
@@ -225,7 +225,7 @@ export default class AdminController {
             res
               .status(200)
               // tslint:disable-next-line:no-null-keyword
-              .json({ error: null, message: 'Checked in successfully!' })
+              .json({ error: null, message: 'Checked in successfully!',ticketStatus:"correct" })
           );
         } catch (error) {
           return apiErrorHandler(error, req, res, "Couldn't check in ticket.");
