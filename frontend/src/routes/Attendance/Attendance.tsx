@@ -234,7 +234,7 @@ export default function TicketsList() {
       dataIndex: "sessionEvent",
       render: (status: string) => (
         <>
-          <Tag color={"red"}>
+          <Tag color={status =="session1"?"blue":status=="session2"?"magenta":status=="session3"?"orange":"green"}>
             {status}
           </Tag>
         </>
@@ -251,7 +251,27 @@ export default function TicketsList() {
       },
     },
 
-
+    {
+      title: "Checked At",
+      dataIndex: "redeemdAt",
+      render: (status: string) => (
+        <>
+          <Tag >
+            {new Date(status).toLocaleString()}
+          </Tag>
+        </>
+      ),
+      filterSearch: true,
+      // filters: [
+      //   { text: "Session 1", value: "session1" },
+      //   { text: "Session 2 ", value: "session2" },
+      //   { text: "Session 3", value: "session3" },
+      //   { text: "Session 4 ", value: "session4" },
+      // ],
+      onFilter: (value: any, record: any) => {
+        return record["sessionEvent"] == value;
+      },
+    },
 
 
     {
@@ -629,11 +649,6 @@ export default function TicketsList() {
       },
     },
 
-
-
-
-    
-
     
     {
       title: "Role",
@@ -718,12 +733,6 @@ export default function TicketsList() {
   };
   
   const loadFilterData = async () => {
-    // let res = await getAllCinemaHalls();
-    // if (res.error) {
-    //   setCinemaList([]);
-    // } else {
-    //   setCinemaList(res);
-    // }
 
     let res = await getAllAttendant();
     if (res.error) {
@@ -759,10 +768,10 @@ export default function TicketsList() {
         <Title level={4}>Attendance List</Title>
         <Divider orientation="center" plain >    
           <Space direction={"vertical"} align={"start"} > 
-            <Title level={5}>Session 1: Unlocking Mini-Grids in Africa </Title> 
-            <Title level={5}>Session 2: Solar Pumps and Other Agricultural Applications</Title>
-            <Title level={5}>Session 3: Manufacturing in Africa</Title>
-            <Title level={5}>Session 4: Electric Vehicles </Title>
+            <Title style={{color:'blue'}} level={5}>Session 1: Unlocking Mini-Grids in Africa </Title> 
+            <Title style={{color:'magenta'}} level={5}>Session 2: Solar Pumps and Other Agricultural Applications</Title>
+            <Title style={{color:'orange'}} level={5}>Session 3: Manufacturing in Africa</Title>
+            <Title style={{color:'green'}} level={5}>Session 4: Electric Vehicles </Title>
           </Space>
         </Divider>
       </Row>
