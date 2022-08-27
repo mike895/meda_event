@@ -10,6 +10,7 @@ import {
   Empty,
   Tooltip,
   Row,
+  Pagination,
   DatePicker,
 } from "antd";
 import _ from "lodash";
@@ -768,11 +769,11 @@ export default function TicketsList() {
         dataSource={AttendanceList}
         columns={columns as any}
         bordered
-        rowKey="id"
-        
-        // pagination={false}
+        rowKey="id"    
+        pagination={{ defaultPageSize: 50, showSizeChanger: true, pageSizeOptions: ['50', '100']}}
         scroll={{ x: "max-content", y: 640 }}
-      ></Table>
+      >
+      </Table>
         <Divider orientation="center" plain >    
           <Space direction={"vertical"} align={"start"} > 
             <Title style={{color:'blue'}} level={5}>Session 1: Unlocking Mini-Grids in Africa </Title> 
