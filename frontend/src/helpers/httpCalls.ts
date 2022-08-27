@@ -38,7 +38,8 @@ export const getCurrentUser = async () => {
       "Authorization": Cookies.get("jwt_auth") || ""
     },
   });
-  // console.log("currentttttt",res)
+  console.log("currentttttt",res)
+  console.log("cookies",Cookies.get("jwt_auth"))
   if (res.status == 200) {
     return await res.json();
   }
