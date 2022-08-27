@@ -194,7 +194,7 @@ export default class AdminController {
           if (attendantselected == undefined)
             return res
               .status(404)
-              .json({ error: "Invalid badge, Attendant doesn't exist", Status: 0 });
+              .json({ error: "Invalid badge, Attendee doesn't exist", Status: 0 });
 
 
           

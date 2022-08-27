@@ -744,9 +744,22 @@ export default function TicketsList() {
       setRedeemerList(res1);
     }
   };
+
+  // const exportData = async () => {   
+  //   ...AttendanceList.map((e) => {
+
+  //     ...AttendeeList.map((q) => {
+
+  //     })
+
+  //   })
+
+  // };
+
   useAsyncEffect(async () => {
     await loadFilterData();
     await loadTickets();
+    // await exportData();
   }, []);
 
   return (
