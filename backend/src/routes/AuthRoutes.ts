@@ -72,7 +72,7 @@ class AuthRoutes {
       .get(
         userAuth,
         userTypeAuth(UserType.User),
-        userRoleAuth([Roles.Admin]),
+        userRoleAuth([Roles.Admin, Roles.Finanace]),
         this.authController.GetCurrentUser
       );
     /**

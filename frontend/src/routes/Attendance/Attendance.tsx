@@ -312,14 +312,14 @@ export default function TicketsList() {
     {
       title: "Category",
       dataIndex: [`attendant`],
-      sorter: {
-        compare: (a: any, b: any) => {
-          if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.category}`.localeCompare(
-            `${b.attendant.category}`
-          );
-        },
-      },
+      // sorter: {
+      //   compare: (a: any, b: any) => {
+      //     if (!(a.attendant && b.attendant)) return false;
+      //     return `${a.attendant.category}`.localeCompare(
+      //       `${b.attendant.category}`
+      //     );
+      //   },
+      // },
       // filterSearch: true,
       // filters: [
       //   ...AttendeeList.map((e) => {
@@ -352,14 +352,14 @@ export default function TicketsList() {
     {
       title: "Title",
       dataIndex: [`attendant`],
-      sorter: {
-        compare: (a: any, b: any) => {
-          if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.title}`.localeCompare(
-            `${a.attendant.title}`
-          );
-        },
-      },
+      // sorter: {
+      //   compare: (a: any, b: any) => {
+      //     if (!(a.attendant && b.attendant)) return false;
+      //     return `${a.attendant.title}`.localeCompare(
+      //       `${a.attendant.title}`
+      //     );
+      //   },
+      // },
       // filterSearch: true,
       // filters: [
       //   ...AttendeeList.map((e) => {
@@ -391,37 +391,37 @@ export default function TicketsList() {
 
     
     {
-      title: "First Name",
+      title: "Name",
       dataIndex: [`attendant`],
       sorter: {
         compare: (a: any, b: any) => {
           if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.firstName}`.localeCompare(
-            `${a.attendant.firstName}`
+          return `${a.attendant.firstName} ${a.attendant.lastName}`.localeCompare(
+            `${a.attendant.firstName} ${a.attendant.lastName}`
           );
         },
       },
-      // filterSearch: true,
-      // filters: [
-      //   ...AttendeeList.map((e) => {
-      //     return { text: `${e.firstName}`, value: e.id };
-      //   }),
-      //   // { text: "Unredeemed", value: null },
-      // ],
-      // onFilter: (value: any, record: any) => {
-      //   if (value == record.attendant) {
-      //     return true;
-      //     //Checking for unredeemed tickets
-      //   }
-      //   if (record.attendant) return record.attendant.id === value;
-      //   return false;
-      //   // return record.redeemdBy.id === value;
-      // },
-      // ellipsis: {
-      //   showTitle: false,
-      // },
+      filterSearch: true,
+      filters: [
+        ...AttendeeList.map((e) => {
+          return { text: `${e.firstName} ${e.lastName}`, value: e.id };
+        }),
+        // { text: "Unredeemed", value: null },
+      ],
+      onFilter: (value: any, record: any) => {
+        if (value == record.attendant.id) {
+          return true;
+          //Checking for unredeemed tickets
+        }
+        if (record.attendant) return record.attendantId === value;
+        return false;
+        // return record.redeemdBy.id === value;
+      },
+      ellipsis: {
+        showTitle: false,
+      },
       render: (e: any) => {
-        if (e) return `${e.firstName}`;
+        if (e) return `${e.firstName} ${e.lastName}`;
         return <Tag color={"magenta"}>
                Null
           </Tag>
@@ -430,20 +430,20 @@ export default function TicketsList() {
     },
 
 
-
+/*
 
     
     {
       title: "Last Name",
       dataIndex: [`attendant`],
-      sorter: {
-        compare: (a: any, b: any) => {
-          if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.lastName}`.localeCompare(
-            `${a.attendant.lastName}`
-          );
-        },
-      },
+      // sorter: {
+      //   compare: (a: any, b: any) => {
+      //     if (!(a.attendant && b.attendant)) return false;
+      //     return `${a.attendant.lastName}`.localeCompare(
+      //       `${a.attendant.lastName}`
+      //     );
+      //   },
+      // },
       // filterSearch: true,
       // filters: [
       //   ...AttendeeList.map((e) => {
@@ -473,20 +473,20 @@ export default function TicketsList() {
     },
 
 
-
+*/
 
     
     {
       title: "Organization",
       dataIndex: [`attendant`],
-      sorter: {
-        compare: (a: any, b: any) => {
-          if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.organization}`.localeCompare(
-            `${a.attendant.organization}`
-          );
-        },
-      },
+      // sorter: {
+      //   compare: (a: any, b: any) => {
+      //     if (!(a.attendant && b.attendant)) return false;
+      //     return `${a.attendant.organization}`.localeCompare(
+      //       `${a.attendant.organization}`
+      //     );
+      //   },
+      // },
       // filterSearch: true,
       // filters: [
       //   ...AttendeeList.map((e) => {
@@ -522,14 +522,14 @@ export default function TicketsList() {
     {
       title: "Designation",
       dataIndex: [`attendant`],
-      sorter: {
-        compare: (a: any, b: any) => {
-          if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.designation}`.localeCompare(
-            `${a.attendant.designation}`
-          );
-        },
-      },
+      // sorter: {
+      //   compare: (a: any, b: any) => {
+      //     if (!(a.attendant && b.attendant)) return false;
+      //     return `${a.attendant.designation}`.localeCompare(
+      //       `${a.attendant.designation}`
+      //     );
+      //   },
+      // },
       // filterSearch: true,
       // filters: [
       //   ...AttendeeList.map((e) => {
@@ -565,14 +565,14 @@ export default function TicketsList() {
     {
       title: "Country",
       dataIndex: [`attendant`],
-      sorter: {
-        compare: (a: any, b: any) => {
-          if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.country}`.localeCompare(
-            `${a.attendant.country}`
-          );
-        },
-      },
+      // sorter: {
+      //   compare: (a: any, b: any) => {
+      //     if (!(a.attendant && b.attendant)) return false;
+      //     return `${a.attendant.country}`.localeCompare(
+      //       `${a.attendant.country}`
+      //     );
+      //   },
+      // },
       // filterSearch: true,
       // filters: [
       //   ...AttendeeList.map((e) => {
@@ -608,14 +608,14 @@ export default function TicketsList() {
     {
       title: "Participation Mode",
       dataIndex: [`attendant`],
-      sorter: {
-        compare: (a: any, b: any) => {
-          if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.participationMode}`.localeCompare(
-            `${a.attendant.participationMode}`
-          );
-        },
-      },
+      // sorter: {
+      //   compare: (a: any, b: any) => {
+      //     if (!(a.attendant && b.attendant)) return false;
+      //     return `${a.attendant.participationMode}`.localeCompare(
+      //       `${a.attendant.participationMode}`
+      //     );
+      //   },
+      // },
       // filterSearch: true,
       // filters: [
       //   ...AttendeeList.map((e) => {
@@ -648,14 +648,14 @@ export default function TicketsList() {
     {
       title: "Role",
       dataIndex: [`attendant`],
-      sorter: {
-        compare: (a: any, b: any) => {
-          if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.role}`.localeCompare(
-            `${b.attendant.role}`
-          );
-        },
-      },
+      // sorter: {
+      //   compare: (a: any, b: any) => {
+      //     if (!(a.attendant && b.attendant)) return false;
+      //     return `${a.attendant.role}`.localeCompare(
+      //       `${b.attendant.role}`
+      //     );
+      //   },
+      // },
       // filterSearch: true,
       // filters: [
       //   ...AttendeeList.map((e) => {
@@ -750,7 +750,7 @@ export default function TicketsList() {
 
   return (
     <>
-
+{/* {console.log("qwertyui",AttendanceList)} */}
       {isModalVisible ? (
         <EditTicketModal
           id={editUserModalProps}
@@ -761,14 +761,6 @@ export default function TicketsList() {
       ) : null}
       <Row justify="start" style={{ paddingBottom: "10px" }}>
         <Title level={4}>Attendance List</Title>
-        <Divider orientation="center" plain >    
-          <Space direction={"vertical"} align={"start"} > 
-            <Title style={{color:'blue'}} level={5}>Session 1: Unlocking Mini-Grids in Africa </Title> 
-            <Title style={{color:'magenta'}} level={5}>Session 2: Solar Pumps and Other Agricultural Applications</Title>
-            <Title style={{color:'orange'}} level={5}>Session 3: Manufacturing in Africa</Title>
-            <Title style={{color:'green'}} level={5}>Session 4: Electric Vehicles </Title>
-          </Space>
-        </Divider>
       </Row>
 
       <Table
@@ -777,8 +769,19 @@ export default function TicketsList() {
         columns={columns as any}
         bordered
         rowKey="id"
+        
+        // pagination={false}
         scroll={{ x: "max-content", y: 640 }}
       ></Table>
+        <Divider orientation="center" plain >    
+          <Space direction={"vertical"} align={"start"} > 
+            <Title style={{color:'blue'}} level={5}>Session 1: Unlocking Mini-Grids in Africa </Title> 
+            <Title style={{color:'magenta'}} level={5}>Session 2: Solar Pumps and Other Agricultural Applications</Title>
+            <Title style={{color:'orange'}} level={5}>Session 3: Manufacturing in Africa</Title>
+            <Title style={{color:'green'}} level={5}>Session 4: Electric Vehicles </Title>
+          </Space>
+        </Divider>
+
     </>
   );
 }
