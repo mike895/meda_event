@@ -10,6 +10,7 @@ export const getCurrentUserThunk = createAsyncThunk(
             throw "Not logged in";
         }
         const res = await getCurrentUser();
+        console.log("case expired",res)
         if(res.error) throw "Case expired token";
         return res;
     }
