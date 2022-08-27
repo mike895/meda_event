@@ -29,7 +29,7 @@ const RoleCheck = ({role}:{role:string}) => {
 
   return (
     <>
-      {console.log(user,"asdfghj",loading)}
+      {/* {console.log(user,"asdfghj",loading)} */}
       {loading ? (
         <Spin size="default" />
       ) : (user && user.role === role) ? (
