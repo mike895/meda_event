@@ -23,6 +23,7 @@ import { EditTwoTone, EditFilled, EditOutlined } from "@ant-design/icons";
 // import { EditUserModal } from "@/components/Admin/manage-users/editUserModal";
 import { useAsyncEffect } from "use-async-effect";
 import { Typography } from "antd";
+import { CSVLink } from "react-csv";
 import {
   getAllCinemaHalls,
   getAllMovies,
@@ -37,8 +38,10 @@ import useColumnFilters, { ColumnDataType } from "../../hooks/useColumnFilters";
 const { RangePicker } = DatePicker;
 const { Title, Text } = Typography;
 export default function TicketsList() {
-  const [AttendanceList, setAttendanceList] = useState<Array<Ticket>>([]);
+  const [AttendanceList, setAttendanceList] = useState<Array<any>>([]);
   const [cinemaList, setCinemaList] = useState<{ name: string }[]>([]);
+  const [exportList, setexportList] = useState<{ id: string; session: string; redeemer:string; redeemedAt: string; category: string;  subCategory:  string;  memberCountry:  string;    observerCountry: string;    signatoryCountry: string;    prospectiveCountry: string;    title: string;    firstName: string;    lastName: string;    organization: string;    designation :string;    email: string;    country: string;    phoneNumber : string;  participationMode : string;    sideEvents: string;    role: string; }[]>([]);
+
   const [redeemerList, setRedeemerList] = useState<
     { firstName: string; lastName: string; id: string }[]
   >([]);
@@ -687,12 +690,6 @@ export default function TicketsList() {
 
 
 
-
-
-
-
-
-
     // {
     //   title: "Actions",
     //   dataIndex: "id",
@@ -731,6 +728,7 @@ export default function TicketsList() {
   const loadFilterData = async () => {
 
     let res = await getAllAttendant();
+
     if (res.error) {
       setAttendeeList([]);
     } else {
@@ -745,26 +743,40 @@ export default function TicketsList() {
     }
   };
 
-  // const exportData = async () => {   
-  //   ...AttendanceList.map((e) => {
+  const exportData = async () => {   
+    AttendanceList.map((e) => {
+     redeemerList.map((k) => { 
+      AttendeeList.map((q) => {
+        const isFound = exportList.some(element => {
+          if (element.id === e.id) {
+            return true;
+          }
+      
+          return false;
+        })
+          if(e.attendantId === q.id && e.ticketValidatorUserId === k.id && !isFound){
+            exportList.push({id: e.id, session: e.sessionEvent, redeemer:k.firstName + k.lastName, redeemedAt: e.redeemdAt, category: q.category,  subCategory:  q.subCategory,  memberCountry:  q.memberCountry,    observerCountry: q.observerCountry,    signatoryCountry: q.signatoryCountry,    prospectiveCountry: q.prospectiveCountry,    title: q.title,  firstName: q.firstName,    lastName: q.lastName,    organization: q.organization,    designation :q.designation,    email: q.email,    country: q.country,    phoneNumber : q.phoneNumber,  participationMode : q.participationMode,    sideEvents: q.sideEvents,  role: q.role})
+          }
+        })
+      })
+    })
 
-  //     ...AttendeeList.map((q) => {
+    // console.log("finally",exportList)
+  };
 
-  //     })
-
-  //   })
-
-  // };
+    useEffect(() => {
+      // console.log("flush",exportList);
+      exportData();
+    });
 
   useAsyncEffect(async () => {
     await loadFilterData();
-    await loadTickets();
-    // await exportData();
+    await loadTickets(); 
+   
   }, []);
 
   return (
     <>
-{/* {console.log("qwertyui",AttendanceList)} */}
       {isModalVisible ? (
         <EditTicketModal
           id={editUserModalProps}
@@ -795,7 +807,7 @@ export default function TicketsList() {
             <Title style={{color:'green'}} level={5}>Session 4: Electric Vehicles </Title>
           </Space>
         </Divider>
-
+    <Button > <CSVLink  filename={"Attendance.csv"} data={exportList} onClick={() => { /*console.log("qwsdfghj",exportList);*/ message.success(" file is downloading")}}>Export to CSV </CSVLink></Button>
     </>
   );
 }

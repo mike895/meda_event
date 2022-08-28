@@ -217,8 +217,8 @@ model Attendant {
   // session4              DateTime?
   role                  String?
   Attendance            Attendance[]
-  TicketValidatorUser   TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
-  ticketValidatorUserId String?
+  // TicketValidatorUser   TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
+  // ticketValidatorUserId String?
 
   @@map("attendant")
 }
