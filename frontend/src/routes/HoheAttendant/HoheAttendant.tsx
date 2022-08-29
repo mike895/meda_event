@@ -37,14 +37,14 @@ const { Title, Text } = Typography;
 export default function TicketsList() {
   const [AttendanceList, setAttendanceList] = useState<Array<any>>([]);
   const [cinemaList, setCinemaList] = useState<{ name: string }[]>([]);
-  const [exportList, setexportList] = useState<{ id: string;     title: string;    firstName: string;    lastName: string;  phoneNumber : string; }[]>([]);
+  const [exportList, setexportList] = useState<{ id: string;     firstName: string;    lastName: string;  phoneNumber : string; }[]>([]);
 
   const [redeemerList, setRedeemerList] = useState<
     { firstName: string; lastName: string; id: string }[]
   >([]);
 
   const [AttendeeList, setAttendeeList] = useState<
-  { id: string;   title: string;    firstName: string;    lastName: string;     phoneNumber : string; }[]
+  { id: string;    firstName: string;    lastName: string;     phoneNumber : string; }[]
     >([]);
 
   const [searchText, setSearchText] = useState("");
@@ -86,44 +86,44 @@ export default function TicketsList() {
     // },
 
 
-    {
-      title: "Title",
-      dataIndex: [`attendant`],
-      // sorter: {
-      //   compare: (a: any, b: any) => {
-      //     if (!(a.attendant && b.attendant)) return false;
-      //     return `${a.attendant.title}`.localeCompare(
-      //       `${a.attendant.title}`
-      //     );
-      //   },
-      // },
-      // filterSearch: true,
-      // filters: [
-      //   ...AttendeeList.map((e) => {
-      //     return { text: `${e.title}`, value: e.id };
-      //   }),
-      //   // { text: "Unredeemed", value: null },
-      // ],
-      // onFilter: (value: any, record: any) => {
-      //   if (value == record.attendant) {
-      //     return true;
-      //     //Checking for unredeemed tickets
-      //   }
-      //   if (record.attendant) return record.attendant.id === value;
-      //   return false;
-      //   // return record.redeemdBy.id === value;
-      // },
-      // ellipsis: {
-      //   showTitle: false,
-      // },
-      render: (e: any) => {
-        if (e) return `${e.title}`;
-        return <Tag color={"magenta"}>
-               Null
-          </Tag>
+    // {
+    //   title: "Title",
+    //   dataIndex: [`attendant`],
+    //   // sorter: {
+    //   //   compare: (a: any, b: any) => {
+    //   //     if (!(a.attendant && b.attendant)) return false;
+    //   //     return `${a.attendant.title}`.localeCompare(
+    //   //       `${a.attendant.title}`
+    //   //     );
+    //   //   },
+    //   // },
+    //   // filterSearch: true,
+    //   // filters: [
+    //   //   ...AttendeeList.map((e) => {
+    //   //     return { text: `${e.title}`, value: e.id };
+    //   //   }),
+    //   //   // { text: "Unredeemed", value: null },
+    //   // ],
+    //   // onFilter: (value: any, record: any) => {
+    //   //   if (value == record.attendant) {
+    //   //     return true;
+    //   //     //Checking for unredeemed tickets
+    //   //   }
+    //   //   if (record.attendant) return record.attendant.id === value;
+    //   //   return false;
+    //   //   // return record.redeemdBy.id === value;
+    //   // },
+    //   // ellipsis: {
+    //   //   showTitle: false,
+    //   // },
+    //   render: (e: any) => {
+    //     if (e) return `${e.title}`;
+    //     return <Tag color={"magenta"}>
+    //            Null
+    //       </Tag>
        
-      },
-    },
+    //   },
+    // },
 
 
     
@@ -139,24 +139,24 @@ export default function TicketsList() {
         },
       },
       filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.firstName}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.id) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        // if (record.attendant) return record.attendantId === value;
-        // return false;
-        // // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.firstName}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.id) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   // if (record.attendant) return record.attendantId === value;
+      //   // return false;
+      //   // // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return `${e.firstName} `;
         return <Tag color={"magenta"}>
@@ -177,25 +177,25 @@ export default function TicketsList() {
           );
         },
       },
-      filterSearch: true,
-      filters: [
-        ...AttendeeList.map((e) => {
-          return { text: `${e.lastName}`, value: e.id };
-        }),
-        // { text: "Unredeemed", value: null },
-      ],
-      onFilter: (value: any, record: any) => {
-        if (value == record.attendant.id) {
-          return true;
-          //Checking for unredeemed tickets
-        }
-        // if (record.attendant) return record.attendantId === value;
-        // return false;
-        // return record.redeemdBy.id === value;
-      },
-      ellipsis: {
-        showTitle: false,
-      },
+      // filterSearch: true,
+      // filters: [
+      //   ...AttendeeList.map((e) => {
+      //     return { text: `${e.lastName}`, value: e.id };
+      //   }),
+      //   // { text: "Unredeemed", value: null },
+      // ],
+      // onFilter: (value: any, record: any) => {
+      //   if (value == record.attendant.id) {
+      //     return true;
+      //     //Checking for unredeemed tickets
+      //   }
+      //   // if (record.attendant) return record.attendantId === value;
+      //   // return false;
+      //   // return record.redeemdBy.id === value;
+      // },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (e: any) => {
         if (e) return ` ${e.lastName}`;
         return <Tag color={"magenta"}>
@@ -271,7 +271,8 @@ export default function TicketsList() {
   const loadTickets = async () => {
     setTableLoading(true);
     const res = await getAllHoheAttendant();
-    // console.log(res)
+    console.log(res)
+    return
     if (res.error) {
       setAttendanceList([]);
       message.error("Error Loading data please refresh the page.");
@@ -299,30 +300,30 @@ export default function TicketsList() {
     }
   };
 
-  const exportData = async () => {   
-    AttendanceList.map((e) => {
-    //  redeemerList.map((k) => { 
-      AttendeeList.map((q) => {
-        const isFound = exportList.some(element => {
-          if (element.id === e.id) {
-            return true;
-          }
+  // const exportData = async () => {   
+  //   AttendanceList.map((e) => {
+  //   //  redeemerList.map((k) => { 
+  //     AttendeeList.map((q) => {
+  //       const isFound = exportList.some(element => {
+  //         if (element.id === e.id) {
+  //           return true;
+  //         }
       
-          return false;
-        })
-          if(e.id === q.id && !isFound){
-            exportList.push({id: e.id,  title: q.title,  firstName: q.firstName,    lastName: q.lastName,    phoneNumber : q.phoneNumber })
-          }
-        })
-      // })
-    })
+  //         return false;
+  //       })
+  //         if(e.id === q.id && !isFound){
+  //           exportList.push({id: e.id, firstName: q.firstName,    lastName: q.lastName,    phoneNumber : q.phoneNumber })
+  //         }
+  //       })
+  //     // })
+  //   })
 
-    // console.log("finally",exportList)
-  };
+  //   // console.log("finally",exportList)
+  // };
 
     useEffect(() => {
       // console.log("flush",exportList);
-      exportData();
+      // exportData();
     });
 
   useAsyncEffect(async () => {
@@ -342,7 +343,7 @@ export default function TicketsList() {
         />
       ) : null}
       <Row justify="start" style={{ paddingBottom: "10px" }}>
-        <Title level={4}>Attendance List</Title>
+        <Title level={4}>Hohe Attendant List</Title>
       </Row>
 
       <Table
@@ -363,7 +364,7 @@ export default function TicketsList() {
             <Title style={{color:'green'}} level={5}>Session 4: Electric Vehicles </Title> */}
           </Space>
         </Divider>
-    <Button > <CSVLink  filename={"HoheAttendant.csv"} data={exportList} onClick={() => { /*console.log("qwsdfghj",exportList);*/ message.success(" file is downloading")}}>Export to CSV </CSVLink></Button>
     </>
   );
 }
+
