@@ -148,7 +148,7 @@ export default function TicketsList() {
 
     {
       title: "Title",
-      dataIndex: [`attendant`],
+      dataIndex: [`hoheattendant`],
       // sorter: {
       //   compare: (a: any, b: any) => {
       //     if (!(a.attendant && b.attendant)) return false;
@@ -189,12 +189,12 @@ export default function TicketsList() {
     
     {
       title: "Name",
-      dataIndex: [`attendant`],
+      dataIndex: [`hoheattendant`],
       sorter: {
         compare: (a: any, b: any) => {
-          if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.firstName} ${a.attendant.lastName}`.localeCompare(
-            `${a.attendant.firstName} ${a.attendant.lastName}`
+          if (!(a.hoheattendant && b.ahohettendant)) return false;
+          return `${a.hoheattendant.firstName} ${a.hoheattendant.lastName}`.localeCompare(
+            `${a.hoheattendant.firstName} ${a.hoheattendant.lastName}`
           );
         },
       },
@@ -229,7 +229,7 @@ export default function TicketsList() {
     
     {
       title: "Phone Number",
-      dataIndex: [`attendant`],
+      dataIndex: [`hoheattendant`],
       // sorter: {
       //   compare: (a: any, b: any) => {
       //     if (!(a.attendant && b.attendant)) return false;
@@ -292,8 +292,9 @@ export default function TicketsList() {
 
   const loadTickets = async () => {
     setTableLoading(true);
-    const res = await getAllHoheAttendance();
-    // console.log(res)
+    console.log("jskdfglkjdsg")
+    const res = await getAllHoheAttendant();
+    console.log(res)
     if (res.error) {
       setAttendanceList([]);
       message.error("Error Loading data please refresh the page.");
@@ -306,6 +307,7 @@ export default function TicketsList() {
   const loadFilterData = async () => {
 
     let res = await getAllHoheAttendant();
+
 
     if (res.error) {
       setAttendeeList([]);
@@ -348,8 +350,10 @@ export default function TicketsList() {
     });
 
   useAsyncEffect(async () => {
-    await loadFilterData();
+    console.log("kdjsfhksjdfh")
+    // await loadFilterData();
     await loadTickets(); 
+    console.log("khfsjhkjsf",AttendeeList)
    
   }, []);
 

@@ -246,14 +246,19 @@ model HoheAttendance {
   redeemdBy             TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
   redeemdAt             DateTime?
   ticketValidatorUserId String?
+
+  @@map("hoheAttendance")
 }
 
 model HoheAttendant {
   id             String           @id @default(uuid())
+  title          String
   firstName      String
   lastName       String
   phoneNumber    String
   HoheAttendance HoheAttendance[]
+
+  @@map("hoheAttendant")
 }
 
 // model Session {

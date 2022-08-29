@@ -128,20 +128,59 @@ export default function TicketsList() {
 
     
     {
-      title: "Name",
-      dataIndex: [`attendant`],
+      title: "First Name",
+      dataIndex: [`firstName`],
       sorter: {
         compare: (a: any, b: any) => {
-          if (!(a.attendant && b.attendant)) return false;
-          return `${a.attendant.firstName} ${a.attendant.lastName}`.localeCompare(
-            `${a.attendant.firstName} ${a.attendant.lastName}`
+          if (!(a.firstName && b.firstName)) return false;
+          return `${a.firstName}`.localeCompare(
+            `${a.firstName}`
           );
         },
       },
       filterSearch: true,
       filters: [
         ...AttendeeList.map((e) => {
-          return { text: `${e.firstName} ${e.lastName}`, value: e.id };
+          return { text: `${e.firstName}`, value: e.id };
+        }),
+        // { text: "Unredeemed", value: null },
+      ],
+      onFilter: (value: any, record: any) => {
+        if (value == record.id) {
+          return true;
+          //Checking for unredeemed tickets
+        }
+        // if (record.attendant) return record.attendantId === value;
+        // return false;
+        // // return record.redeemdBy.id === value;
+      },
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (e: any) => {
+        if (e) return `${e.firstName} `;
+        return <Tag color={"magenta"}>
+               Null
+          </Tag>
+       
+      },
+    },
+   
+    {
+      title: "Last Name",
+      dataIndex: [`lastName`],
+      sorter: {
+        compare: (a: any, b: any) => {
+          if (!(a.lastName && b.lastName)) return false;
+          return `${a.lastName}`.localeCompare(
+            `${a.lastName}`
+          );
+        },
+      },
+      filterSearch: true,
+      filters: [
+        ...AttendeeList.map((e) => {
+          return { text: `${e.lastName}`, value: e.id };
         }),
         // { text: "Unredeemed", value: null },
       ],
@@ -150,26 +189,25 @@ export default function TicketsList() {
           return true;
           //Checking for unredeemed tickets
         }
-        if (record.attendant) return record.attendantId === value;
-        return false;
+        // if (record.attendant) return record.attendantId === value;
+        // return false;
         // return record.redeemdBy.id === value;
       },
       ellipsis: {
         showTitle: false,
       },
       render: (e: any) => {
-        if (e) return `${e.firstName} ${e.lastName}`;
+        if (e) return ` ${e.lastName}`;
         return <Tag color={"magenta"}>
                Null
           </Tag>
        
       },
     },
-
     
     {
       title: "Phone Number",
-      dataIndex: [`attendant`],
+      dataIndex: [`phoneNumber`],
       // sorter: {
       //   compare: (a: any, b: any) => {
       //     if (!(a.attendant && b.attendant)) return false;
@@ -232,7 +270,7 @@ export default function TicketsList() {
 
   const loadTickets = async () => {
     setTableLoading(true);
-    const res = await getAllHoheAttendance();
+    const res = await getAllHoheAttendant();
     // console.log(res)
     if (res.error) {
       setAttendanceList([]);

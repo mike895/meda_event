@@ -51,7 +51,7 @@ export default class AdminController {
     async GetAllHoheAttendant(req: Request, res: Response, next: NextFunction) {
       try {
       // console.log("hi")
-        const attendance = await prisma.hoheattendant.findMany({ });
+        const attendance = await prisma.hoheAttendant.findMany({ });
         if (!attendance) return res.status(404).json({ error: 'Error.' });
         return res.status(200).json(attendance);
       } catch (error) {
@@ -63,7 +63,7 @@ export default class AdminController {
     async GetAllHoheAttendance(req: Request, res: Response, next: NextFunction) {
       try {
       // console.log("hi")
-        const attendance = await prisma.hoheattendance.findMany({ 
+        const attendance = await prisma.hoheAttendance.findMany({ 
           include: {
             redeemdBy: {
               select: {
@@ -297,7 +297,7 @@ export default class AdminController {
           console.log("hello hohe badge")
           // const session = req.params.session;
           const id = req.params.id;
-          const attendantselected = await prisma.hoheattendant.findUnique({
+          const attendantselected = await prisma.hoheAttendant.findUnique({
             where: {
               id,
             },
@@ -315,7 +315,7 @@ export default class AdminController {
               .json({ error: "Invalid badge, Attendee doesn't exist", Status: 0 });
 
 
-          const redeemedTicket = await prisma.hoheattendance.create({
+          const redeemedTicket = await prisma.hoheAttendance.create({
             data: {
               hoheattendantId: id,
               // ticketValidatorUserId: (req.user as any).id,
