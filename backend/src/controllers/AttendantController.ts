@@ -30,9 +30,70 @@ export default class AdminController {
     }
 
 
+    async CreatehoheUser(req: Request, res: Response, next: NextFunction) {
+      try {
+
+        const { title, firstName, lastName, phoneNumber }: { title: string, firstName: string, lastName: string, phoneNumber: string } = req.body;
+           
+        const user = await AttendantRepository.createhoheAttendant({ title, firstName, lastName, phoneNumber });
+        return res.status(201).json({
+            error: undefined,
+            message: 'Hohe Attendant created successfully'
+        });
+
+      } catch (error) {
+        return apiErrorHandler(error, req, res, "Couldn't create Hohe Attendant ")
+      }
+
+
+    }
+
+    async GetAllHoheAttendant(req: Request, res: Response, next: NextFunction) {
+      try {
+      // console.log("hi")
+        const attendance = await prisma.hoheattendant.findMany({ });
+        if (!attendance) return res.status(404).json({ error: 'Error.' });
+        return res.status(200).json(attendance);
+      } catch (error) {
+        return apiErrorHandler(error, req, res, "Couldn't get Hohe attendant.");
+      }
+    }
+
+
+    async GetAllHoheAttendance(req: Request, res: Response, next: NextFunction) {
+      try {
+      // console.log("hi")
+        const attendance = await prisma.hoheattendance.findMany({ 
+          include: {
+            redeemdBy: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+            hoheattendant: {
+              select: { 
+                title: true, 
+                firstName: true, 
+                lastName: true,  
+                phoneNumber: true, 
+              },
+            },
+          },
+        });
+        if (!attendance) return res.status(404).json({ error: 'Error.' });
+        return res.status(200).json(attendance);
+      } catch (error) {
+        return apiErrorHandler(error, req, res, "Couldn't get Hohe attendance.");
+      }
+    }
+
+
+
     async GetAllAttendance(req: Request, res: Response, next: NextFunction) {
         try {
-        console.log("hi")
+        // console.log("hi")
           const attendance = await prisma.attendance.findMany({ 
             include: {
               redeemdBy: {
@@ -72,7 +133,6 @@ export default class AdminController {
           return apiErrorHandler(error, req, res, "Couldn't get attendance.");
         }
       }
-
 
 
       async GetAllAttendant(req: Request, res: Response, next: NextFunction) {
@@ -171,9 +231,6 @@ export default class AdminController {
 
 
 
-
-
-
     async CheckBadge(req: Request, res: Response, next: NextFunction) {
         try {
           console.log("hello badge")
@@ -235,6 +292,48 @@ export default class AdminController {
 
 
 
+      async CheckHoheBadge(req: Request, res: Response, next: NextFunction) {
+        try {
+          console.log("hello hohe badge")
+          // const session = req.params.session;
+          const id = req.params.id;
+          const attendantselected = await prisma.hoheattendant.findUnique({
+            where: {
+              id,
+            },
+          });
+
+          // if(attendantselected)
+          //   return res
+          //      .status(200)
+          //      .json({msg: attendantselected});
+
+
+          if (attendantselected == undefined)
+            return res
+              .status(404)
+              .json({ error: "Invalid badge, Attendee doesn't exist", Status: 0 });
+
+
+          const redeemedTicket = await prisma.hoheattendance.create({
+            data: {
+              hoheattendantId: id,
+              // ticketValidatorUserId: (req.user as any).id,
+              redeemdAt: new Date(),
+            },
+  
+          });
+
+          // tslint:disable-next-line:no-null-keyword
+          return (
+            res
+              .status(200)
+              .json({ error: null,attendant:{title: attendantselected.title,firstName: attendantselected.firstName, lastName: attendantselected.lastName }, message: 'Checked in successfully!',Status:1 })
+          );
+        } catch (error) {
+          return apiErrorHandler(error, req, res, "Couldn't check in ticket.");
+        }
+      }
 
 
 

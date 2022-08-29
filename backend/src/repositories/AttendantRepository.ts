@@ -73,6 +73,22 @@ class AttendantRepository {
   }
 
 
+
+
+  async createhoheAttendant({  title, firstName, lastName, phoneNumber }: { title: string, firstName: string, lastName: string, phoneNumber: string }) {
+    return await prisma?.hoheattendant.create({
+        data: {
+            title, 
+            firstName, 
+            lastName,
+            phoneNumber
+        }
+    }
+    );
+}
+
+
+
     // async UpdateUser(id: string, { firstName, lastName, username, address, accountLockedOut, role, phoneNumber }: { firstName: string, lastName: string, username: string, address: string , accountLockedOut: boolean, role: number, phoneNumber: string }) {
     //     return await prisma?.user.update({
     //         where: {

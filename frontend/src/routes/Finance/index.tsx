@@ -28,6 +28,12 @@ function Admin(props: any) {
             <Menu.Item key="" icon={<PicCenterOutlined />}>
               <Link to="">{"Attendance"}</Link>
             </Menu.Item>
+            <Menu.Item key="hohe_attendance" icon={<PicCenterOutlined />}>
+              <Link to="hohe_attendance">{"HoHe Attendance"}</Link>
+            </Menu.Item>
+            <Menu.Item key="hohe_attendant" icon={<PicCenterOutlined />}>
+              <Link to="hohe_attendant">{"HoHe Attendant"}</Link>
+            </Menu.Item>
             {/* <Menu.Item key="sales-report" icon={<BarChartOutlined />}>
               <Link to="sales-report">{"Sales Report"}</Link>
             </Menu.Item> */}

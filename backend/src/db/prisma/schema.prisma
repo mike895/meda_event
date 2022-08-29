@@ -59,6 +59,7 @@ model TicketValidatorUser {
   TicketsOnSeats       TicketsOnSeats[]
   Attendant            Attendant[]
   Attendance           Attendance[]
+  HoheAttendance       HoheAttendance[]
 
   @@map("ticketvalidatoruser")
 }
@@ -236,6 +237,23 @@ model Attendance {
   ticketValidatorUserId String?
 
   @@map("attendance")
+}
+
+model HoheAttendance {
+  id                    String               @id @default(uuid())
+  hoheattendant         HoheAttendant        @relation(fields: [hoheattendantId], references: [id])
+  hoheattendantId       String
+  redeemdBy             TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
+  redeemdAt             DateTime?
+  ticketValidatorUserId String?
+}
+
+model HoheAttendant {
+  id             String           @id @default(uuid())
+  firstName      String
+  lastName       String
+  phoneNumber    String
+  HoheAttendance HoheAttendance[]
 }
 
 // model Session {

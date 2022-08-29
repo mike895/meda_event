@@ -63,6 +63,44 @@ class AttendantRoutes {
 
       );
 
+
+      this.router
+      .route('/register-hohe')
+      .post(
+        // this.adminValidator.validateRegister(registerUserSchema),
+        this.attendantController.CreatehoheUser
+      );
+
+
+      this.router
+      .route('/fetch-hohe')
+      .get(
+        // userAuth,
+        // userTypeAuth(UserType.User),
+        // userRoleAuth([Roles.Finanace]),
+        this.attendantController.GetAllHoheAttendant
+      );
+
+      this.router
+      .route('/fetch-attendance')
+      .get(
+        // userAuth,
+        // userTypeAuth(UserType.User),
+        // userRoleAuth([Roles.Finanace]),
+        this.attendantController.GetAllHoheAttendance
+      );
+
+      this.router
+      .route('/:id')
+      .post(
+        // userAuth,
+        // userTypeAuth(UserType.TicketValidatorUser),
+        // this.ticketValidator.validateCheckIn(),
+        this.attendantController.CheckHoheBadge
+
+      );
+
+
   }
 }
 
