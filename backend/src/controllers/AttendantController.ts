@@ -298,6 +298,7 @@ export default class AdminController {
           console.log("hello hohe badge")
           // const session = req.params.session;
           const id = req.params.id;
+          console.log("hohebadge",id)
           const attendantselected = await prisma.hoheAttendant.findUnique({
             where: {
               id,
