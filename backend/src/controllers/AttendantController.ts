@@ -304,7 +304,7 @@ export default class AdminController {
               id,
             },
           });
-
+console.log("qaaqqqqqqqqqqq",attendantselected)
           // if(attendantselected)
           //   return res
           //      .status(200)

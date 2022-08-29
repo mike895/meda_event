@@ -252,7 +252,7 @@ model HoheAttendance {
 
 model HoheAttendant {
   id             String           @id @default(uuid())
-  title          String
+  title          String?
   firstName      String
   lastName       String
   phoneNumber    String
