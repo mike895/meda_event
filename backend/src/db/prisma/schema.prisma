@@ -191,7 +191,7 @@ model EventTicket {
 
 model Attendant {
   id                    String               @id @default(uuid())
-  category              String
+  category              String?
   subCategory           String?
   memberCountry         String?
   observerCountry       String?
@@ -202,8 +202,8 @@ model Attendant {
   lastName              String
   organization          String
   designation           String
-  email                 String
-  country               String
+  email                 String?
+  country               String?
   phoneNumber           String?
   registrationDate      String?
   participationMode     String?
@@ -219,6 +219,8 @@ model Attendant {
   Attendance            Attendance[]
   // TicketValidatorUser   TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
   // ticketValidatorUserId String?
+  TicketValidatorUser   TicketValidatorUser? @relation(fields: [ticketValidatorUserId], references: [id])
+  ticketValidatorUserId String?
 
   @@map("attendant")
 }

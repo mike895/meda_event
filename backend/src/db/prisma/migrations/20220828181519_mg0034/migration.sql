@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "attendant" ALTER COLUMN "category" DROP NOT NULL,
+ALTER COLUMN "email" DROP NOT NULL,
+ALTER COLUMN "country" DROP NOT NULL;
