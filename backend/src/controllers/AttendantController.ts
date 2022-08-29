@@ -335,7 +335,7 @@ console.log("qaaqqqqqqqqqqq",attendantselected)
           return (
             res
               .status(200)
-              .json({ error: null,attendant:{title: attendantselected.title,firstName: attendantselected.firstName, lastName: attendantselected.lastName }, message: 'Checked in successfully!',Status:1 })
+              .json({ error: null,attendant:{firstName: attendantselected.firstName, lastName: attendantselected.lastName }, message: 'Checked in successfully!',Status:1 })
           );
         } catch (error) {
           return apiErrorHandler(error, req, res, "Couldn't check in ticket.");
