@@ -53,7 +53,7 @@ export default class AdminController {
       // console.log("hi")
         const attendance = await prisma.hoheAttendant.findMany({ });
         if (!attendance) return res.status(404).json({ error: 'Error.' });
-        return res.status(200).json(attendance);
+        return res.status(200).json({msg:"hello",attendance});
       } catch (error) {
         return apiErrorHandler(error, req, res, "Couldn't get Hohe attendant.");
       }
