@@ -146,44 +146,44 @@ export default function TicketsList() {
     },
 
 
-    {
-      title: "Title",
-      dataIndex: [`hoheattendant`],
-      // sorter: {
-      //   compare: (a: any, b: any) => {
-      //     if (!(a.attendant && b.attendant)) return false;
-      //     return `${a.attendant.title}`.localeCompare(
-      //       `${a.attendant.title}`
-      //     );
-      //   },
-      // },
-      // filterSearch: true,
-      // filters: [
-      //   ...AttendeeList.map((e) => {
-      //     return { text: `${e.title}`, value: e.id };
-      //   }),
-      //   // { text: "Unredeemed", value: null },
-      // ],
-      // onFilter: (value: any, record: any) => {
-      //   if (value == record.attendant) {
-      //     return true;
-      //     //Checking for unredeemed tickets
-      //   }
-      //   if (record.attendant) return record.attendant.id === value;
-      //   return false;
-      //   // return record.redeemdBy.id === value;
-      // },
-      // ellipsis: {
-      //   showTitle: false,
-      // },
-      render: (e: any) => {
-        if (e) return `${e.title}`;
-        return <Tag color={"magenta"}>
-               Null
-          </Tag>
+    // {
+    //   title: "Title",
+    //   dataIndex: [`hoheattendant`],
+    //   // sorter: {
+    //   //   compare: (a: any, b: any) => {
+    //   //     if (!(a.attendant && b.attendant)) return false;
+    //   //     return `${a.attendant.title}`.localeCompare(
+    //   //       `${a.attendant.title}`
+    //   //     );
+    //   //   },
+    //   // },
+    //   // filterSearch: true,
+    //   // filters: [
+    //   //   ...AttendeeList.map((e) => {
+    //   //     return { text: `${e.title}`, value: e.id };
+    //   //   }),
+    //   //   // { text: "Unredeemed", value: null },
+    //   // ],
+    //   // onFilter: (value: any, record: any) => {
+    //   //   if (value == record.attendant) {
+    //   //     return true;
+    //   //     //Checking for unredeemed tickets
+    //   //   }
+    //   //   if (record.attendant) return record.attendant.id === value;
+    //   //   return false;
+    //   //   // return record.redeemdBy.id === value;
+    //   // },
+    //   // ellipsis: {
+    //   //   showTitle: false,
+    //   // },
+    //   render: (e: any) => {
+    //     if (e) return `${e.title}`;
+    //     return <Tag color={"magenta"}>
+    //            Null
+    //       </Tag>
        
-      },
-    },
+    //   },
+    // },
 
 
     
@@ -206,11 +206,11 @@ export default function TicketsList() {
         // { text: "Unredeemed", value: null },
       ],
       onFilter: (value: any, record: any) => {
-        if (value == record.attendant.id) {
+        if (value == record.hoheattendant.id) {
           return true;
           //Checking for unredeemed tickets
         }
-        if (record.attendant) return record.attendantId === value;
+        if (record.hoheattendant) return record.hoheattendantId === value;
         return false;
         // return record.redeemdBy.id === value;
       },
@@ -292,8 +292,8 @@ export default function TicketsList() {
 
   const loadTickets = async () => {
     setTableLoading(true);
-    console.log("jskdfglkjdsg")
-    const res = await getAllHoheAttendant();
+    // console.log("jskdfglkjdsg")
+    const res = await getAllHoheAttendance();
     console.log(res)
     if (res.error) {
       setAttendanceList([]);
@@ -350,10 +350,8 @@ export default function TicketsList() {
     });
 
   useAsyncEffect(async () => {
-    console.log("kdjsfhksjdfh")
-    // await loadFilterData();
+    await loadFilterData();
     await loadTickets(); 
-    console.log("khfsjhkjsf",AttendeeList)
    
   }, []);
 

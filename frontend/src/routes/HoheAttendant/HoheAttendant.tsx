@@ -158,7 +158,7 @@ export default function TicketsList() {
       //   showTitle: false,
       // },
       render: (e: any) => {
-        if (e) return `${e.firstName} `;
+        if (e) return `${e} `;
         return <Tag color={"magenta"}>
                Null
           </Tag>
@@ -197,7 +197,7 @@ export default function TicketsList() {
       //   showTitle: false,
       // },
       render: (e: any) => {
-        if (e) return ` ${e.lastName}`;
+        if (e) return ` ${e}`;
         return <Tag color={"magenta"}>
                Null
           </Tag>
@@ -236,7 +236,7 @@ export default function TicketsList() {
       //   showTitle: false,
       // },
       render: (e: any) => {
-        if (e) return `${e.phoneNumber}`;
+        if (e) return `${e}`;
         return <Tag color={"magenta"}>
                Null
           </Tag>
@@ -272,7 +272,7 @@ export default function TicketsList() {
     setTableLoading(true);
     const res = await getAllHoheAttendant();
     console.log(res)
-    return
+    // return
     if (res.error) {
       setAttendanceList([]);
       message.error("Error Loading data please refresh the page.");
