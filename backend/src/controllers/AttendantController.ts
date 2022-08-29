@@ -303,6 +303,11 @@ export default class AdminController {
             where: {
               id,
             },
+            select: {
+              firstName:true,
+              lastName:true,
+              phoneNumber:true,
+            },
           });
 console.log("qaaqqqqqqqqqqq",attendantselected)
           // if(attendantselected)
