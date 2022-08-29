@@ -33,9 +33,9 @@ export default class AdminController {
     async CreatehoheUser(req: Request, res: Response, next: NextFunction) {
       try {
 
-        const { title, firstName, lastName, phoneNumber }: { title: string, firstName: string, lastName: string, phoneNumber: string } = req.body;
+        const { firstName, lastName, phoneNumber }: { firstName: string, lastName: string, phoneNumber: string } = req.body;
            
-        const user = await AttendantRepository.createhoheAttendant({ title, firstName, lastName, phoneNumber });
+        const user = await AttendantRepository.createhoheAttendant({ firstName, lastName, phoneNumber });
         return res.status(201).json({
             error: undefined,
             message: 'Hohe Attendant created successfully'
