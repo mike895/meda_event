@@ -75,10 +75,9 @@ class AttendantRepository {
 
 
 
-  async createhoheAttendant({  title, firstName, lastName, phoneNumber }: { title: string, firstName: string, lastName: string, phoneNumber: string }) {
+  async createhoheAttendant({ firstName, lastName, phoneNumber }: { firstName: string, lastName: string, phoneNumber: string }) {
     return await prisma?.hoheAttendant.create({
         data: {
-            title, 
             firstName, 
             lastName,
             phoneNumber

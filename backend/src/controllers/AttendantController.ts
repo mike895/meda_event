@@ -75,7 +75,6 @@ export default class AdminController {
             },
             hoheattendant: {
               select: { 
-                title: true, 
                 firstName: true, 
                 lastName: true,  
                 phoneNumber: true, 
@@ -177,12 +176,6 @@ export default class AdminController {
                 registrationDate: true, 
                 participationMode: true, 
                 sideEvents: true, 
-                // redeemdBy: true,
-                // redeemdAt: true,
-                // session1: true,  
-                // session2: true,  
-                // session3: true, 
-                // session4: true, 
                 role: true,
 
             });
