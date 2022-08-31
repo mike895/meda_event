@@ -22,12 +22,21 @@ function Admin(props: any) {
         <Sider trigger={null} breakpoint="lg" collapsible collapsed={collapsed}>
           <div className={styles.logo} />
           <Menu theme="dark" mode="inline">
-            <Menu.Item key="tickets" icon={<PicCenterOutlined />}>
+            {/* <Menu.Item key="tickets" icon={<PicCenterOutlined />}>
               <Link to="tickets">{"Tickets"}</Link>
+            </Menu.Item> */}
+            <Menu.Item key="" icon={<PicCenterOutlined />}>
+              <Link to="">{"Attendance"}</Link>
             </Menu.Item>
-            <Menu.Item key="sales-report" icon={<BarChartOutlined />}>
+            <Menu.Item key="hohe_attendance" icon={<PicCenterOutlined />}>
+              <Link to="hohe_attendance">{"HoHe Attendance"}</Link>
+            </Menu.Item>
+            <Menu.Item key="hohe_attendant" icon={<PicCenterOutlined />}>
+              <Link to="hohe_attendant">{"HoHe Attendant"}</Link>
+            </Menu.Item>
+            {/* <Menu.Item key="sales-report" icon={<BarChartOutlined />}>
               <Link to="sales-report">{"Sales Report"}</Link>
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu>
         </Sider>
         <Layout className={styles["site-layout"]}>

@@ -38,6 +38,8 @@ export const getCurrentUser = async () => {
       "Authorization": Cookies.get("jwt_auth") || ""
     },
   });
+  // console.log("currentttttt",res)
+  // console.log("cookies",Cookies.get("jwt_auth"))
   if (res.status == 200) {
     return await res.json();
   }
@@ -563,6 +565,90 @@ export const getSalesReport = async (data: any) => {
     return { error: "Internal server error." };
   }
 };
+
+export const getAllHoheAttendance = async () => {
+  const res = await fetch(`${baseUrl}/api/attendant/fetch-attendance`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": Cookies.get("jwt_auth") || ""
+    },
+  });
+  if (res.status == 200) {
+    return await res.json();
+  }
+  else {
+    let json = await res.json();
+    if (json.error) {
+      return { error: json.error };
+    }
+    return { error: "Internal server error." }
+  }
+}
+
+
+export const getAllAttendance = async () => {
+  const res = await fetch(`${baseUrl}/api/attendant/fetch`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": Cookies.get("jwt_auth") || ""
+    },
+  });
+  if (res.status == 200) {
+    return await res.json();
+  }
+  else {
+    let json = await res.json();
+    if (json.error) {
+      return { error: json.error };
+    }
+    return { error: "Internal server error." }
+  }
+}
+
+export const getAllHoheAttendant = async () => {
+  const res = await fetch(`${baseUrl}/api/attendant/fetch-hohe`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": Cookies.get("jwt_auth") || ""
+    },
+  });
+  if (res.status == 200) {
+    return await res.json();
+  }
+  else {
+    let json = await res.json();
+    if (json.error) {
+      return { error: json.error };
+    }
+    return { error: "Internal server error." }
+  }
+}
+
+
+export const getAllAttendant = async () => {
+  const res = await fetch(`${baseUrl}/api/attendant/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": Cookies.get("jwt_auth") || ""
+    },
+  });
+  if (res.status == 200) {
+    return await res.json();
+  }
+  else {
+    let json = await res.json();
+    if (json.error) {
+      return { error: json.error };
+    }
+    return { error: "Internal server error." }
+  }
+}
+
+
 export const getAllTickets = async () => {
   const res = await fetch(`${baseUrl}/api/ticket/`, {
     method: 'GET',
