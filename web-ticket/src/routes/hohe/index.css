@@ -93,7 +93,6 @@ body {
   flex-direction: column;
   height: fit-content;
   padding: 10px;
-  
 }
 
 .meda-tickets-lable {
@@ -116,7 +115,7 @@ body {
   justify-content: center;
   padding-bottom: 20px;
 }
-.line{
+.line {
   height: 2px;
   width: 90%;
   background-color: #f8802a94;
@@ -133,7 +132,7 @@ body {
 
 .ticket-info-label,
 ticket-info-value {
-  width: 40%;
+  width: 30%;
 }
 
 .ticket-info-label {
@@ -141,6 +140,7 @@ ticket-info-value {
   padding-right: 15px;
 }
 .ticket-info-value {
+  flex: 1;
   padding-left: 15px;
 }
 
@@ -338,6 +338,10 @@ ticket-info-value {
   .ticket-container {
     width: 90%;
     margin-bottom: 20px;
+  }
+  .ticket-padding {
+    padding: 5px;
+   
   }
 }
 
