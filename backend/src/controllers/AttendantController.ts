@@ -34,6 +34,15 @@ export default class AdminController {
       try {
 
         const { firstName, lastName, phoneNumber }: { firstName: string, lastName: string, phoneNumber: string } = req.body;
+
+        // const phoneNumber = req.params.phone;
+      // console.log("hi",phoneNumber)
+        const attendance = await prisma.hoheAttendant.findMany({ 
+          where: {
+            phoneNumber,
+          },
+        });
+        if(attendance[0]) return res.status(404).json({ error: 'user already exists', attendance });
            
         const user = await AttendantRepository.createhoheAttendant({ firstName, lastName, phoneNumber });
         return res.status(201).json({
@@ -47,6 +56,27 @@ export default class AdminController {
 
 
     }
+
+
+
+ async gethoheUser(req: Request, res: Response, next: NextFunction) {
+      try {
+        const phoneNumber = req.params.phone;
+      // console.log("hi",phoneNumber)
+        const attendance = await prisma.hoheAttendant.findMany({ 
+          where: {
+            phoneNumber,
+          },
+        });
+        console.log("what",attendance)
+        if (!attendance) return res.status(404).json({ error: 'Error.' });
+        return res.status(200).json(attendance);
+      } catch (error) {
+        return apiErrorHandler(error, req, res, "Couldn't get Hohe attendant.");
+      }
+    }
+
+
 
     async GetAllHoheAttendant(req: Request, res: Response, next: NextFunction) {
       try {

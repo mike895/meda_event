@@ -72,11 +72,12 @@ class AttendantRoutes {
       );
 
       this.router
-      .route('/register-hohe/:phone')
+      .route('/hohe/:phone')
       .get(
         // this.adminValidator.validateRegister(registerUserSchema),
-        this.attendantController.CreatehoheUser
+        this.attendantController.gethoheUser
       );
+
 
       this.router
       .route('/fetch-hohe')
