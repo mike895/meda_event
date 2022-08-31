@@ -348,7 +348,7 @@ console.log("qaaqqqqqqqqqqq",attendantselected)
           const redeemedTicket = await prisma.hoheAttendance.create({
             data: {
               hoheattendantId: id,
-              // ticketValidatorUserId: (req.user as any).id,
+              ticketValidatorUserId: (req.user as any).id,
               redeemdAt: new Date(),
             },
   
