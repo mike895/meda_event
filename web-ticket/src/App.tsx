@@ -9,6 +9,7 @@ import AuthModal from "./components/auth/authModal";
 import Tickets from "./routes/Tickets";
 import Custom404 from "./routes/404";
 import MyTickets from "./routes/myTickets";
+import Hohe from "./routes/hohe";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             path="/bot/:chatid/:scheduleId/:showTimeId/:token"
             element={<Bot />}
           ></Route>
+          <Route path="/hohe" element={<Hohe />}></Route>
           <Route
             path="/schedule/:id/showtime/:st"
             element={<ChooseSeat />}
