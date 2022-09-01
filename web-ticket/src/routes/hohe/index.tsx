@@ -10,14 +10,6 @@ import axios from "axios";
 import Header2 from "../../components/global/header2";
 const reactScreenshot = require("use-react-screenshot");
 
-type props = {
-  phone: string;
-  firstName: string;
-  lastName: string;
-  setPhone: any;
-  setFirstName: any;
-  setLastName: any;
-};
 
 function Hohe() {
   const [registered, setRegistered] = useState(false);
@@ -191,266 +183,16 @@ const Ticket = ({ user, setUser }: any) => {
             </div>
           </div>
           <div className="line"></div>
-          <ol style={{fontStyle:"italic"}}>
+          <ol style={{ fontStyle: "italic" }}>
             <li>Keep this ticket private.</li>
             <li>Do not share or duplicate this ticket.</li>
             <li>The above ticket is valid for only one use.</li>
           </ol>
           <div className="line"></div>
-          <p style={{ textAlign: "center", color: "#f8812a" }}>
+          <p style={{ textAlign: "center", color: "#f8812a" , fontSize:"14px"}}>
             Digital Ticket - powered by Meda / 360Ground
           </p>
         </div>
-      </div>
-    </div>
-  );
-};
-
-const Registration = ({ setRegistered, setUser }: any) => {
-  const [error, setError] = useState({
-    errorFor: "",
-    errorMessage: "",
-  });
-  const [phone, setPhone] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [otp, setOtp] = useState(false);
-  const [otpCode, setOtpCode] = useState("");
-  const [authRequestId, setAuthRequestId] = useState("");
-  const [otpExpiry, setOtpExpiry] = useState(0);
-
-  const sendOtp = async () => {
-    const phoneNumber = validateForm(phone);
-    if (phoneNumber) {
-      setOtp(!otp);
-      axios
-        .post("https://meda.et/mauth/api/users/auth/otp/request", {
-          phoneNumber,
-        })
-        .then((res) => {
-          console.log(res);
-
-          setAuthRequestId(res.data.authRequestId);
-          setOtpExpiry(res.data.otpExpiryDate);
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  const cleanInputs = () => {
-    setPhone("");
-    setFirstName("");
-    setLastName("");
-    setOtp(false);
-    setOtpCode("");
-    setAuthRequestId("");
-    setOtpExpiry(0);
-  };
-
-  const handleRegistration = async () => {
-    axios
-      .post("https://meda.et/mauth/api/users/auth/otp/verify", {
-        authRequestId: authRequestId,
-        otp: otpCode,
-      })
-      .then(async (res) => {
-        console.log(res);
-        const result = await registerAttendant({
-          firstName,
-          lastName,
-          phoneNumber: phone,
-        });
-        localStorage.setItem("phone", phone);
-        if (res.data.isNewUser) {
-          axios
-            .post("https://meda.et/mauth/api/users/auth/otp/register", {
-              authRequestId: authRequestId,
-              otp: otpCode,
-            })
-            .then((res) => {
-              cleanInputs();
-              setRegistered(true);
-            })
-            .catch((err) => console.log(err));
-        } else {
-          setRegistered(true);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const validateForm = (num: any) => {
-    if (!isValidPhoneNumber(num, "ET")) {
-      setError({
-        errorFor: "phone",
-        errorMessage: "Please, enter a valid phone number.",
-      });
-      return false;
-    }
-    if (!firstName) {
-      setError({
-        errorFor: "firstName",
-        errorMessage: "Please, enter your name",
-      });
-      return false;
-    }
-    if (!lastName) {
-      setError({
-        errorFor: "lastName",
-        errorMessage: "Please, enter your last name",
-      });
-      return false;
-    }
-    if (num.length === 12) return "+" + num;
-    if (num.length === 9) return "+251" + num;
-    console.log(num);
-  };
-
-  useEffect(() => {
-    setOtp(false);
-  }, []);
-
-  return (
-    <div className="registration">
-      <div className="reg-left">
-        <img src="/images/hohe.png" alt="hohe logo" />
-        <div className="reg-right-top">
-          <h2 className="hohe-title">ሆሄ ሽልማት</h2>
-          <p className="event-description">
-            የሆሄ የሥነ ጽሑፍ ሽልማት ለ፬ኛ ጊዜ ነሐሴ 30 2014 ዓ.ም. <br /> ከምሽት 11፡00 - 2፡00
-            ሰዓት በአዲስ አበባ ከተማ አስተዳደር ማዘጋጃ ቤት ይካሄዳል
-          </p>
-        </div>
-        <button className="more-button">More about event</button>
-      </div>
-
-      <div className="right">
-        <div className="reg-right-top">
-          <h3>መገኘትዎን ያረጋግጡ</h3>
-          <p>መገኘትዎን ለማረጋገጥ እና የመግቢያ ትኬትዎን ለማግኘት እባክዎ ከታች ያለውን መረጃ ይሙሉ</p>
-        </div>
-        <div>
-          <div className="reg-phone-input">
-            <label htmlFor="phone">Mobile Number</label>
-            <div className="custom-input">
-              <img src="/images/eth-flag.png" alt="" />
-              <span>+251</span>
-              <input
-                type="number"
-                name="phoneNumber"
-                id="phone"
-                value={phone}
-                onChange={(e) => {
-                  setError({
-                    errorFor: "",
-                    errorMessage: "",
-                  });
-                  setOtp(false);
-                  setPhone(e.target.value);
-                }}
-              />
-            </div>
-            {error.errorFor === "phone" ? (
-              <p className="error-line">{error.errorMessage}</p>
-            ) : null}
-          </div>
-          <div className="reg-personal-info-input">
-            <div className="reg-input-group">
-              <label htmlFor="firstName">First Name</label>
-              <input
-                className="reg-input"
-                type="text"
-                name="firstName"
-                placeholder="First Name"
-                id="firstName"
-                value={firstName}
-                onChange={(e) => {
-                  setError({
-                    errorFor: "",
-                    errorMessage: "",
-                  });
-                  setFirstName(e.target.value);
-                }}
-              />
-              {error.errorFor === "firstName" ? (
-                <p className="error-line">{error.errorMessage}</p>
-              ) : null}
-            </div>
-            <div className="reg-input-group">
-              <label htmlFor="lastName">Last Name</label>
-              <input
-                className="reg-input"
-                type="text"
-                name="lastName"
-                placeholder="Last Name"
-                id="lastName"
-                value={lastName}
-                onChange={(e) => {
-                  setError({
-                    errorFor: "",
-                    errorMessage: "",
-                  });
-                  setLastName(e.target.value);
-                }}
-              />
-              {error.errorFor === "lastName" ? (
-                <p className="error-line">{error.errorMessage}</p>
-              ) : null}
-            </div>
-            {otp ? (
-              <div>
-                <div
-                  style={{
-                    height: "1px",
-                    width: "250px",
-                    backgroundColor: "black",
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                    display: "flex",
-                  }}
-                />
-                <div className="reg-input-group">
-                  <label htmlFor="lastName">
-                    Enter the code sent to your number
-                  </label>
-                  <input
-                    className="reg-input"
-                    type="text"
-                    name="otp"
-                    placeholder="Enter the code"
-                    id="lastName"
-                    value={otpCode}
-                    onChange={(e) => {
-                      setOtpCode(e.target.value);
-                    }}
-                  />
-                </div>
-                {/* {otpExpiry > 0 ? (
-                  <Timer expiry={otpExpiry} resendOtp={sendOtp} />
-                ) : null} */}
-              </div>
-            ) : null}
-          </div>
-          {!otp ? (
-            <button onClick={sendOtp} className="reg-submit-button">
-              Send code
-            </button>
-          ) : (
-            <button onClick={handleRegistration} className="reg-submit-button">
-              Register
-            </button>
-          )}
-        </div>
-        <p style={{ marginTop: "20px" }}>
-          Already have a ticket? Please sign in.
-        </p>
-        <button
-          onClick={handleRegistration}
-          className="more-button"
-          style={{ width: "250px", margin: 0 }}
-        >
-          Sign in
-        </button>
       </div>
     </div>
   );
@@ -576,133 +318,133 @@ const SignIn = ({ setRegistered, setUser }: any) => {
             ሰዓት በአዲስ አበባ ከተማ አስተዳደር ማዘጋጃ ቤት ይካሄዳል
           </p>
         </div>
-        <button className="more-button">More about event</button>
       </div>
 
       <div className="right">
-        <div className="reg-right-top">
-          <h3>መገኘትዎን ያረጋግጡ</h3>
-          <p>መገኘትዎን ለማረጋገጥ እና የመግቢያ ትኬትዎን ለማግኘት እባክዎ ከታች ያለውን መረጃ ይሙሉ</p>
-        </div>
-        {!isNewUser ? (
-          <div>
-            <div className="reg-phone-input">
-              <label htmlFor="phone">Mobile Number</label>
-              <div className="custom-input">
-                <img src="/images/eth-flag.png" alt="" />
+        <div className="right-container">
+          <div className="reg-right-top">
+            <h3>መገኘትዎን ያረጋግጡ</h3>
+            <p>መገኘትዎን ለማረጋገጥ እና የመግቢያ ትኬትዎን ለማግኘት እባክዎ ከታች ያለውን መረጃ ይሙሉ</p>
+          </div>
+          {!isNewUser ? (
+            <div className="">
+              <div className="reg-phone-input">
+                <label htmlFor="phone">Mobile Number</label>
+                <div className="custom-input">
+                  <img src="/images/eth-flag.png" alt="" />
 
-                <span>+251</span>
-                <input
-                  type="number"
-                  name="phoneNumber"
-                  id="phone"
-                  value={phoneNumber}
-                  onChange={(e) => {
-                    setError("");
-                    setCodeSent(false);
-                    setPhoneNumber(e.target.value);
-                  }}
-                />
-              </div>
-              {error ? <p className="error-line">{error}</p> : null}
-            </div>
-            {codeSent ? (
-              <div>
-                <div className="reg-input-group">
-                  <label htmlFor="lastName">
-                    Enter the code sent to your number
-                  </label>
+                  <span>+251</span>
                   <input
-                    className="reg-input"
-                    type="text"
-                    name="otp"
-                    placeholder="Enter the code"
-                    id="lastName"
-                    value={code}
+                    type="number"
+                    name="phoneNumber"
+                    id="phone"
+                    value={phoneNumber}
                     onChange={(e) => {
+                      setError("");
+                      setCodeSent(false);
                       setCodeError(false);
-                      setCode(e.target.value);
+                      setCode('')
+                      setPhoneNumber(e.target.value);
                     }}
                   />
-                  {codeError ? (
-                    <p className="error-line">Wrong / Expired - Code</p>
-                  ) : null}
                 </div>
+                {error ? <p className="error-line">{error}</p> : null}
+              </div>
+              {codeSent ? (
+                <div>
+                  <div className="reg-input-group">
+                    <label htmlFor="lastName">
+                      Enter the code sent to your number
+                    </label>
+                    <input
+                      className="reg-input"
+                      type="text"
+                      name="otp"
+                      placeholder="Enter the code"
+                      id="lastName"
+                      value={code}
+                      onChange={(e) => {
+                        setError("");
+                        setCodeError(false);
+                        setCode(e.target.value);
+                      }}
+                    />
+                    {codeError ? (
+                      <p className="error-line">Wrong / Expired - Code</p>
+                    ) : null}
+                  </div>
 
-                {/* {otpExpiry > 0 ? (
+                  {/* {otpExpiry > 0 ? (
                   <Timer expiry={otpExpiry} resendOtp={requestOTP} />
                 ) : null} */}
+                </div>
+              ) : null}
+
+              {!codeSent ? (
+                <button onClick={requestOTP} className="reg-submit-button">
+                  Verify Phone
+                </button>
+              ) : (
+                <button onClick={handleSignin} className="reg-submit-button">
+                  Sign in
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="reg-personal-info-input">
+              <div className="reg-input-group">
+                <label htmlFor="">Phone Number: {phoneNumber}</label>
+                <label htmlFor="firstName">First Name</label>
+                <input
+                  className="reg-input"
+                  type="text"
+                  name="firstName"
+                  placeholder="First Name"
+                  id="firstName"
+                  value={firstName}
+                  onChange={(e) => {
+                    setFormError({
+                      errorFor: "",
+                      message: "",
+                    });
+                    setFirstName(e.target.value);
+                  }}
+                />
+                {formError.errorFor === "firstName" ? (
+                  <p className="error-line">{formError.message}</p>
+                ) : null}
               </div>
-            ) : null}
-
-            {!codeSent ? (
-              <button onClick={requestOTP} className="reg-submit-button">
-                Verify Phone
+              <div className="reg-input-group">
+                <label htmlFor="lastName">Last Name</label>
+                <input
+                  className="reg-input"
+                  type="text"
+                  name="lastName"
+                  placeholder="Last Name"
+                  id="lastName"
+                  value={lastName}
+                  onChange={(e) => {
+                    setFormError({
+                      errorFor: "",
+                      message: "",
+                    });
+                    setLastName(e.target.value);
+                  }}
+                />
+                {formError.errorFor === "lastName" ? (
+                  <p className="error-line">{formError.message}</p>
+                ) : null}
+              </div>
+              <button
+                onClick={handleRegistraion}
+                className="more-button"
+                style={{ width: "250px", margin: 0, marginTop: "20px" }}
+              >
+                Register
               </button>
-            ) : (
-              <button onClick={handleSignin} className="reg-submit-button">
-                Sign in
-              </button>
-            )}
-          </div>
-        ) : (
-          <div className="reg-personal-info-input">
-            <div className="reg-input-group">
-              <label htmlFor="">Phone Number: {phoneNumber}</label>
-              <label htmlFor="firstName">First Name</label>
-              <input
-                className="reg-input"
-                type="text"
-                name="firstName"
-                placeholder="First Name"
-                id="firstName"
-                value={firstName}
-                onChange={(e) => {
-                  setFormError({
-                    errorFor: "",
-                    message: "",
-                  });
-                  setFirstName(e.target.value);
-                }}
-              />
-              {formError.errorFor === "firstName" ? (
-                <p className="error-line">{formError.message}</p>
-              ) : null}
             </div>
-            <div className="reg-input-group">
-              <label htmlFor="lastName">Last Name</label>
-              <input
-                className="reg-input"
-                type="text"
-                name="lastName"
-                placeholder="Last Name"
-                id="lastName"
-                value={lastName}
-                onChange={(e) => {
-                  setFormError({
-                    errorFor: "",
-                    message: "",
-                  });
-                  setLastName(e.target.value);
-                }}
-              />
-              {formError.errorFor === "lastName" ? (
-                <p className="error-line">{formError.message}</p>
-              ) : null}
-            </div>
-            <button
-              onClick={handleRegistraion}
-              className="more-button"
-              style={{ width: "250px", margin: 0, marginTop: "20px" }}
-            >
-              Register
-            </button>
-          </div>
-        )}
-
-        {/* <p style={{ marginTop: "20px" }}>
-          Already have a ticket? Please sign in.
-        </p> */}
+          )}
+        </div>
       </div>
     </div>
   );
