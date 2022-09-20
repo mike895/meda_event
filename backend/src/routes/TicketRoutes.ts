@@ -317,8 +317,12 @@ class AuthRoutes {
       );
     // ! Test
     this.router
-      .route('/meda-pay-callback')
+      .route('/arifpay-callback')
       .post(this.ticketController.TicketBoughtMedaPayCallback);
+
+    // this.router
+    //   .route('/meda-pay-callback')
+    //   .post(this.ticketController.TicketBoughtMedaPayCallback);
   }
 }
 

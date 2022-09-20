@@ -23,9 +23,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 dayjs.extend(duration);
 
-
 export default class TicketController {
   constructor() {}
+
   async CreateTicket(req: Request, res: Response, next: NextFunction) {
     // Get the userId from the authenticated user @red.user.id (//!the phone num is the ID)
     try {
@@ -34,8 +34,8 @@ export default class TicketController {
         amount,
         showTimeId,
         chatid,
-        // referenceNumber,
-      }: {
+      }: // referenceNumber,
+      {
         amount: number;
         // referenceNumber: string;
         showTimeId: string;
@@ -43,17 +43,16 @@ export default class TicketController {
         chatid: string;
       } = req.body;
 
-      
-    
       const ticketId = uuidv4();
       const curuser = req.user as any;
-      const { href, billReferenceNumber } =
-        await TicketController.GenerateReference({
-          name: curuser.firstName + curuser.lastName,
-          phoneNumber: curuser.phoneNumber,
-          amount: amount,
-          ticketId: ticketId,
-        });
+      // Ignore for arif pay
+      // const { href, billReferenceNumber } =
+      //   await TicketController.GenerateReference({
+      //     name: curuser.firstName + curuser.lastName,
+      //     phoneNumber: curuser.phoneNumber,
+      //     amount: amount,
+      //     ticketId: ticketId,
+      //   });
 
       // ! Check if this is an active showtime
       const stb = await prisma.showTime.findUnique({
@@ -61,11 +60,13 @@ export default class TicketController {
           id: showTimeId,
         },
       });
+
       if (stb!.active == false) {
         return res.json({
           error: "You can't buy a ticket to a deactivated showtime",
         });
       }
+
       const seatTicketsAlreadyBought: string[] = [];
       for (const seat of seats) {
         const ticketForThisSeatExists = await prisma.ticketsOnSeats.findFirst({
@@ -89,6 +90,7 @@ export default class TicketController {
           seatTicketsAlreadyBought.push(ticketForThisSeatExists.seat.seatName);
         }
       }
+
       if (seatTicketsAlreadyBought.length != 0)
         return res.status(409).json({
           error: `Seats ${seatTicketsAlreadyBought.join(
@@ -115,11 +117,13 @@ export default class TicketController {
           ticketKey,
         });
       }
+
       const createdEventTicket = await prisma.eventTicket.create({
         data: {
           id: ticketId,
           userId: (req.user as any).phoneNumber,
-          referenceNumber: billReferenceNumber,
+          // referenceNumber: billReferenceNumber,
+          referenceNumber: '',
           showTimeId,
           amount: amount,
           paymentStatus: PaymentStatus.PENDING,
@@ -154,7 +158,9 @@ export default class TicketController {
         },
       });
       // Send the req back
-      res.status(201).json({ ...createdEventTicket, href });
+      res
+        .status(201)
+        .json({ ...createdEventTicket, user: req.user, href: 'asdjl' });
       // ! END
       // ? The seats are "reserved" now and the code below will remove the reservation after x amount of time after the ticket was bought
       const task = new AsyncTask(
@@ -181,8 +187,8 @@ export default class TicketController {
       );
       const job = new SimpleIntervalJob(
         { seconds: 600 },
-        task,
-        billReferenceNumber
+        task
+        // billReferenceNumber
       );
       scheduler.addSimpleIntervalJob(job);
     } catch (error) {
@@ -207,7 +213,6 @@ export default class TicketController {
           },
           eventTicket: {
             include: {
-            
               showTime: {
                 include: {
                   eventHall: {
@@ -236,6 +241,7 @@ export default class TicketController {
       return apiErrorHandler(error, req, res, "Couldn't redeem ticket.");
     }
   }
+
   async GetTicketIssueInfoByKey(
     req: Request,
     res: Response,
@@ -290,7 +296,6 @@ export default class TicketController {
     }
   }
 
-  
   async RedeemTicket(req: Request, res: Response, next: NextFunction) {
     try {
       const { ticketKey }: { ticketKey: string } = req.body;
@@ -388,6 +393,7 @@ export default class TicketController {
       return apiErrorHandler(error, req, res, "Couldn't redeem ticket.");
     }
   }
+
   async GetRedeemHistory(req: Request, res: Response, next: NextFunction) {
     try {
       const redeemerId = (req.user as any).id;
@@ -451,6 +457,7 @@ export default class TicketController {
       );
     }
   }
+
   async GetTicketById(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
@@ -490,6 +497,7 @@ export default class TicketController {
       return apiErrorHandler(error, req, res, "Couldn't get ticket.");
     }
   }
+
   async GetTicketBuyHistory(req: Request, res: Response, next: NextFunction) {
     // TODO Add authentication once there is a way to auth a meda user
     try {
@@ -530,6 +538,7 @@ export default class TicketController {
       return apiErrorHandler(error, req, res, "Couldn't get ticket.");
     }
   }
+
   async GetSalesReport(req: Request, res: Response, next: NextFunction) {
     try {
       const {
@@ -664,6 +673,7 @@ export default class TicketController {
       return apiErrorHandler(error, req, res, "Couldn't get tickets.");
     }
   }
+
   async IssueReceipt(req: Request, res: Response, next: NextFunction) {
     try {
       const { ticketKey, fsNumber }: { ticketKey: string; fsNumber: string } =
@@ -711,11 +721,13 @@ export default class TicketController {
       return apiErrorHandler(error, req, res, "Couldn't issue receipt.");
     }
   }
+
   async TicketBoughtMedaPayCallback(
     req: Request,
     res: Response,
     next: NextFunction
   ) {
+    console.log(req.body);
     const {
       orderId,
       status,
@@ -828,7 +840,6 @@ export default class TicketController {
             },
           });
 
-
           await sendSmsMessage(
             allFinance.map((e) => e.phoneNumber),
             `Meda|Ticket: ${
@@ -843,29 +854,30 @@ export default class TicketController {
             seatNames += `${e.ticketKey}, `;
           });
 
-
           // Send the user a notification and a url to checkout his link
           const msg = `Meda|Ticket \nDear user, \nYou have bought ${
-          eventTicket.TicketsOnSeats.length
+            eventTicket.TicketsOnSeats.length
           } tickets for the event ${
-          eventTicket.showTime!.EventSchedule?.event.title
-          }\nhall name: ${eventTicket.showTime!.eventHall.name
-          }\nseats: ${seatNames
-          }\nreference number: ${eventTicket.referenceNumber
-          }\ntime: ${dayjs(eventTicket.showTime?.time).format('h:mm A')} ${dayjs(eventTicket.showTime?.EventSchedule?.date).format('MMM DD, YYYY')
-          }\n\nyou can get your ticket on Meda mobile app or at ${webClientHostedUrl}/tickets/${eventTicket.id
-          }` ;
-          
-          await sendMessage(
-            eventTicket.userId,
-            msg
-          );
+            eventTicket.showTime!.EventSchedule?.event.title
+          }\nhall name: ${
+            eventTicket.showTime!.eventHall.name
+          }\nseats: ${seatNames}\nreference number: ${
+            eventTicket.referenceNumber
+          }\ntime: ${dayjs(eventTicket.showTime?.time).format(
+            'h:mm A'
+          )} ${dayjs(eventTicket.showTime?.EventSchedule?.date).format(
+            'MMM DD, YYYY'
+          )}\n\nyou can get your ticket on Meda mobile app or at ${webClientHostedUrl}/tickets/${
+            eventTicket.id
+          }`;
+
+          await sendMessage(eventTicket.userId, msg);
 
           // Send message to telegram bot
           // if(eventTicket.chatid)
-          if (eventTicket.chatid){
-          const tickets_on_seats  = eventTicket.TicketsOnSeats 
-          sendToBot(eventTicket.chatid, tickets_on_seats , msg)
+          if (eventTicket.chatid) {
+            const tickets_on_seats = eventTicket.TicketsOnSeats;
+            sendToBot(eventTicket.chatid, tickets_on_seats, msg);
           }
           // Notify the telegram bot server
           // const io: Server = req.app.get('io');
@@ -874,7 +886,6 @@ export default class TicketController {
           //   'onTicketPaymentComplete',
           //   updatedTicket
           // );
-
         }
       } else if (status == 'CANCELED') {
         // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING
@@ -897,6 +908,7 @@ export default class TicketController {
       return apiErrorHandler(error, req, res, 'Error confirming payment');
     }
   }
+
   static async GenerateReference({
     name,
     phoneNumber,
@@ -931,7 +943,7 @@ export default class TicketController {
       }),
     });
     const mpayRes = await mpay.json();
-	console.log(mpayRes)
+    console.log(mpayRes);
     if (mpayRes.error) {
       throw new Error(mpayRes.error);
     }

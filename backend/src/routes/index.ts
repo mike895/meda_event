@@ -16,43 +16,37 @@ import * as path from 'path';
 import RedeemerUserRoutes from './RedemmerUserRoutes';
 import * as swaggerUI from 'swagger-ui-express';
 import { swaggerDocs } from '../swagger/swagerConfig';
-const multer  = require('multer')
+import ArifPay from './ArifPay';
+const multer = require('multer');
 // var path = require('path')
-var storeval;
- 
+let storeval;
+
 const storage = multer.diskStorage({
-        destination: (req, file, cb) => {
-                cb(null, 'public/images')
-        },
-        filename: (req, file, cb) => {
-          storeval = Date.now() + path.extname(file.originalname);
-        cb(null, storeval)
-   }
-})
+  destination: (req, file, cb) => {
+    cb(undefined, 'public/images');
+  },
+  filename: (req, file, cb) => {
+    storeval = Date.now() + path.extname(file.originalname);
+    cb(undefined, storeval);
+  },
+});
 
 const upload = multer({
-        storage: storage,
-        limits: { fileSize: '2000000' },
-        fileFilter: (req, file, cb) => {
-                const fileTypes = /jpeg|jpg|png|gif/
-                const mimeType = fileTypes.test(file.mimetype)
-                const extname = fileTypes.test(path.extname(file.originalname))
+  storage: storage,
+  limits: { fileSize: '2000000' },
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /jpeg|jpg|png|gif/;
+    const mimeType = fileTypes.test(file.mimetype);
+    const extname = fileTypes.test(path.extname(file.originalname));
 
-                if(mimeType && extname) {
-                        return cb(null, true)
-                }
-                cb('Give proper files format to upload')
-        }
-
-})
-
-
+    if (mimeType && extname) {
+      return cb(undefined, true);
+    }
+    cb('Give proper files format to upload');
+  },
+});
 
 export default class Routes {
-
-
-
-
   constructor(app: Application) {
     app.use('/api/auth', AuthRoutes);
     app.use(
@@ -62,11 +56,13 @@ export default class Routes {
       userRoleAuth([Roles.Admin]),
       AdminRoutes
     );
-    app.use('/upload', upload.single('logo') ,(req,res)=> {
-        // upload()
+    app.use('/upload', upload.single('logo'), (req, res) => {
+      // upload()
       setTimeout(() => {
-        console.log('file uploaded', storeval)
-        return res.status(200).json({ result: true, msg: 'file uploaded', name: storeval})
+        console.log('file uploaded', storeval);
+        return res
+          .status(200)
+          .json({ result: true, msg: 'file uploaded', name: storeval });
       }, 3000);
     });
     app.use('/api/event', MovieRoutes);
@@ -74,6 +70,7 @@ export default class Routes {
     app.use('/api/venue', CinemaHallRoutes);
     app.use('/api/event-schedule', CinemaScheduleRoutes);
     app.use('/api/ticket', TicketRoutes);
+    app.use('/api/arifpay', ArifPay);
     app.use('/api/redeemer-users', RedeemerUserRoutes);
     app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
     app.get('/backend*', (req, res) => {
