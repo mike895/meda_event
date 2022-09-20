@@ -11,7 +11,6 @@ import {
   CinemaHallValidator,
 } from '../validators/cinemaHallValidator';
 
-
 import {
   PaymentStatus,
   Prisma,
@@ -51,11 +50,11 @@ class ArifPayRoutes {
 
         url: `https://gateway.arifpay.net/v0/sandbox/checkout/session`,
         data: {
-          cancelUrl: 'http://cancel',
+          cancelUrl: 'https://meda.et/cancel',
           nonce: orderId,
-          errorUrl: 'http://error',
+          errorUrl: 'https://meda.et/tickets/error',
           notifyUrl: 'https://meda.et/api/ticket/arifpay-callback',
-          successUrl: 'http://success',
+          successUrl: `https://meda.et/tickets/${orderId}`,
           paymentMethods: ['CARD', 'AWASH'],
           expireDate: new Date(
             Date.now() + 1 * 24 * 60 * 60 * 1000
@@ -78,11 +77,6 @@ class ArifPayRoutes {
         },
       })
         .then(async (ArifRes) => {
-          console.log('----------------');
-          console.log(ArifRes.data);
-          console.log(orderId);
-          console.log('----------------');
-
           const updateReference = await prisma.eventTicket.update({
             where: {
               id: orderId,
@@ -97,81 +91,6 @@ class ArifPayRoutes {
           console.log(err);
           return res.status(200).json('Error creating arifpay payment');
         });
-
-      //   needle.post(
-      //     `https://gateway.arifpay.net/v0/sandbox/checkout/session`,
-      //     {
-      //       cancelUrl: 'http://cancel',
-      //       nonce: orderId,
-      //       errorUrl: 'http://error',
-      //       notifyUrl: 'https://meda.et/api/arifpay/callback',
-      //       successUrl: 'http://success',
-      //       paymentMethods: ['CARD', 'AWASH'],
-      //       expireDate: new Date(
-      //         Date.now() + 1 * 24 * 60 * 60 * 1000
-      //       ).toISOString(),
-      //       items: [
-      //         {
-      //           name,
-      //           quantity,
-      //           price,
-      //           image: 'https://meda.et/images/logo.png',
-      //         },
-      //       ],
-      //       beneficiaries: [
-      //         {
-      //           accountNumber: '01320662432100',
-      //           bank: 'AWINETAA',
-      //           amount: price,
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       json: true,
-      //       headers: {
-      //         'x-arifpay-key': process.env.ARIF_PAY_KEY,
-      //       },
-      //     },
-      //     (arifError, arifRes, arifBody) => {
-      //       console.log(arifRes);
-
-      //       console.log(
-      //         '*** Arif pay response: code - ',
-      //         arifRes.statusCode,
-      //         '\nbody - ',
-      //         arifBody
-      //       );
-
-      //       if (arifError) {
-      //         console.log('Arif pay Error: ', arifBody);
-      //         return res.status(arifRes.statusCode).json({ error: arifBody });
-      //       } else {
-      //         needle.put(
-      //           `${'frappeUrl'}/api/resource/Order/${req.params.orderId}`,
-      //           {
-      //             session_id: arifBody.data.sessionId,
-      //           },
-      //           { json: true },
-      //           (err, ress, body) => {
-      //             if (err) {
-      //               console.log(
-      //                 'Error while adding reference number to order: ',
-      //                 err
-      //               );
-      //               res.status(ress.statusCode).json({ error: err });
-      //             } else {
-      //               // console.log(body);
-      //               res.status(ress.statusCode).json({
-      //                 paymentUrl: arifBody.data.paymentUrl,
-      //                 cancelUrl: arifBody.data.cancelUrl,
-      //                 total: arifBody.data.totalAmount,
-      //               });
-      //             }
-      //           }
-      //         );
-      //       }
-      //     }
-      //   );
     });
 
     // this.router.post('/callback', (req, res, next) => {

@@ -314,9 +314,19 @@ enum ReceiptStatus {
   NOTISSUED
 }
 
+// enum PaymentStatus {
+// PAYED
+// CANCELED
+// PENDING
+// TOBERETURNED
+// }
 enum PaymentStatus {
+  CANCELLED
+  FAILED
+  EXPIRED
+  SUCCESS
+  PENDING
   PAYED
   CANCELED
-  PENDING
   TOBERETURNED
 }

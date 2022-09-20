@@ -164,7 +164,7 @@ export default class TicketController {
       // ? The seats are "reserved" now and the code below will remove the reservation after x amount of time after the ticket was bought
       const task = new AsyncTask(
         'task to release seats reserved',
-       
+
         async () => {
           console.log('Cleanse the seats...');
           await prisma.eventTicket.update({
@@ -174,7 +174,7 @@ export default class TicketController {
             data: {
               // tslint:disable-next-line:no-null-keyword
               showTimeId: null,
-              paymentStatus: PaymentStatus.CANCELED,
+              paymentStatus: PaymentStatus.CANCELLED,
             },
           });
           scheduler.removeById(createdEventTicket.id);
@@ -696,7 +696,7 @@ export default class TicketController {
         return res
           .status(409)
           .json({ error: 'A receipt has already been issued!' });
-      if (isAlreadyIssued.eventTicket.paymentStatus != PaymentStatus.PAYED)
+      if (isAlreadyIssued.eventTicket.paymentStatus != PaymentStatus.SUCCESS)
         return res.status(409).json({
           error:
             "Can't issue receipt for this ticket because payment isn't complete yet",
@@ -727,187 +727,192 @@ export default class TicketController {
     res: Response,
     next: NextFunction
   ) {
-    console.log(req.body);
-    return;
-    // const {
-    //   orderId,
-    //   status,
-    //   referenceNumber,
-    //   paymentMethod,
-    //   isSimulation,
-    //   amount,
-    // }: any = req.body;
-    // try {
-    //   // Check env and if someone is using a simulation on production just end it
-    //   if (
-    //     process.env.NODE_ENV === 'production' &&
-    //     isSimulation == true &&
-    //     false
-    //   )
-    //     throw new Error("Can't use sandbox on prod");
-    //   if (status == 'PAYED') {
-    //     // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING
-    //     scheduler.removeById(referenceNumber);
-    //     const eventTicket = await prisma.eventTicket.findUnique({
-    //       where: {
-    //         referenceNumber,
-    //       },
-    //       include: {
-    //         TicketsOnSeats: {
-    //           include: {
-    //             seat: true,
-    //           },
-    //         },
-    //         showTime: {
-    //           include: {
-    //             EventSchedule: {
-    //               include: {
-    //                 event: true,
-    //               },
-    //             },
-    //             eventHall: {
-    //               select: {
-    //                 id: true,
-    //                 name: true,
-    //               },
-    //             },
-    //           },
-    //         },
-    //       },
-    //     });
-    //     // tslint:disable-next-line:no-null-keyword
-    //     if (eventTicket?.showTimeId == null) {
-    //       // This means the reservation has already been removed and the user paid for a reservation that doesn't exist
-    //       // Payment shouldn't be this annoying ffs
-    //       // So now they need to be refunded so we'll mark it as need to be refunded
-    //       scheduler.removeById(referenceNumber);
-    //       await prisma.eventTicket.update({
-    //         where: {
-    //           referenceNumber,
-    //         },
-    //         data: {
-    //           // tslint:disable-next-line:no-null-keyword
-    //           showTimeId: null,
-    //           paymentStatus: PaymentStatus.TOBERETURNED,
-    //           referenceNumber: referenceNumber,
-    //           paymentMethod,
-    //           amount,
-    //         },
-    //       });
-    //     } else {
-    //       // ! PAYMENT SUCCESSFUL
-    //       // TODO Check if anyone wants to be a smart ass and sends a fake amount
-    //       const updatedTicket = await prisma.eventTicket.update({
-    //         where: {
-    //           referenceNumber,
-    //         },
-    //         data: {
-    //           paymentStatus: PaymentStatus.PAYED,
-    //           referenceNumber: referenceNumber,
-    //           paymentMethod,
-    //           amount,
-    //         },
-    //         include: {
-    //           TicketsOnSeats: {
-    //             include: {
-    //               seat: true,
-    //             },
-    //           },
-    //           showTime: {
-    //             include: {
-    //               EventSchedule: {
-    //                 include: {
-    //                   event: true,
-    //                 },
-    //               },
-    //               eventHall: {
-    //                 select: {
-    //                   id: true,
-    //                   name: true,
-    //                 },
-    //               },
-    //             },
-    //           },
-    //         },
-    //       });
-    //       // ! NOTIFY ALL USERS WITH ROLE FINANCE
-    //       const allFinance = await prisma.user.findMany({
-    //         where: {
-    //           accountLockedOut: false,
-    //           roles: {
-    //             // Finance or cashier
-    //             name: Roles.Finanace,
-    //           },
-    //         },
-    //       });
+    const orderId = req.body.nonce;
+    const status = req.body.transaction.transactionStatus;
+    const referenceNumber = req.body.nonce;
+    const paymentMethod = req.body.transaction.paymentType;
+    const isSimulation = true;
+    const amount = req.body.totalAmount;
 
-    //       await sendSmsMessage(
-    //         allFinance.map((e) => e.phoneNumber),
-    //         `Meda|Ticket: ${
-    //           eventTicket.TicketsOnSeats.length
-    //         } tickets for the event ${
-    //           eventTicket.showTime!.EventSchedule?.event.title
-    //         } have been bought`
-    //       );
+    console.log(
+      orderId,
+      status,
+      referenceNumber,
+      paymentMethod,
+      isSimulation,
+      amount
+    );
+    try {
+      // Check env and if someone is using a simulation on production just end it
+      if (
+        process.env.NODE_ENV === 'production' &&
+        isSimulation == true &&
+        false
+      )
+        throw new Error("Can't use sandbox on prod");
+      if (status == 'PAYED') {
+        // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING
+        scheduler.removeById(referenceNumber);
+        const eventTicket = await prisma.eventTicket.findUnique({
+          where: {
+            id: orderId,
+          },
+          include: {
+            TicketsOnSeats: {
+              include: {
+                seat: true,
+              },
+            },
+            showTime: {
+              include: {
+                EventSchedule: {
+                  include: {
+                    event: true,
+                  },
+                },
+                eventHall: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+        // tslint:disable-next-line:no-null-keyword
+        if (eventTicket?.showTimeId == null) {
+          // This means the reservation has already been removed and the user paid for a reservation that doesn't exist
+          // Payment shouldn't be this annoying ffs
+          // So now they need to be refunded so we'll mark it as need to be refunded
+          scheduler.removeById(orderId);
+          await prisma.eventTicket.update({
+            where: {
+              id: orderId,
+            },
+            data: {
+              // tslint:disable-next-line:no-null-keyword
+              showTimeId: null,
+              paymentStatus: PaymentStatus.PENDING,
+              referenceNumber: referenceNumber,
+              paymentMethod,
+              amount,
+            },
+          });
+        } else {
+          // ! PAYMENT SUCCESSFUL
+          // TODO Check if anyone wants to be a smart ass and sends a fake amount
+          const updatedTicket = await prisma.eventTicket.update({
+            where: {
+              id: orderId,
+            },
+            data: {
+              paymentStatus: PaymentStatus.SUCCESS,
+              referenceNumber: referenceNumber,
+              paymentMethod,
+              amount,
+            },
+            include: {
+              TicketsOnSeats: {
+                include: {
+                  seat: true,
+                },
+              },
+              showTime: {
+                include: {
+                  EventSchedule: {
+                    include: {
+                      event: true,
+                    },
+                  },
+                  eventHall: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          });
+          // ! NOTIFY ALL USERS WITH ROLE FINANCE
+          const allFinance = await prisma.user.findMany({
+            where: {
+              accountLockedOut: false,
+              roles: {
+                // Finance or cashier
+                name: Roles.Finanace,
+              },
+            },
+          });
 
-    //       let seatNames = '';
-    //       eventTicket.TicketsOnSeats.forEach((e) => {
-    //         seatNames += `${e.ticketKey}, `;
-    //       });
+          await sendSmsMessage(
+            allFinance.map((e) => e.phoneNumber),
+            `Meda|Ticket: ${
+              eventTicket.TicketsOnSeats.length
+            } tickets for the event ${
+              eventTicket.showTime!.EventSchedule?.event.title
+            } have been bought`
+          );
 
-    //       // Send the user a notification and a url to checkout his link
-    //       const msg = `Meda|Ticket \nDear user, \nYou have bought ${
-    //         eventTicket.TicketsOnSeats.length
-    //       } tickets for the event ${
-    //         eventTicket.showTime!.EventSchedule?.event.title
-    //       }\nhall name: ${
-    //         eventTicket.showTime!.eventHall.name
-    //       }\nseats: ${seatNames}\nreference number: ${
-    //         eventTicket.referenceNumber
-    //       }\ntime: ${dayjs(eventTicket.showTime?.time).format(
-    //         'h:mm A'
-    //       )} ${dayjs(eventTicket.showTime?.EventSchedule?.date).format(
-    //         'MMM DD, YYYY'
-    //       )}\n\nyou can get your ticket on Meda mobile app or at ${webClientHostedUrl}/tickets/${
-    //         eventTicket.id
-    //       }`;
+          let seatNames = '';
+          eventTicket.TicketsOnSeats.forEach((e) => {
+            seatNames += `${e.ticketKey}, `;
+          });
 
-    //       await sendMessage(eventTicket.userId, msg);
+          // Send the user a notification and a url to checkout his link
+          const msg = `Meda|Ticket \nDear user, \nYou have bought ${
+            eventTicket.TicketsOnSeats.length
+          } tickets for the event ${
+            eventTicket.showTime!.EventSchedule?.event.title
+          }\nhall name: ${
+            eventTicket.showTime!.eventHall.name
+          }\nseats: ${seatNames}\nreference number: ${
+            eventTicket.referenceNumber
+          }\ntime: ${dayjs(eventTicket.showTime?.time).format(
+            'h:mm A'
+          )} ${dayjs(eventTicket.showTime?.EventSchedule?.date).format(
+            'MMM DD, YYYY'
+          )}\n\nyou can get your ticket on Meda mobile app or at ${webClientHostedUrl}/tickets/${
+            eventTicket.id
+          }`;
 
-    //       // Send message to telegram bot
-    //       // if(eventTicket.chatid)
-    //       if (eventTicket.chatid) {
-    //         const tickets_on_seats = eventTicket.TicketsOnSeats;
-    //         sendToBot(eventTicket.chatid, tickets_on_seats, msg);
-    //       }
-    //       // Notify the telegram bot server
-    //       // const io: Server = req.app.get('io');
-    //       // const ticketNotificationNamespace = io.of('/ticket-notification');
-    //       // ticketNotificationNamespace.emit(
-    //       //   'onTicketPaymentComplete',
-    //       //   updatedTicket
-    //       // );
-    //     }
-    //   } else if (status == 'CANCELED') {
-    //     // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING
-    //     scheduler.removeById(referenceNumber);
-    //     await prisma.eventTicket.update({
-    //       where: {
-    //         referenceNumber,
-    //       },
-    //       data: {
-    //         // tslint:disable-next-line:no-null-keyword
-    //         showTimeId: null,
-    //         paymentStatus: PaymentStatus.CANCELED,
-    //         referenceNumber: referenceNumber,
-    //         paymentMethod,
-    //       },
-    //     });
-    //   }
-    //   return res.end();
-    // } catch (error) {
-    //   return apiErrorHandler(error, req, res, 'Error confirming payment');
-    // }
+          await sendMessage(eventTicket.userId, msg);
+
+          // Send message to telegram bot
+          // if(eventTicket.chatid)
+          if (eventTicket.chatid) {
+            const tickets_on_seats = eventTicket.TicketsOnSeats;
+            sendToBot(eventTicket.chatid, tickets_on_seats, msg);
+          }
+          // Notify the telegram bot server
+          // const io: Server = req.app.get('io');
+          // const ticketNotificationNamespace = io.of('/ticket-notification');
+          // ticketNotificationNamespace.emit(
+          //   'onTicketPaymentComplete',
+          //   updatedTicket
+          // );
+        }
+      } else if (status == 'CANCELED') {
+        // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING
+        scheduler.removeById(referenceNumber);
+        await prisma.eventTicket.update({
+          where: {
+            id: orderId,
+          },
+          data: {
+            // tslint:disable-next-line:no-null-keyword
+            showTimeId: null,
+            paymentStatus: PaymentStatus.CANCELLED,
+            referenceNumber: referenceNumber,
+            paymentMethod,
+          },
+        });
+      }
+      return res.end();
+    } catch (error) {
+      return apiErrorHandler(error, req, res, 'Error confirming payment');
+    }
   }
 
   static async GenerateReference({
