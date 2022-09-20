@@ -10,7 +10,7 @@ import {
   addCinemaHallSchema,
   CinemaHallValidator,
 } from '../validators/cinemaHallValidator';
-import needle from 'needle';
+
 
 import {
   PaymentStatus,
@@ -174,100 +174,100 @@ class CinemaHallRoutes {
       //   );
     });
 
-    this.router.post('/callback', (req, res, next) => {
-      console.log('***Arifpay called with body *** ', req.body);
-      needle.get(
-        `${'frappeUrl'}/api/resource/Order/${req.body.nonce}`,
-        (orderErr, orderRes, orderBody) => {
-          if (orderErr) {
-            console.log(
-              'Payment callback for order ' +
-                req.body.nonce +
-                ' has no order in database'
-            );
-            console.log('Get order error ', orderErr);
-            return res.status(200).json({ error: orderErr });
-          } else {
-            needle.get(
-              `https://gateway.arifpay.net/v0/sandbox/checkout/session/${orderBody.data.session_id}`,
-              {
-                headers: {
-                  'x-arifpay-key': '5tWdaIuiYnn7a3FxGJwaoRdSkvzqUGBM',
-                },
-              },
-              (arifErr, arifRes, arifBody) => {
-                if (arifErr) {
-                  console.log(
-                    "Arif callback called but we couldn't double check the session ",
-                    arifErr
-                  );
-                  return res.status(200).json({ error: arifErr });
-                } else {
-                  console.log(
-                    'Got session check result from arif pay: ',
-                    arifBody
-                  );
-                  if (arifBody.data.totalAmount >= orderBody.data.grand) {
-                    let status;
-                    switch (arifBody.data.transaction.transactionStatus) {
-                      case 'CANCELLED':
-                        status = 'Cancelled';
-                        break;
-                      case 'FAILED':
-                        status = 'Failed';
-                        break;
-                      case 'EXPIRED':
-                        status = 'Expired';
-                        break;
-                      case 'SUCCESS':
-                        status = 'Complete';
-                        break;
-                      case 'PENDING':
-                        status = 'Pending';
-                        break;
-                      default:
-                        console.log(
-                          'Arifpay payment status not from the expected enum'
-                        );
-                        status = 'Initiated';
-                    }
-                    needle.put(
-                      `${'frappeUrl'}/api/resource/Order/${req.body.nonce}`,
-                      {
-                        payment_status: status,
-                      },
-                      { json: true },
-                      (err, ress, body) => {
-                        if (err) {
-                          console.log(
-                            'Error while putting new payment status: ',
-                            err
-                          );
-                          res.status(200).json({ error: err });
-                        } else {
-                          console.log('Put status ', status, ' body ', body);
-                          res.status(200).json(body);
-                        }
-                      }
-                    );
-                  } else {
-                    console.log(
-                      'Arifpay totalAmount and order grand total is not equal: ',
-                      arifBody.data.totalAmount,
-                      ', ',
-                      orderBody.data.grand
-                    );
-                    res
-                      .status(200)
-                      .json({ error: 'User payed the wrong amount' });
-                  }
-                }
-              }
-            );
-          }
-        }
-      );
-    });
+    // this.router.post('/callback', (req, res, next) => {
+    //   console.log('***Arifpay called with body *** ', req.body);
+    //   needle.get(
+    //     `${'frappeUrl'}/api/resource/Order/${req.body.nonce}`,
+    //     (orderErr, orderRes, orderBody) => {
+    //       if (orderErr) {
+    //         console.log(
+    //           'Payment callback for order ' +
+    //             req.body.nonce +
+    //             ' has no order in database'
+    //         );
+    //         console.log('Get order error ', orderErr);
+    //         return res.status(200).json({ error: orderErr });
+    //       } else {
+    //         needle.get(
+    //           `https://gateway.arifpay.net/v0/sandbox/checkout/session/${orderBody.data.session_id}`,
+    //           {
+    //             headers: {
+    //               'x-arifpay-key': '5tWdaIuiYnn7a3FxGJwaoRdSkvzqUGBM',
+    //             },
+    //           },
+    //           (arifErr, arifRes, arifBody) => {
+    //             if (arifErr) {
+    //               console.log(
+    //                 "Arif callback called but we couldn't double check the session ",
+    //                 arifErr
+    //               );
+    //               return res.status(200).json({ error: arifErr });
+    //             } else {
+    //               console.log(
+    //                 'Got session check result from arif pay: ',
+    //                 arifBody
+    //               );
+    //               if (arifBody.data.totalAmount >= orderBody.data.grand) {
+    //                 let status;
+    //                 switch (arifBody.data.transaction.transactionStatus) {
+    //                   case 'CANCELLED':
+    //                     status = 'Cancelled';
+    //                     break;
+    //                   case 'FAILED':
+    //                     status = 'Failed';
+    //                     break;
+    //                   case 'EXPIRED':
+    //                     status = 'Expired';
+    //                     break;
+    //                   case 'SUCCESS':
+    //                     status = 'Complete';
+    //                     break;
+    //                   case 'PENDING':
+    //                     status = 'Pending';
+    //                     break;
+    //                   default:
+    //                     console.log(
+    //                       'Arifpay payment status not from the expected enum'
+    //                     );
+    //                     status = 'Initiated';
+    //                 }
+    //                 needle.put(
+    //                   `${'frappeUrl'}/api/resource/Order/${req.body.nonce}`,
+    //                   {
+    //                     payment_status: status,
+    //                   },
+    //                   { json: true },
+    //                   (err, ress, body) => {
+    //                     if (err) {
+    //                       console.log(
+    //                         'Error while putting new payment status: ',
+    //                         err
+    //                       );
+    //                       res.status(200).json({ error: err });
+    //                     } else {
+    //                       console.log('Put status ', status, ' body ', body);
+    //                       res.status(200).json(body);
+    //                     }
+    //                   }
+    //                 );
+    //               } else {
+    //                 console.log(
+    //                   'Arifpay totalAmount and order grand total is not equal: ',
+    //                   arifBody.data.totalAmount,
+    //                   ', ',
+    //                   orderBody.data.grand
+    //                 );
+    //                 res
+    //                   .status(200)
+    //                   .json({ error: 'User payed the wrong amount' });
+    //               }
+    //             }
+    //           }
+    //         );
+    //       }
+    //     }
+    //   );
+    // });
   }
 }
 
