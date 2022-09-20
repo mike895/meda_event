@@ -20,7 +20,7 @@ import {
 } from '@prisma/client';
 import prisma from '../db/db';
 
-class CinemaHallRoutes {
+class ArifPayRoutes {
   router = Router();
   cinemaHallController = new CinemaHallController();
   cinemaHallValidator = new CinemaHallValidator();
@@ -271,4 +271,4 @@ class CinemaHallRoutes {
   }
 }
 
-export default new CinemaHallRoutes().router;
+export default new ArifPayRoutes().router;

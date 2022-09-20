@@ -15,7 +15,7 @@ perf-logs
 v8.log
 *.js
 *.js.map
-
+.env
 # Runtime data
 pids
 *.pid
