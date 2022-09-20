@@ -10,6 +10,7 @@ import {
   Radio,
   Button,
 } from "antd";
+import axios from "axios";
 import dayjs from "dayjs";
 import { relative } from "path";
 import React, { useEffect, useLayoutEffect, useState } from "react";
@@ -65,22 +66,40 @@ export default function ChooseSeat() {
   const navigate = useNavigate();
 
   //amount error
-  async function buySeats(price: any) {
+  async function createTicket(price: any) {
     let res = await buyTicket({
       showTimeId: st,
       seats: selectedSeats.map((e: any) => e.id),
       amount: 1,
     });
+    // console.log(res);
 
-    if (res.error == undefined) {
-      //Success
-      window.open(res.href, "_blank");
-      navigate({
-        pathname: `/tickets/${res.id}`,
+    const PayInfo = {
+      id: res.id,
+      quantity: res.amount,
+      name: `${res.user.firstName + " " + res.user.lastName}`,
+      price,
+    };
+
+    payWithArifPay(PayInfo, res.id);
+  }
+
+  async function payWithArifPay(data: any, ticketId: string) {
+    // todo: auth token
+    axios
+      .post(`http://localhost:3000/api/arifpay/create`, data)
+      .then((res) => {
+        console.log(res.data.data.paymentUrl);
+        window.open(res.data.data.paymentUrl, "_blank");
+        navigate({
+          pathname: `/tickets/${ticketId}`,
+        });
+        return;
+      })
+      .catch((err) => {
+        message.error("Unknown error");
+        console.log(err);
       });
-    } else {
-      message.error(res.error || "Unknown error");
-    }
   }
 
   useEffect(() => {
@@ -156,7 +175,7 @@ export default function ChooseSeat() {
     } else {
       setBuyLoading(true);
       try {
-        await buySeats(totalPrice);
+        await createTicket(totalPrice);
       } catch (error) {
         console.log(error);
 
@@ -221,6 +240,7 @@ export default function ChooseSeat() {
                     height: 50,
                     marginRight: 5,
                   }}
+                  alt=""
                 />
                 <Breadcrumb
                   separator={">"}
