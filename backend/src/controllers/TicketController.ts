@@ -341,7 +341,7 @@ export default class TicketController {
         return res
           .status(409)
           .json({ error: 'This ticket has already been redeemed!' });
-      if (isAlreadyReddemed.eventTicket.paymentStatus != PaymentStatus.PAYED)
+      if (isAlreadyReddemed.eventTicket.paymentStatus != PaymentStatus.SUCCESS)
         return res.status(409).json({ error: 'Payment not confirmed!' });
       const redeemedTicket = await prisma.ticketsOnSeats.update({
         where: {
@@ -727,7 +727,7 @@ export default class TicketController {
     res: Response,
     next: NextFunction
   ) {
-    
+
     const orderId = req.body.nonce;
     const status = req.body.transaction.transactionStatus;
     const referenceNumber = req.body.nonce;
