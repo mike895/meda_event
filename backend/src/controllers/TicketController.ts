@@ -122,7 +122,6 @@ export default class TicketController {
         data: {
           id: ticketId,
           userId: (req.user as any).phoneNumber,
-          // referenceNumber: billReferenceNumber,
           referenceNumber: '',
           showTimeId,
           amount: amount,
@@ -163,34 +162,35 @@ export default class TicketController {
         .json({ ...createdEventTicket, user: req.user, href: 'asdjl' });
       // ! END
       // ? The seats are "reserved" now and the code below will remove the reservation after x amount of time after the ticket was bought
-      const task = new AsyncTask(
-        'task to release seats reserved',
-        async () => {
-          console.log('Cleanse the seats...');
-          await prisma.eventTicket.update({
-            where: {
-              id: createdEventTicket.id,
-            },
-            data: {
-              // tslint:disable-next-line:no-null-keyword
-              showTimeId: null,
-              paymentStatus: PaymentStatus.CANCELED,
-            },
-          });
-          scheduler.removeById(createdEventTicket.referenceNumber);
-        },
-        (err: Error) => {
-          /* handle error here */
-          // Don't deadlock please
-          scheduler.removeById(createdEventTicket.referenceNumber);
-        }
-      );
-      const job = new SimpleIntervalJob(
-        { seconds: 600 },
-        task
-        // billReferenceNumber
-      );
-      scheduler.addSimpleIntervalJob(job);
+      // const task = new AsyncTask(
+      //   'task to release seats reserved',
+       
+      //   async () => {
+      //     console.log('Cleanse the seats...');
+      //     await prisma.eventTicket.update({
+      //       where: {
+      //         id: createdEventTicket.id,
+      //       },
+      //       data: {
+      //         // tslint:disable-next-line:no-null-keyword
+      //         showTimeId: null,
+      //         paymentStatus: PaymentStatus.CANCELED,
+      //       },
+      //     });
+      //     scheduler.removeById(createdEventTicket.referenceNumber);
+      //   },
+      //   (err: Error) => {
+      //     /* handle error here */
+      //     // Don't deadlock please
+      //     scheduler.removeById(createdEventTicket.referenceNumber);
+      //   }
+      // );
+      // const job = new SimpleIntervalJob(
+      //   { seconds: 600 },
+      //   task
+      //   // billReferenceNumber
+      // );
+      // scheduler.addSimpleIntervalJob(job);
     } catch (error) {
       return apiErrorHandler(error, req, res, "Couldn't create ticket.");
     }
