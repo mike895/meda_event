@@ -87,7 +87,10 @@ export default function ChooseSeat() {
   async function payWithArifPay(data: any, ticketId: string) {
     // todo: auth token
     axios
-      .post(`http://localhost:3000/api/arifpay/create`, data)
+      .post(
+        `${process.env.REACT_APP_BASE_URL_BACKEND}/api/arifpay/create`,
+        data
+      )
       .then((res) => {
         console.log(res.data.data.paymentUrl);
         window.open(res.data.data.paymentUrl, "_blank");
@@ -97,6 +100,7 @@ export default function ChooseSeat() {
         return;
       })
       .catch((err) => {
+        console.log(err)
         message.error("Unknown error");
         console.log(err);
       });
