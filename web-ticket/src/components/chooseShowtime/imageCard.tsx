@@ -67,7 +67,7 @@ function ImageCard( {schedule}: any) {
             color: "#F56A05",
           }}
           onClick={() => {
-            if (schedule.event.trailerLink == null)
+            if (schedule.event.trailerLink === null)
               return message.info(
                 "A trailer is not available right now for this movie"
               );

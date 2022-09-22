@@ -129,7 +129,7 @@ function Register() {
             if (res.error) {
               return message.error(res.error);
             }
-            if (res.isNewUser == false) {
+            if (res.isNewUser === false) {
               setStep(0);
               setOtp("");
               return message.error(

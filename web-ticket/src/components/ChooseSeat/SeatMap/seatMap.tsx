@@ -12,10 +12,11 @@ function SeatMap({ seatMap }: Props) {
   const largestSeatMapLength = seatMap.reduce(function (p: any, v: any) {
     return p.seats.length > v.seats.length ? p : v;
   }).seats.length;
+
   const getScreenLen = () => {
     let sum = 0;
     seatMap.forEach((e: any) => {
-      if (e.columnType == "PADDING") {
+      if (e.columnType === "PADDING") {
         // Padding width
         sum += 45;
       } else {
@@ -25,57 +26,62 @@ function SeatMap({ seatMap }: Props) {
     });
     return sum;
   };
+
   return (
     <div
+      className="cool-scroll"
       style={{
-        padding: "15px 0px",
-        display: "flex",
+        padding: "15px 20px",
+        // display: "flex",
         width: "100%",
-        alignItems: "flex-end",
+        // alignItems: "center",
+        // justifyContent: "center",
+        // flexDirection: "column",
+        overflowX: "scroll",
       }}
     >
       <div
         style={{
-          height: "100%",
-          justifyContent: "flex-end",
-          flexDirection: "column-reverse",
-          display: "flex",
-          marginBottom: 160,
-        }}
-        className={styles["scroll-offset"]}
-      >
-        {[...Array(largestSeatMapLength)].map((e, i) => {
-          return (
-            <div
-              key={`keyp ${i}`}
-              style={{
-                margin: 3,
-                width: 35,
-                height: 35,
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                display: "flex",
-                textAlign: "center",
-                color: "grey",
-              }}
-            >
-              {String.fromCharCode(65 + i)}
-            </div>
-          );
-        })}
-      </div>
-      <div
-        className="cool-scroll"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
           width: "100%",
-
-          overflowX: "auto",
+          // padding: "15px 0px",
+          display: "flex",
+          // alignItems: "flex-end",
+          // justifyContent: "center",
+          // backgroundColor:'red',
+          paddingRight: "30px",
         }}
       >
+        <div
+          style={{
+            height: "100%",
+            // justifyContent: "flex-end",
+            flexDirection: "column-reverse",
+            display: "flex",
+            // marginBottom: 160,
+          }}
+          // className={styles["scroll-offset"]}
+        >
+          {[...Array(largestSeatMapLength)].map((e, i) => {
+            return (
+              <div
+                key={`keyp ${i}`}
+                style={{
+                  margin: 3,
+                  width: 35,
+                  height: 35,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  display: "flex",
+                  textAlign: "center",
+                  color: "grey",
+                }}
+              >
+                {String.fromCharCode(65 + i)}
+              </div>
+            );
+          })}
+        </div>
         <div
           style={{
             display: "flex",
@@ -86,18 +92,18 @@ function SeatMap({ seatMap }: Props) {
           }}
         >
           {seatMap.map((e: any) => {
-            return e.columnType == "PADDING" ? (
+            return e.columnType === "PADDING" ? (
               <div
                 key={`P ${e.columnName}`}
                 style={{
                   flexDirection: "column",
                   width: "45px",
-                  backgroundColor: "red",
+                  // backgroundColor: "red",
                   display: "flex",
                   flexShrink: 0,
                 }}
               ></div>
-            ) : e.columnType == "SEATMAP" ? (
+            ) : e.columnType === "SEATMAP" ? (
               <div
                 key={`R ${e.columnName}`}
                 style={{
@@ -114,10 +120,23 @@ function SeatMap({ seatMap }: Props) {
             ) : null;
           })}
         </div>
+      </div>
+
+      <div
+        className="cool-scroll"
+        // style={{
+        // display: "flex",
+        // flexDirection: "column",
+        // justifyContent: "flex-end",
+        // alignItems: "center",
+        // overflowX: "auto",
+        // width: "100%",
+        // }}
+      >
         <div
           style={{
             width: getScreenLen() - 30,
-            height: 40,
+            height: 35,
             marginTop: 30,
             marginLeft: 15,
             marginRight: 15,
@@ -128,18 +147,18 @@ function SeatMap({ seatMap }: Props) {
             justifyContent: "center",
             alignItems: "center",
             fontSize: "16px",
-            color: "grey",
+            color: "black",
           }}
           className={styles["screen"]}
         >
-          Screen
+          Stage
         </div>
         <Space
           size={"large"}
           style={{
             display: "flex",
             justifyContent: "center",
-            width: getScreenLen() -30,
+            width: getScreenLen() - 30,
             marginLeft: 15,
             marginRight: 15,
             marginBottom: 10,

@@ -74,7 +74,7 @@ export default function MovieCard({
                         color: "#F56A05",
                       }}
                       onClick={() => {
-                        if (trailerLink == null)
+                        if (trailerLink === null)
                           return message.info(
                             "A trailer is not available right now for this movie"
                           );

@@ -126,7 +126,7 @@ function Login() {
             if (res.error) {
               return message.error(res.error);
             }
-            if (res.isNewUser == true) {
+            if (res.isNewUser === true) {
               setStep(0);
               return message.error("You need to register first");
             }

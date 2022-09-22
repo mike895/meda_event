@@ -211,7 +211,7 @@ function TicketSlider({
                     textAlign: "center",
                   }}
                 >
-                  {e.seat.seatType == "VIP" ? "[VIP]" : null}{" "}
+                  {e.seat.seatType === "VIP" ? "[VIP]" : null}{" "}
                   {ticket.showTime?.CinemaMovieSchedule?.movie.title}
                 </div>
                 <div

@@ -58,7 +58,7 @@ function AuthModal() {
                 width: 100,
                 fontWeight: "bold",
                 borderRadius: 10,
-                color: props.activeTab == "REGISTER" ? colors.PRIMARY : undefined,
+                color: props.activeTab === "REGISTER" ? colors.PRIMARY : undefined,
               }}
               onClick={() =>
                 toggleAuthModal(open, { ...props, activeTab: "LOGIN" })
@@ -67,7 +67,7 @@ function AuthModal() {
               Login
             </Button>
             <Button
-              type={props.activeTab == "REGISTER" ? "primary" : "default"}
+              type={props.activeTab === "REGISTER" ? "primary" : "default"}
               //   shape="round"
               style={{
                 width: 100,

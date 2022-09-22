@@ -71,7 +71,7 @@ function Header() {
           </div>
         </div>
       ) : null}
-      {false && loading == false ? (
+      {false && loading === false ? (
         <div
           style={{
             display: "flex",

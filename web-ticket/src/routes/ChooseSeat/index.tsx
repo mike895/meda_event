@@ -55,6 +55,7 @@ export default function ChooseSeat() {
       },
       onSuccessCallback: (data: any) => {
         setShowtime(data);
+        console.log(data);
       },
     });
   }
@@ -100,22 +101,22 @@ export default function ChooseSeat() {
         return;
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         message.error("Unknown error");
         console.log(err);
       });
   }
 
   useEffect(() => {
-    if (currentUser == null && loading == false) {
+    if (currentUser === null && loading === false) {
       toggleAuthModal(true, {
         ...authModalProps,
         phoneNumber: query.get("phoneNumber"),
       });
     } else if (
       currentUser != null &&
-      loading == false &&
-      query.get("ref") == "tbot" &&
+      loading === false &&
+      query.get("ref") === "tbot" &&
       currentUser.phoneNumber != query.get("phoneNumber")
     ) {
       toggleAuthModal(true, {
@@ -128,14 +129,14 @@ export default function ChooseSeat() {
   }, [currentUser, loading]);
 
   function isSeatSelected(seat: any) {
-    return selectedSeats.find((e: any) => e.id == seat.id) ? true : false;
+    return selectedSeats.find((e: any) => e.id === seat.id) ? true : false;
   }
 
   const toggleSelectSeat = (seat: any) => {
     if (isSeatSelected(seat)) {
       // Remove seat
       let valueList = [...selectedSeats];
-      const seatToBeRemovedIdx = valueList.findIndex((e) => e.id == seat.id);
+      const seatToBeRemovedIdx = valueList.findIndex((e) => e.id === seat.id);
       valueList.splice(seatToBeRemovedIdx, 1);
       setSelectedSeats(valueList);
     } else {
@@ -150,7 +151,7 @@ export default function ChooseSeat() {
   useLayoutEffect(() => {
     var sum = 0;
     selectedSeats.forEach((e: any) => {
-      if (e.seatType == SeatType.Regular) {
+      if (e.seatType === SeatType.Regular) {
         sum += showtime?.EventSchedule.regularTicketPrice ?? 0;
       } else {
         // sum += showtime?.CinemaMovieSchedule.vipTicketPrice ?? 0;
@@ -161,16 +162,16 @@ export default function ChooseSeat() {
   }, [selectedSeats]);
 
   const payAction = async () => {
-    if (selectedSeats.length == 0) {
+    if (selectedSeats.length === 0) {
       message.error("You have not selected your seats");
       return;
     }
     if (
-      loading == false &&
+      loading === false &&
       ((currentUser != null &&
-        query.get("ref") == "tbot" &&
+        query.get("ref") === "tbot" &&
         currentUser.phoneNumber != query.get("phoneNumber")) ||
-        currentUser == null)
+        currentUser === null)
     ) {
       toggleAuthModal(true, {
         ...authModalProps,
@@ -198,6 +199,7 @@ export default function ChooseSeat() {
           onCloseModal={setModalVisible}
           data={showtime}
           paymentInfo={{
+            user: currentUser,
             totalPrice: totalPrice,
             selectedSeats: selectedSeats.length,
           }}
@@ -208,7 +210,8 @@ export default function ChooseSeat() {
       <div
         style={{
           flexDirection: "column",
-          display: "flex",
+          // display: "flex",
+          width: "100%",
           height: "100%",
           position: "relative",
           zIndex: 1,
@@ -228,12 +231,13 @@ export default function ChooseSeat() {
             <ChooseSeatSkeleton />
           ) : (
             <div
-              className="container"
               style={{
-                margin: "15px 0px",
                 flexDirection: "column",
-                display: "flex",
                 flexGrow: 1,
+                paddingLeft: "30px",
+                maxWidth: "1280px",
+                margin: "auto",
+                marginTop: "20px",
               }}
             >
               <Row align="middle">
@@ -267,8 +271,7 @@ export default function ChooseSeat() {
                   </Breadcrumb.Item>
                 </Breadcrumb>
               </Row>
-              {/* halllllllllllllll */}
-              <Row className={styles["content-container"]}>
+              <Row className={styles["seat-selection-container"]}>
                 <ShowtimeDetail
                   showtime={showtime}
                   currentHall={currentHall}
@@ -277,22 +280,30 @@ export default function ChooseSeat() {
               </Row>
 
               <Row
-                className={styles["content-container"]}
-                style={{ margin: "25px 0px" }}
+                // className={styles["seat-selection-container"]}
+
+                style={{
+                  margin: "25px 0px",
+                  display: "flex",
+                  overflow:"hidden",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                <Typography.Title level={4}>Seat selection</Typography.Title>
+                <Typography.Title level={4}>Select seat</Typography.Title>
                 {showtime != null ? (
                   <SeatMap
                     seatMap={
                       showtime.eventHall[
-                        currentHall == SeatType.Regular ? "regularSeats" : "" //"vipSeats"
+                        currentHall === SeatType.Regular ? "regularSeats" : "" //"vipSeats"
                       ]
                     }
                   />
                 ) : null}
               </Row>
 
-              <Row className={styles["content-container"]}>
+              <Row className={styles["content-container"]} style={{}}>
                 <SeatsDetail showtime={showtime} />
               </Row>
               <Row
@@ -306,6 +317,7 @@ export default function ChooseSeat() {
                       backgroundColor: colors.PRIMARY,
                       padding: "10px 15px",
                       borderRadius: 5,
+                      marginBottom: "50px",
                     }}
                     justify="space-between"
                     align="middle"
@@ -326,11 +338,10 @@ export default function ChooseSeat() {
                         fontSize: 16,
                         minWidth: 100,
                         padding: 0,
-                        marginLeft: 10,
                       }}
                       loading={buyLoading}
                       onClick={() => {
-                        if (selectedSeats.length == 0) {
+                        if (selectedSeats.length === 0) {
                           message.error("You have not selected your seats");
                           return;
                         } else {

@@ -119,7 +119,7 @@ function MyTickets() {
                               ).format("MMM DD, YYYY")} | ${
                                 item?.TicketsOnSeats?.length
                               } ${
-                                item?.TicketsOnSeats?.length == 1
+                                item?.TicketsOnSeats?.length === 1
                                   ? "Ticket"
                                   : "Tickets"
                               } | ${item?.amount} Birr`}

@@ -68,7 +68,7 @@ export function AuthProvider({ children }: any) {
   function toggleAuthModal(status: boolean, options: any | null) {
     setAuthModalProps((prevState) => ({
       open: status,
-      props: options == null ? prevState.props : options,
+      props: options === null ? prevState.props : options,
     }));
   }
   useEffect(() => {

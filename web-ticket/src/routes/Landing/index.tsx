@@ -76,7 +76,7 @@ function Landing() {
               return (
                 <div
                   className={
-                    i == index
+                    i === index
                       ? styles["calender-active"]
                       : styles["calender-not-active"]
                   }

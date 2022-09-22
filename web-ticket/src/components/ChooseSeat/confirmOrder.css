@@ -9,11 +9,14 @@
 }
 .details {
   background-color: white;
-  width: 50%;
-  height: 500px;
+  width: 30%;
+  max-width: 400px;
+  height: fit-content;
+  overflow: hidden;
   border-radius: 10px;
   margin-top: 100px;
-  padding: 2%;
+  /* padding-top: 2%; */
+  /* padding-inline: 1%; */
   position: relative;
 }
 
@@ -24,6 +27,7 @@
   border-radius: 5px;
   margin: auto;
   margin-bottom: 30px;
+  margin-top: 10px;
 }
 
 .detail-row {
@@ -34,14 +38,17 @@
 }
 
 .detail-head {
-  font-weight: 600;
+  font-weight: bold;
   text-align: end;
   flex: 1;
+  margin: 0;
   margin-right: 10px;
   font-size: medium;
 }
 
 .detail-value {
+  margin: 0;
+  margin-block: 3px;
   font-weight: 600;
   color: rgb(245, 106, 5);
   margin-left: 10px;
@@ -49,22 +56,49 @@
   font-size: medium;
 }
 
+.address-link:hover {
+  text-decoration: underline;
+}
+.address-link {
+  color: rgb(75, 75, 255);
+}
 .confirm-button {
-  margin: auto;
+  /* margin: auto; */
+  /* margin-top: 20px; */
   display: block;
-  margin-top: 20px;
-  width: 20%;
-  background-color: rgb(245, 106, 5);
+  width: auto;
+  background-color: #ffec00;
   height: 35px;
-  color: white;
+  color: black;
   font-weight: 600;
   font-size: medium;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.confirm-button:hover,
+.payButton:hover {
+  transition: 0.4s ease;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.payButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8812a;
+  padding-block: 10px;
+  padding-inline: 10px;
+  margin-inline: 20px;
+  margin-top: 20px;
+  gap: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.4s ease;
+}
+
+/* .confirm-button:hover, */
 .close-button:hover {
   background-color: rgb(235, 90, 0);
 }
@@ -84,6 +118,12 @@
   cursor: pointer;
 }
 
+.bottom-summary {
+  background-color: rgb(231, 242, 255);
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 50px;
+}
 @media (max-width: 1000px) {
   .details {
     width: 80%;

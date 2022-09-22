@@ -68,7 +68,7 @@ function Hohe() {
     <>
       <Header2 />
       <div className="container">
-        {user.length == 0 ? (
+        {user.length === 0 ? (
           <SignIn setRegistered={setRegistered} setUser={setUser} />
         ) : (
           <Ticket user={user} setUser={setUser} />

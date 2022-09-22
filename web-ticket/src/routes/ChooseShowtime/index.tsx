@@ -33,6 +33,7 @@ import dayjs from "dayjs";
 import MoviesPreviewScroll from "../../components/global/moviesPreviewScroll";
 import ChooseShowtimeSkeleton from "./chooseShowtimeSkeleton";
 import { useAuth } from "../../context/authContext";
+
 export default function ChooseShowtime() {
   const { Meta } = Card;
   let { id } = useParams();
@@ -90,6 +91,7 @@ export default function ChooseShowtime() {
                     height: 50,
                     marginRight: 5,
                   }}
+                  alt=""
                 />
                 <Breadcrumb
                   separator={">"}
@@ -178,7 +180,7 @@ export default function ChooseShowtime() {
                             style={{ width: 300, height: 750 }}
                             cover={
                               <img
-                                alt="Speaker Image"
+                                alt="Speaker_image"
                                 src={`${process.env.REACT_APP_BASE_URL_BACKEND}/images/${e.posterImg}`}
                               />
                             }
@@ -251,11 +253,11 @@ export default function ChooseShowtime() {
                               key={e.id}
                               value={e.id}
                               select={setSelectedShowtime}
-                              selected={e.id == selectedShowtime}
+                              selected={e.id === selectedShowtime}
                               timeCinema={`${dayjs(e.time).format("h:mm A")} (${
                                 e.eventHall.name
                               })`}
-                              // movieType={e.movieType == "THREE" ? "3D" : "2D"}
+                              // movieType={e.movieType === "THREE" ? "3D" : "2D"}
                               disabled={!e.active}
                             />
                           );
@@ -271,7 +273,7 @@ export default function ChooseShowtime() {
                     >
                       <Button
                         type="primary"
-                        disabled={selectedShowtime == null}
+                        disabled={selectedShowtime === null}
                         onClick={() => {
                           if (!currentUser)
                             return message.error(

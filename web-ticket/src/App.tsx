@@ -10,6 +10,7 @@ import Tickets from "./routes/Tickets";
 import Custom404 from "./routes/404";
 import MyTickets from "./routes/myTickets";
 import Hohe from "./routes/hohe";
+import Chebelew from "./routes/Chebelew";
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
       <BrowserRouter basename="/">
         <Routes>
           <Route path="*" element={<Custom404 />} />
-          <Route path="/" element={<Landing />}></Route>
+          <Route path="/" element={<Chebelew />}></Route>
+          {/* <Route path="/" element={<Landing />}></Route> */}
           <Route path="/schedule/:id" element={<ChooseShowtime />}></Route>
           <Route
             path="/bot/:chatid/:scheduleId/:showTimeId/:token"

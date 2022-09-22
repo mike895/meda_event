@@ -71,16 +71,16 @@ export default function ChooseSeat() {
     });
   }
   const payAction = async () => {
-    if (selectedSeats.length == 0) {
+    if (selectedSeats.length === 0) {
       message.error("You have not selected your seats");
       return;
     }
     if (
-      loading == false &&
+      loading === false &&
       ((currentUser != null &&
-        query.get("ref") == "tbot" &&
+        query.get("ref") === "tbot" &&
         currentUser.phoneNumber != query.get("phoneNumber")) ||
-        currentUser == null)
+        currentUser === null)
     ) {
       toggleAuthModal(true, {
         ...authModalProps,
@@ -120,7 +120,7 @@ export default function ChooseSeat() {
       amount: 1,
       chatid,
     });
-    if (res.error == undefined) {
+    if (res.error === undefined) {
       //Success
       window.open(res.href, "_blank");
       navigate({
@@ -132,13 +132,13 @@ export default function ChooseSeat() {
   }
 
   function isSeatSelected(seat: any) {
-    return selectedSeats.find((e: any) => e.id == seat.id) ? true : false;
+    return selectedSeats.find((e: any) => e.id === seat.id) ? true : false;
   }
   const toggleSelectSeat = (seat: any) => {
     if (isSeatSelected(seat)) {
       // Remove seat
       let valueList = [...selectedSeats];
-      const seatToBeRemovedIdx = valueList.findIndex((e) => e.id == seat.id);
+      const seatToBeRemovedIdx = valueList.findIndex((e) => e.id === seat.id);
       valueList.splice(seatToBeRemovedIdx, 1);
       setSelectedSeats(valueList);
     } else {
@@ -152,7 +152,7 @@ export default function ChooseSeat() {
   useLayoutEffect(() => {
     var sum = 0;
     selectedSeats.forEach((e: any) => {
-      if (e.seatType == SeatType.Regular) {
+      if (e.seatType === SeatType.Regular) {
         sum += showtime?.EventSchedule.regularTicketPrice ?? 0;
       } else {
         // sum += showtime?.CinemaMovieSchedule.vipTicketPrice ?? 0;
@@ -258,7 +258,7 @@ export default function ChooseSeat() {
                     <SeatMap
                       seatMap={
                         showtime.eventHall[
-                          currentHall == SeatType.Regular ? "regularSeats" : "" //"vipSeats"
+                          currentHall === SeatType.Regular ? "regularSeats" : "" //"vipSeats"
                         ]
                       }
                     />
@@ -303,7 +303,7 @@ export default function ChooseSeat() {
                         }}
                         loading={buyLoading}
                         onClick={() => {
-                          if (selectedSeats.length == 0) {
+                          if (selectedSeats.length === 0) {
                             message.error("You have not selected your seats");
                             return;
                           } else {

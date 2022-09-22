@@ -51,7 +51,7 @@ export default function Tickets() {
   }
 
   function renderStatusIcon() {
-    if (ticket?.paymentStatus == "PAYED") {
+    if (ticket?.paymentStatus === "SUCCESS") {
       return (
         <CheckCircleTwoTone
           size={70}
@@ -59,7 +59,7 @@ export default function Tickets() {
           style={{ fontSize: 60 }}
         />
       );
-    } else if (ticket?.paymentStatus == "PENDING") {
+    } else if (ticket?.paymentStatus === "PENDING") {
       return (
         <ClockCircleTwoTone
           size={70}
@@ -67,7 +67,7 @@ export default function Tickets() {
           style={{ fontSize: 60 }}
         />
       );
-    } else if (ticket?.paymentStatus == "CANCELED") {
+    } else if (ticket?.paymentStatus === "CANCELLED") {
       return (
         <CloseCircleTwoTone
           size={70}
@@ -124,7 +124,7 @@ export default function Tickets() {
     loadData();
   }, []);
 
-  const paid = ticket?.paymentStatus == "PAYED" ? true : false;
+  const paid = ticket?.paymentStatus === "PAYED" ? true : false;
 
   return (
     <>
@@ -223,7 +223,7 @@ export default function Tickets() {
                         <div ref={printRef.current}>
                           <TicketWarning />
                         </div>
-                        {ticket?.paymentStatus == "PAYED" ? (
+                        {ticket?.paymentStatus === "PAYED" ? (
                           <div className="action-buttons-wrapper">
                             <ActionButton
                               title={"Copy"}
@@ -298,7 +298,7 @@ export default function Tickets() {
                 </div>
               </Col>
 
-              {ticket?.paymentStatus == "PAYED" && ticket?.showTime != null ? (
+              {ticket?.paymentStatus === "PAYED" && ticket?.showTime != null ? (
                 <TicketSlider
                   ticket={ticket}
                   oneLoading={oneLoading}
