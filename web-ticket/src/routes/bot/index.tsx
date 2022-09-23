@@ -87,6 +87,9 @@ export default function ChooseSeat() {
       price,
     };
 
+    console.log(PayInfo);
+    // return;
+
     payWithArifPay(PayInfo, res.id);
   }
 
@@ -98,7 +101,6 @@ export default function ChooseSeat() {
         data
       )
       .then((res) => {
-        console.log(res.data.data.paymentUrl);
         window.open(res.data.data.paymentUrl, "_blank");
         navigate({
           pathname: `/tickets/${ticketId}`,
@@ -108,7 +110,6 @@ export default function ChooseSeat() {
       .catch((err) => {
         console.log(err);
         message.error("Unknown error");
-        console.log(err);
       });
   }
   const payAction = async () => {
@@ -143,7 +144,6 @@ export default function ChooseSeat() {
     loadData();
   }, []);
 
-  console.log(token);
   useEffect(() => {
     if (token && !currentUser) {
       botlogin(token);

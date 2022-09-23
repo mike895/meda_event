@@ -52,7 +52,7 @@ class ArifPayRoutes {
         data: {
           cancelUrl: 'https://meda.et/cancel',
           nonce: orderId,
-          errorUrl: 'https://meda.et/tickets/${orderId}',
+          errorUrl: 'https://meda.et/tickets',
           notifyUrl: 'https://meda.et/api/ticket/arifpay-callback',
           successUrl: `https://meda.et/tickets/${orderId}`,
           paymentMethods: ['CARD', 'AWASH'],
