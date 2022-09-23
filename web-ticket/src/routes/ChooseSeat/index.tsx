@@ -17,6 +17,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import ConfirmOrder from "../../components/ChooseSeat/ConfirmOrder";
 import SeatMap from "../../components/ChooseSeat/SeatMap/seatMap";
+import SeatPreview from "../../components/ChooseSeat/SeatMap/SeatPreview";
 import SeatsDetail from "../../components/ChooseSeat/seatsDetail";
 import ShowtimeDetail from "../../components/ChooseSeat/showtimeDetail";
 import Header from "../../components/global/header";
@@ -26,6 +27,7 @@ import { useAuth } from "../../context/authContext";
 import { SeatSelectionProvider } from "../../context/seatContext";
 import useOnFetch from "../../hooks/useOnFetch";
 import useQuery from "../../hooks/useQuery";
+import "./style.css";
 import {
   baseUrl,
   buyTicket,
@@ -210,7 +212,7 @@ export default function ChooseSeat() {
       <div
         style={{
           flexDirection: "column",
-          // display: "flex",
+          display: "flex",
           width: "100%",
           height: "100%",
           position: "relative",
@@ -230,11 +232,13 @@ export default function ChooseSeat() {
           {isLoading ? (
             <ChooseSeatSkeleton />
           ) : (
-            <div
+            <Row
               style={{
                 flexDirection: "column",
                 flexGrow: 1,
-                paddingLeft: "30px",
+                // paddingLeft: "30px",
+                width: "100%",
+                paddingBlock: "20px",
                 maxWidth: "1280px",
                 margin: "auto",
                 marginTop: "20px",
@@ -284,16 +288,18 @@ export default function ChooseSeat() {
 
                 style={{
                   margin: "25px 0px",
+                  padding: "25px",
                   display: "flex",
-                  overflow:"hidden",
-                  flexDirection: "row",
+                  overflow: "hidden",
+                  flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
+                  width: "100%",
                 }}
               >
                 <Typography.Title level={4}>Select seat</Typography.Title>
                 {showtime != null ? (
-                  <SeatMap
+                  <SeatPreview
                     seatMap={
                       showtime.eventHall[
                         currentHall === SeatType.Regular ? "regularSeats" : "" //"vipSeats"
@@ -301,11 +307,12 @@ export default function ChooseSeat() {
                     }
                   />
                 ) : null}
+                <div className="screen">Stage</div>
               </Row>
 
-              <Row className={styles["content-container"]} style={{}}>
+              {/* <Row className={styles["content-container"]} style={{}}>
                 <SeatsDetail showtime={showtime} />
-              </Row>
+              </Row> */}
               <Row
                 className={styles["content-row"]}
                 style={{ flexDirection: "column" }}
@@ -355,7 +362,7 @@ export default function ChooseSeat() {
                   </Row>
                 </Row>
               </Row>
-            </div>
+            </Row>
           )}
         </SeatSelectionProvider>
       </div>

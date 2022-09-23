@@ -124,7 +124,7 @@ export default function Tickets() {
     loadData();
   }, []);
 
-  const paid = ticket?.paymentStatus === "PAYED" ? true : false;
+  const paid = ticket?.paymentStatus === "SUCCESS" ? true : false;
 
   return (
     <>
@@ -223,7 +223,7 @@ export default function Tickets() {
                         <div ref={printRef.current}>
                           <TicketWarning />
                         </div>
-                        {ticket?.paymentStatus === "PAYED" ? (
+                        {ticket?.paymentStatus === "SUCCESS" ? (
                           <div className="action-buttons-wrapper">
                             <ActionButton
                               title={"Copy"}
@@ -298,7 +298,7 @@ export default function Tickets() {
                 </div>
               </Col>
 
-              {ticket?.paymentStatus === "PAYED" && ticket?.showTime != null ? (
+              {ticket?.paymentStatus === "SUCCESS" && ticket?.showTime != null ? (
                 <TicketSlider
                   ticket={ticket}
                   oneLoading={oneLoading}

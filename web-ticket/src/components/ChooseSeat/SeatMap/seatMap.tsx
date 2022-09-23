@@ -6,6 +6,8 @@ import seatStyles from "./seat/seat.module.css";
 interface Props {
   seatMap: any;
 }
+
+
 function SeatMap({ seatMap }: Props) {
   // Get the largest seat column length
 
@@ -31,9 +33,10 @@ function SeatMap({ seatMap }: Props) {
     <div
       className="cool-scroll"
       style={{
-        padding: "15px 20px",
+        // padding: "15px 20px",
+        // backgroundColor:'red',
         // display: "flex",
-        width: "100%",
+        // width: "100%",
         // alignItems: "center",
         // justifyContent: "center",
         // flexDirection: "column",
@@ -41,17 +44,19 @@ function SeatMap({ seatMap }: Props) {
       }}
     >
       <div
-        style={{
-          width: "100%",
-          // padding: "15px 0px",
-          display: "flex",
-          // alignItems: "flex-end",
-          // justifyContent: "center",
-          // backgroundColor:'red',
-          paddingRight: "30px",
-        }}
+        style={
+          {
+            // width: "100%",
+            // padding: "15px 0px",
+            // display: "flex",
+            // alignItems: "flex-end",
+            // justifyContent: "center",
+            // backgroundColor:'red',
+            // paddingRight: "30px",
+          }
+        }
       >
-        <div
+        {/* <div
           style={{
             height: "100%",
             // justifyContent: "flex-end",
@@ -81,45 +86,8 @@ function SeatMap({ seatMap }: Props) {
               </div>
             );
           })}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-end",
-            justifyContent: "flex-start",
-            width: "100%",
-          }}
-        >
-          {seatMap.map((e: any) => {
-            return e.columnType === "PADDING" ? (
-              <div
-                key={`P ${e.columnName}`}
-                style={{
-                  flexDirection: "column",
-                  width: "45px",
-                  // backgroundColor: "red",
-                  display: "flex",
-                  flexShrink: 0,
-                }}
-              ></div>
-            ) : e.columnType === "SEATMAP" ? (
-              <div
-                key={`R ${e.columnName}`}
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  flexDirection: "column",
-                  height: "100%",
-                }}
-              >
-                {e.seats.map((i: any) => {
-                  return <Seat seat={i} key={i.seatName} />;
-                })}
-              </div>
-            ) : null;
-          })}
-        </div>
+        </div> */}
+       
       </div>
 
       <div
@@ -135,12 +103,12 @@ function SeatMap({ seatMap }: Props) {
       >
         <div
           style={{
-            width: getScreenLen() - 30,
+            // width: getScreenLen() - 30,
+            width: "40%",
+            minWidth: "200px",
             height: 35,
-            marginTop: 30,
-            marginLeft: 15,
-            marginRight: 15,
-            marginBottom: 10,
+            margin: "auto",
+            marginTop: "40px",
             backgroundColor: "#EDF2F8",
             borderRadius: 10,
             display: "flex",
@@ -198,3 +166,14 @@ function SeatMap({ seatMap }: Props) {
 }
 
 export default SeatMap;
+
+const margin = (seat: any) => {
+  if (
+    // seat.includes("D") ||
+    seat.includes("H") ||
+    // seat.includes("L") ||
+    seat.includes("P")
+    // seat.includes("T")
+  )
+    return "1";
+};

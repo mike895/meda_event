@@ -11,9 +11,6 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-@media (max-width: 50px) {
-  
-}
 .ch-back-img-wrapper {
   overflow: hidden;
   height: 100vh;
@@ -75,7 +72,7 @@
 }
 
 .ch-show-more:hover {
-  background-color: #F56A05;
+  background-color: #f56a05;
   color: white;
 }
 .ch-top-right {
@@ -96,4 +93,47 @@
 .ch-buyTicket {
   font-size: 40px;
   font-weight: bold;
+}
+
+@media (max-width: 900px) {
+  .ch-top {
+    /* height: 100vh; */
+    flex-direction: row-reverse;
+  }
+  .chebelew {
+    height: 346px;
+  }
+  .ch-section-title,
+  .ch-section-desc {
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .ch-top {
+    /* height: 100vh; */
+    gap: 10px;
+    flex-direction: row-reverse;
+  }
+  .chebelew {
+    height: 250px;
+  }
+  .ch-section-title,
+  .ch-section-desc {
+    font-size: 16px !important;
+  }
+}
+@media (max-width: 600px) {
+  .ch-top {
+    /* height: 100vh; */
+    gap: 10px;
+    flex-direction: row-reverse;
+  }
+  .chebelew {
+    display: none;
+  }
+  .ch-section-title,
+  .ch-section-desc {
+    font-size: 16px !important;
+  }
 }

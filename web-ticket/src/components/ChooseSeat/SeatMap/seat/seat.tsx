@@ -1,5 +1,5 @@
 import { message } from "antd";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SeatSelectionContext } from "../../../../context/seatContext";
 import styles from "./seat.module.css";
 interface Props {
@@ -12,6 +12,9 @@ export default function Seat({ seat }: Props) {
   const triggerErrorAnim = () => {
     setErrorClass(styles["error-animation"]);
   };
+  useEffect(() => {
+    console.log();
+  });
   return (
     <div
       style={{
@@ -21,23 +24,24 @@ export default function Seat({ seat }: Props) {
         textAlign: "center",
         flexDirection: "column",
         margin: 3,
+        fontWeight: "bold",
         width: 35,
         height: 35,
         // borderRadius: 5,
-        borderTopLeftRadius:10,
-        borderTopRightRadius:10,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         userSelect: "none",
-        fontSize:12
+        fontSize: 12,
         //make it white
       }}
       onClick={() => {
-          if(seat.TicketsOnSeats.length != 0){
-              triggerErrorAnim();
-              return message.error("This seat is already booked")
-          }
-          else{
-              seatSelectionCtx.toggleSelect(seat);
-          }
+        if (seat.TicketsOnSeats.length != 0) {
+          triggerErrorAnim();
+
+          return message.error("This seat is already booked");
+        } else {
+          seatSelectionCtx.toggleSelect(seat);
+        }
       }}
       onAnimationEnd={() => {
         setErrorClass("");
@@ -50,7 +54,8 @@ export default function Seat({ seat }: Props) {
           : styles["selected-selection"]
       }`}
     >
-      {isSelected?seat.seatName:null}
+      {seat.seatName}
+      {/* {isSelected ? seat.seatName : null} */}
     </div>
   );
 }

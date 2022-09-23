@@ -15,7 +15,7 @@
 .seat-selection-container {
   background-color: #f9fcff;
   display: flex;
-  align-items: "center";
+  align-items: center;
   flex-direction: column;
   padding: 25px 25px;
   /* min-height: 340px; */

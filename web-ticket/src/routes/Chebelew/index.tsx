@@ -110,7 +110,6 @@ export default function Chebelew() {
             src={`${process.env.REACT_APP_BASE_URL_BACKEND}/images/${schedule?.schedules[0].event.posterImg}`}
             alt=""
           />
-          {/* <img className="ch-back-img" src="/images/chebelewbg.png" alt="" /> */}
         </div>
         <div className="ch-top">
           <div className="ch-top-left">
@@ -131,9 +130,14 @@ export default function Chebelew() {
             <div style={{ display: "flex", flexDirection: "row", gap: "50px" }}>
               <div className="ch-section">
                 <h3 className="ch-section-title">Address</h3>
-                <p className="ch-section-desc">
+                <a
+                  href="https://bit.ly/3LAhxLN"
+                  className="ch-section-desc"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   {schedule?.schedules[0].showTimes[0].eventHall.name}
-                </p>
+                </a>
               </div>
               <div className="ch-section">
                 <h3 className="ch-section-title">Date</h3>
@@ -165,7 +169,9 @@ export default function Chebelew() {
                 disabled={selectedShowtime === null}
                 onClick={() => {
                   if (!currentUser) {
-                    toggleAuthModal(true);
+                    toggleAuthModal(true, {
+                      ...authModalProps,
+                    });
                     return message.error("You need to login to continue");
                   }
 
@@ -192,283 +198,7 @@ export default function Chebelew() {
           </div>
           <span className="scrollDown"></span>
         </div>
-
-        {/* <div id="register" className="ch-bottom"></div> */}
-        {/* <div id="register" className="ch-bottom">
-          <div className="ch-form">
-            <div
-              // className={styles["content-container"]}
-              style={{ margin: "25px 0px" }}
-            >
-              <Space direction="horizontal">
-                {schedule?.speakers?.map((e: any) => {
-                  return (
-                    <Card
-                      key={e.id}
-                      hoverable
-                      // style={{ width: 700, wordWrap: 'break-word'}}
-                      style={{ width: 300, height: 750 }}
-                      cover={
-                        <img
-                          alt="Speaker_image"
-                          src={`${process.env.REACT_APP_BASE_URL_BACKEND}/images/${e.posterImg}`}
-                        />
-                      }
-                    >
-                      <Meta
-                        title={e.firstName + " " + e.lastName}
-                        description={e.biography}
-                      />
-                    </Card>
-                  );
-                })}
-              </Space>
-              <div style={{ margin: "25px 0px" }}> </div>
-              <Typography.Title level={2}>Buy Ticket</Typography.Title>
-              <Row style={{ flexDirection: "column", maxWidth: 500 }}>
-                <Typography.Title
-                  level={4}
-                  style={{
-                    marginRight: 10,
-                    marginBottom: 5,
-                    // marginTop: 30,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {"Mobile Number"}
-                </Typography.Title>
-                <PhoneInput
-                  countrySelectProps={{
-                    disabled: true,
-                  }}
-                  disabled
-                  placeholder="Enter phone number"
-                  countries={["ET"]}
-                  defaultCountry={"ET"}
-                  value={currentUser?.phoneNumber}
-                  international
-                  countryCallingCodeEditable={false}
-                  onChange={(e) => {
-                    // setPhone(e as any);
-                  }}
-                  style={{
-                    margin: "5px 0px",
-                  }}
-                />
-                <Typography.Title
-                  level={4}
-                  style={{
-                    marginRight: 10,
-                    marginBottom: 5,
-                    marginTop: 30,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {"Showtime"}
-                </Typography.Title>
-                <Typography.Text
-                  style={{
-                    marginRight: 10,
-                    marginBottom: 5,
-                    fontSize: 16,
-                    fontWeight: "500",
-                  }}
-                >
-                  {"Select your preferred showtime"}
-                </Typography.Text>
-                <Space direction="vertical">
-                  {schedule?.showTimes?.map((e: any) => {
-                    return (
-                      <ShowtimeSelectButton
-                        key={e.id}
-                        value={e.id}
-                        select={setSelectedShowtime}
-                        selected={e.id === selectedShowtime}
-                        timeCinema={`${dayjs(e.time).format("h:mm A")} (${
-                          e.eventHall.name
-                        })`}
-                        // movieType={e.movieType === "THREE" ? "3D" : "2D"}
-                        disabled={!e.active}
-                      />
-                    );
-                  })}
-                </Space>
-              </Row>
-              <Row
-                style={{
-                  flexDirection: "column",
-                  maxWidth: 500,
-                  marginTop: 30,
-                }}
-              >
-                <Button
-                  type="primary"
-                  disabled={selectedShowtime === null}
-                  onClick={() => {
-                    if (!currentUser) {
-                      toggleAuthModal(true);
-                      return message.error("You need to login to continue");
-                    }
-
-                    if (!isValidPhoneNumber(currentUser?.phoneNumber)) {
-                      message.error("Please enter a valid phone number");
-                    } else {
-                      navigate({
-                        pathname: `showtime/${selectedShowtime}`,
-                      });
-                    }
-                  }}
-                  style={{
-                    borderRadius: 5,
-                    fontWeight: "600",
-                    minHeight: 40,
-                    fontSize: 16,
-                  }}
-                >
-                  Continue to seat selection
-                </Button>
-              </Row>
-            </div>
-          </div>
-        </div> */}
       </div>
     </>
   );
 }
-
-/* Trial one
-
-
-const Seat = ({ name }: Seats) => {
-  return (
-    <div
-      style={{
-        padding: "5px",
-        backgroundColor: "#faad14",
-        color: "white",
-        borderRadius: "5px",
-        margin: "5px",
-        cursor: "pointer",
-      }}
-    >
-      {name}
-    </div>
-  );
-};
-
-
-
-const [currentBlocks, setCurrentBlocks] = useState(1);
-  const [currentZones, setCurrentZones] = useState(1);
-  const [seats, setSeats] = useState([
-    [
-      [
-        [
-          { block: 1, zone: 1, seatName: "A1" },
-          { block: 1, zone: 1, seatName: "A2" },
-          { block: 1, zone: 1, seatName: "A3" },
-        ],
-      ],
-    ],
-  ]);
-  let keys = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-  ];
-
-  const addBlock = () => {
-    setCurrentBlocks((prev) => prev + 1);
-    setSeats([
-      ...seats,
-      [
-        [
-          [
-            { block: currentBlocks, zone: currentZones, seatName: "A1" },
-            { block: currentBlocks, zone: currentZones, seatName: "A2" },
-            { block: currentBlocks, zone: currentZones, seatName: "A3" },
-          ],
-        ],
-      ],
-    ]);
-  };
-
-  const addZone = () => {
-    setCurrentZones((prev) => prev + 1);
-    setSeats([
-      ...seats,
-      [
-        [
-          [
-            { block: currentBlocks, zone: currentZones, seatName: "A1" },
-            { block: currentBlocks, zone: currentZones, seatName: "A2" },
-            { block: currentBlocks, zone: currentZones, seatName: "A3" },
-          ],
-        ],
-      ],
-    ]);
-  };
-
-  return (
-    <>
-      <Button onClick={() => addBlock()}>Add Block</Button>
-      <Button onClick={() => addBlock()}>Add Seats</Button>
-      <div
-        className="seatMap"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "30px",
-        }}
-      >
-        {seats.map((blocks) => (
-          <div
-            className="block"
-            style={{ display: "flex", marginBottom: "30px" }}
-          >
-            {blocks.map((zones) => (
-              <div
-                className="zone"
-                style={{ display: "flex", flexDirection: "column-reverse" }}
-              >
-                {zones.map((zoneRow) => (
-                  <div
-                    className="seat-row"
-                    style={{
-                      backgroundColor: "red",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      margin: "3px",
-                    }}
-                  >
-                    {zoneRow.map((i, index) => (
-                      <Seat name={i.seatName} />
-                    ))}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </>
-  );
-*/
