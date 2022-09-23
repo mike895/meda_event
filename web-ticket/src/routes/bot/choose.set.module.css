@@ -1,11 +1,9 @@
-.content-row{
+.content-row {
     margin: 25px 25px;
     /* background-color: red; */
-}
-.content-container{
-    background-color: #F9FCFF;
-    /* height: 30vh; */
-    /* width: 60vh; */
+  }
+  .content-container {
+    background-color: #f9fcff;
     display: flex;
     flex-direction: column;
     padding: 25px 25px;
@@ -13,4 +11,16 @@
     /* padding-bottom: 40px; */
     /* align-items: flex-start; */
     /* background-color: aqua; */
-}
+  }
+  .seat-selection-container {
+    background-color: #f9fcff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 25px 25px;
+    /* min-height: 340px; */
+    /* padding-bottom: 40px; */
+    /* align-items: flex-start; */
+    /* background-color: aqua; */
+  }
+  

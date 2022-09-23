@@ -33,6 +33,7 @@ import styles from "./choose.set.module.css";
 import ChooseSeatSkeleton from "./chooseSeatSkeletion";
 import ConfirmOrder from "../../components/ChooseSeat/ConfirmOrder";
 import SeatPreview from "../../components/ChooseSeat/SeatMap/SeatPreview";
+import axios from "axios";
 
 export default function ChooseSeat() {
   let { id, st } = useParams();
@@ -55,10 +56,8 @@ export default function ChooseSeat() {
     botlogin,
   } = useAuth();
   const [modalVisible, setModalVisible] = useState(false);
-
-  // const userObject = useMemo(() => {
-  //   return { scheduleId:scheduleId, showTimeId:showTimeId, token:token , chatid:chatid  };
-  // }, [scheduleId, showTimeId, token , chatid]);
+  const [selectedSeats, setSelectedSeats] = useState<any>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   async function loadData() {
     await onFetch(async () => await getShowtimeWithHallById(showTimeId), {
@@ -70,6 +69,47 @@ export default function ChooseSeat() {
         setShowtime(data);
       },
     });
+  }
+  async function createTicket(price: any) {
+    let res = await buyTicket({
+      showTimeId,
+      seats: selectedSeats.map((e: any) => e.id),
+      amount: 1,
+    });
+
+    if (res.error) {
+      message.error(error);
+    }
+    const PayInfo = {
+      id: res.id,
+      quantity: res.amount,
+      name: `${res.user.firstName + " " + res.user.lastName}`,
+      price,
+    };
+
+    payWithArifPay(PayInfo, res.id);
+  }
+
+  async function payWithArifPay(data: any, ticketId: string) {
+    // todo: auth token
+    axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL_BACKEND}/api/arifpay/create`,
+        data
+      )
+      .then((res) => {
+        console.log(res.data.data.paymentUrl);
+        window.open(res.data.data.paymentUrl, "_blank");
+        navigate({
+          pathname: `/tickets/${ticketId}`,
+        });
+        return;
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Unknown error");
+        console.log(err);
+      });
   }
   const payAction = async () => {
     if (selectedSeats.length === 0) {
@@ -90,7 +130,7 @@ export default function ChooseSeat() {
     } else {
       setBuyLoading(true);
       try {
-        await buySeats(totalPrice);
+        await createTicket(totalPrice);
       } catch (error) {
         console.log(error);
 
@@ -99,7 +139,6 @@ export default function ChooseSeat() {
       setBuyLoading(false);
     }
   };
-
   useEffect(() => {
     loadData();
   }, []);
@@ -121,7 +160,7 @@ export default function ChooseSeat() {
       amount: 1,
       chatid,
     });
-    if (res.error === undefined) {
+    if (res.error == undefined) {
       //Success
       window.open(res.href, "_blank");
       navigate({
@@ -133,13 +172,13 @@ export default function ChooseSeat() {
   }
 
   function isSeatSelected(seat: any) {
-    return selectedSeats.find((e: any) => e.id === seat.id) ? true : false;
+    return selectedSeats.find((e: any) => e.id == seat.id) ? true : false;
   }
   const toggleSelectSeat = (seat: any) => {
     if (isSeatSelected(seat)) {
       // Remove seat
       let valueList = [...selectedSeats];
-      const seatToBeRemovedIdx = valueList.findIndex((e) => e.id === seat.id);
+      const seatToBeRemovedIdx = valueList.findIndex((e) => e.id == seat.id);
       valueList.splice(seatToBeRemovedIdx, 1);
       setSelectedSeats(valueList);
     } else {
@@ -147,13 +186,11 @@ export default function ChooseSeat() {
       setSelectedSeats([...selectedSeats, seat]);
     }
   };
-  const [selectedSeats, setSelectedSeats] = useState<any>([]);
-  const [totalPrice, setTotalPrice] = useState(0);
 
   useLayoutEffect(() => {
     var sum = 0;
     selectedSeats.forEach((e: any) => {
-      if (e.seatType === SeatType.Regular) {
+      if (e.seatType == SeatType.Regular) {
         sum += showtime?.EventSchedule.regularTicketPrice ?? 0;
       } else {
         // sum += showtime?.CinemaMovieSchedule.vipTicketPrice ?? 0;
