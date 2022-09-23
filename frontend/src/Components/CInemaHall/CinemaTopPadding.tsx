@@ -8,7 +8,7 @@ import React from "react";
 import styles from "./cinema.padding.module.css";
 import { CinemaHallColumn } from "./types";
 
-const CinemaPadding = ({
+const CinemaTopPadding = ({
   seatMap,
   onRemoveColumn,
   column,
@@ -17,27 +17,26 @@ const CinemaPadding = ({
   onRemoveColumn: Function | null | undefined;
   seatMap: CinemaHallColumn[];
 }) => {
-  function getLargestSeatMapLength() {
-    return seatMap.reduce(function (p, v) {
-      return p.seats.length > v.seats.length ? p : v;
-    }).seats.length;
-  }
+    function getLargestSeatMapLength() {
+      return seatMap.reduce(function (p, v) {
+        return p.seats.length > v.seats.length ? p : v;
+      }).seats.length;
+    }
   return (
-    <div
+    <Col
       className={styles.seatPadding}
       style={{
-        display: "block",
-        height: "30px",
-        zIndex: 200,
-        width: "auto",
+        height: `${
+          getLargestSeatMapLength() * 40 + (getLargestSeatMapLength() - 1) * 10
+        }px`,
       }}
     >
       {onRemoveColumn == undefined ? null : (
         <div
           style={{
             position: "absolute",
-            // right: "-5px",
-            // marginTop: "-5px",
+            right: "-5px",
+            marginTop: "-5px",
           }}
         >
           <Popconfirm
@@ -56,8 +55,8 @@ const CinemaPadding = ({
           </Popconfirm>
         </div>
       )}
-    </div>
+    </Col>
   );
 };
 
-export default CinemaPadding;
+export default CinemaTopPadding;

@@ -3,6 +3,7 @@ import { Modal, Row, Tabs, Typography } from "antd";
 import React from "react";
 import CinemaColumn from "../CinemaColumn";
 import CinemaPadding from "../CinemaPadding";
+import CinemaTopPadding from "../CinemaTopPadding";
 import { CinemaHall } from "../types";
 import "./cinema.hall.preview.css";
 interface ModalProps {
@@ -40,7 +41,7 @@ const CinemaHallPreviewModal = ({ data, visible, onCancel }: ModalProps) => {
         style={{ marginBottom: "15px" }}
       >
         <TabPane tab="Regular" key="Regular">
-          <Row align="bottom" justify="center">
+          {/* <Row align="bottom" justify="center">
             {data.regularSeats.map((e) => {
               if (e.columnType == "SEATMAP") {
                 return (
@@ -61,7 +62,46 @@ const CinemaHallPreviewModal = ({ data, visible, onCancel }: ModalProps) => {
                 );
               }
             })}
-          </Row>
+          </Row> */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "auto",
+              flexDirection: "column-reverse",
+              width: "fit-content",
+            }}
+          >
+            {data.regularSeats.map((e) => {
+              if (e.columnType === "SEATMAP") {
+                return (
+                  <CinemaColumn
+                    key={e.columnName}
+                    column={e}
+                    onRemoveColumn={null}
+                  />
+                );
+              } else if (e.columnType === "PADDING") {
+                return (
+                  <CinemaPadding
+                    key={e.columnName}
+                    seatMap={data.regularSeats}
+                    column={e}
+                    onRemoveColumn={null}
+                  />
+                );
+              } else if (e.columnType === "TOPPADDING") {
+                return (
+                  <CinemaTopPadding
+                    key={e.columnName}
+                    seatMap={data.regularSeats}
+                    column={e}
+                    onRemoveColumn={null}
+                  />
+                );
+              }
+            })}
+          </div>
         </TabPane>
         {/* <TabPane tab="VIP" key="VIP">
         <Row align="bottom" justify="center">

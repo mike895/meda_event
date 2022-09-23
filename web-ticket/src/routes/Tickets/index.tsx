@@ -1,5 +1,6 @@
-import { Col, message, Popconfirm, Row, Spin, Typography } from "antd";
+import { Col, message, Button, Popconfirm, Row, Spin, Typography } from "antd";
 import { useEffect, useRef, useState } from "react";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/global/header";
@@ -19,6 +20,8 @@ import TicketWarning from "../../components/tickets/ticketWarning";
 import TicketSlider from "../../components/tickets/ticketSlider";
 import "./index.css";
 import colors from "../../constants/colors";
+import { useAuth } from "../../context/authContext";
+import axios from "axios";
 const reactScreenshot = require("use-react-screenshot");
 
 const { Paragraph } = Typography;
@@ -31,6 +34,7 @@ export default function Tickets() {
   const [currentTicket, setCurrentTicket] = useState(0);
   const [allLoading, setAllLoading] = useState(false);
   const [oneLoading, setOneLoading] = useState(false);
+  const { currentUser, loading, toggleAuthModal, authModalProps } = useAuth();
 
   let { id } = useParams();
   const location = useLocation();
@@ -46,6 +50,7 @@ export default function Tickets() {
       },
       onSuccessCallback: (data: any) => {
         setTicket(data);
+        console.log(data);
       },
     });
   }
@@ -119,6 +124,25 @@ export default function Tickets() {
     }
     all ? setAllLoading(false) : setOneLoading(false);
   };
+
+  async function payWithArifPay(data: any, ticketId: string) {
+    // todo: auth token
+    axios
+      .post(
+        `${process.env.REACT_APP_BASE_URL_BACKEND}/api/arifpay/create`,
+        data
+      )
+      .then((res) => {
+        console.log(res.data.data.paymentUrl);
+        window.open(res.data.data.paymentUrl, "_blank");
+        return;
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Unknown error");
+        console.log(err);
+      });
+  }
 
   useEffect(() => {
     loadData();
@@ -199,6 +223,51 @@ export default function Tickets() {
                         ? "Order Completed"
                         : `Payment Status: ${ticket?.paymentStatus}`}
                     </div>
+                    {/* {ticket?.paymentStatus === "PENDING" ? (
+                      <Row style={{ fontSize: 16 }} justify="center">
+                        <Col span={12}>
+                          <Button
+                            type="primary"
+                            // disabled={selectedShowtime === null}
+                            onClick={() => {
+                              if (ticket?.paymentStatus !== "PENDING") {
+                                return message.error("Reservtion expired!");
+                              }
+                              if (!currentUser) {
+                                toggleAuthModal(true, {
+                                  ...authModalProps,
+                                });
+                                return message.error(
+                                  "You need to login to continue"
+                                );
+                              }
+
+                              if (
+                                !isValidPhoneNumber(currentUser?.phoneNumber)
+                              ) {
+                                message.error(
+                                  "Please enter a valid phone number"
+                                );
+                              } else {
+                                navigate({
+                                  // pathname: `schedule/${schedule.schedules[0].id}/showtime/${selectedShowtime}`,
+                                });
+                              }
+                            }}
+                            style={{
+                              borderRadius: 5,
+                              fontWeight: "600",
+                              minHeight: 40,
+                              fontSize: 16,
+                              paddingLeft: "40px",
+                              paddingRight: "40px",
+                            }}
+                          >
+                            Retry
+                          </Button>
+                        </Col>
+                      </Row>
+                    ) : null} */}
                     {ticket?.showTime != null ? (
                       <div
                         style={{
@@ -206,7 +275,7 @@ export default function Tickets() {
                         }}
                       >
                         You need to download or save the ticket and show when
-                        requested at the cinema doors.
+                        requested at the event doors.
                       </div>
                     ) : null}
                   </div>
@@ -298,7 +367,8 @@ export default function Tickets() {
                 </div>
               </Col>
 
-              {ticket?.paymentStatus === "SUCCESS" && ticket?.showTime != null ? (
+              {ticket?.paymentStatus === "SUCCESS" &&
+              ticket?.showTime != null ? (
                 <TicketSlider
                   ticket={ticket}
                   oneLoading={oneLoading}

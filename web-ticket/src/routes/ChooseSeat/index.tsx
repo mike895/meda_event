@@ -284,8 +284,6 @@ export default function ChooseSeat() {
               </Row>
 
               <Row
-                // className={styles["seat-selection-container"]}
-
                 style={{
                   margin: "25px 0px",
                   padding: "25px",

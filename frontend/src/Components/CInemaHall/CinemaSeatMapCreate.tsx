@@ -1,4 +1,3 @@
-
 import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -19,10 +18,17 @@ import { type } from "os";
 import React, { useState } from "react";
 import CinemaColumn from "./CinemaColumn";
 import CinemaPadding from "./CinemaPadding";
+import CinemaTopPadding from "./CinemaTopPadding";
 import Seat from "./CinemaSeat/Seat";
 import { CinemaHallColumn } from "./types";
 const { Text, Link, Title } = Typography;
-const CinemaSeatMapCreate = ({seatMap,setSeatMap}:{seatMap:CinemaHallColumn[],setSeatMap:React.Dispatch<React.SetStateAction<CinemaHallColumn[]>>}) => {
+const CinemaSeatMapCreate = ({
+  seatMap,
+  setSeatMap,
+}: {
+  seatMap: CinemaHallColumn[];
+  setSeatMap: React.Dispatch<React.SetStateAction<CinemaHallColumn[]>>;
+}) => {
   const [columnAdd, setColumnAdd] = useState<{
     columnName: number;
     numberOfRows: number;
@@ -54,6 +60,13 @@ const CinemaSeatMapCreate = ({seatMap,setSeatMap}:{seatMap:CinemaHallColumn[],se
     "Q",
     "R",
     "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
   ];
   const removeColumn = (columnName: string) => {
     // Remove the said element then recalculate column order
@@ -69,9 +82,16 @@ const CinemaSeatMapCreate = ({seatMap,setSeatMap}:{seatMap:CinemaHallColumn[],se
   };
   return (
     <div>
-      <Row align="bottom">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "revert",
+          flexDirection: "column-reverse",
+          width: "fit-content",
+        }}
+      >
         {seatMap.map((e) => {
-          if (e.columnType == "SEATMAP") {
+          if (e.columnType === "SEATMAP") {
             return (
               <CinemaColumn
                 key={e.columnName}
@@ -79,7 +99,7 @@ const CinemaSeatMapCreate = ({seatMap,setSeatMap}:{seatMap:CinemaHallColumn[],se
                 onRemoveColumn={removeColumn}
               />
             );
-          } else if (e.columnType == "PADDING") {
+          } else if (e.columnType === "PADDING") {
             return (
               <CinemaPadding
                 key={e.columnName}
@@ -88,16 +108,25 @@ const CinemaSeatMapCreate = ({seatMap,setSeatMap}:{seatMap:CinemaHallColumn[],se
                 onRemoveColumn={removeColumn}
               />
             );
+          } else if (e.columnType === "TOPPADDING") {
+            return (
+              <CinemaTopPadding
+                key={e.columnName}
+                seatMap={seatMap}
+                column={e}
+                onRemoveColumn={removeColumn}
+              />
+            );
           }
         })}
-      </Row>
+      </div>
       <Row style={{ paddingTop: "10px" }} justify="center">
         <Popconfirm
           icon={<PlusOutlined style={{ color: "blue" }} />}
           title={
             <>
               <Space direction="vertical">
-                <Row>Column Number</Row>
+                <Row>Row Number</Row>
                 <Row>
                   <InputNumber
                     min={0}
@@ -115,11 +144,11 @@ const CinemaSeatMapCreate = ({seatMap,setSeatMap}:{seatMap:CinemaHallColumn[],se
                 </Row>
                 {columnAdd.columnType == "SEATMAP" ? (
                   <>
-                    <Row>Number Of Rows</Row>
+                    <Row>Columns</Row>
                     <Row>
                       <InputNumber
                         min={1}
-                        max={17}
+                        max={26}
                         value={columnAdd.numberOfRows}
                         onChange={(val) => {
                           if (!val) return;
@@ -158,6 +187,7 @@ const CinemaSeatMapCreate = ({seatMap,setSeatMap}:{seatMap:CinemaHallColumn[],se
                     }}
                   >
                     <Select.Option value="SEATMAP">SeatMap</Select.Option>
+                    {/* <Select.Option value="TOPPADDING">Top Padding</Select.Option> */}
                     <Select.Option value="PADDING">Padding</Select.Option>
                   </Select>
                 </Row>

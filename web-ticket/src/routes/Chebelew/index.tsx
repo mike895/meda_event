@@ -161,9 +161,7 @@ export default function Chebelew() {
               <p className="ch-section-desc">
                 {schedule?.schedules[0].event.synopsis}
               </p>
-              {/* <a href="#register" className="ch-show-more">
-                Buy Ticket
-              </a> */}
+
               <Button
                 type="primary"
                 disabled={selectedShowtime === null}

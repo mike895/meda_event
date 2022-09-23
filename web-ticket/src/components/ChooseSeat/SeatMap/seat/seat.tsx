@@ -27,7 +27,7 @@ export default function Seat({ seat }: Props) {
         fontWeight: "bold",
         width: 35,
         height: 35,
-        // borderRadius: 5,
+        marginLeft: `${margin(seat.seatName) ? "30px" : "0px"}`,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         userSelect: "none",
@@ -59,3 +59,14 @@ export default function Seat({ seat }: Props) {
     </div>
   );
 }
+
+const margin = (seat: any) => {
+  if (
+    // seat.includes("D") ||
+    seat.includes("H") ||
+    // seat.includes("L") ||
+    seat.includes("P")
+    // seat.includes("T")
+  )
+    return true;
+};
