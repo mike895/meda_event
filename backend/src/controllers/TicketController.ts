@@ -727,7 +727,6 @@ export default class TicketController {
     res: Response,
     next: NextFunction
   ) {
-
     const orderId = req.body.nonce;
     const status = req.body.transaction.transactionStatus;
     const referenceNumber = req.body.nonce;
@@ -751,7 +750,7 @@ export default class TicketController {
         false
       )
         throw new Error("Can't use sandbox on prod");
-      if (status == 'PAYED') {
+      if (status == 'SUCCESS') {
         // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING
         scheduler.removeById(referenceNumber);
         const eventTicket = await prisma.eventTicket.findUnique({
@@ -894,7 +893,7 @@ export default class TicketController {
           //   updatedTicket
           // );
         }
-      } else if (status == 'CANCELED') {
+      } else if (status == 'CANCELLED') {
         // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING
         scheduler.removeById(referenceNumber);
         await prisma.eventTicket.update({
@@ -905,6 +904,51 @@ export default class TicketController {
             // tslint:disable-next-line:no-null-keyword
             showTimeId: null,
             paymentStatus: PaymentStatus.CANCELLED,
+            referenceNumber: referenceNumber,
+            paymentMethod,
+          },
+        });
+      } else if (status == 'FAILED') {
+        // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING
+        scheduler.removeById(referenceNumber);
+        await prisma.eventTicket.update({
+          where: {
+            id: orderId,
+          },
+          data: {
+            // tslint:disable-next-line:no-null-keyword
+            showTimeId: null,
+            paymentStatus: PaymentStatus.FAILED,
+            referenceNumber: referenceNumber,
+            paymentMethod,
+          },
+        });
+      } else if (status == 'PENDING') {
+        // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING
+        scheduler.removeById(referenceNumber);
+        await prisma.eventTicket.update({
+          where: {
+            id: orderId,
+          },
+          data: {
+            // tslint:disable-next-line:no-null-keyword
+            showTimeId: null,
+            paymentStatus: PaymentStatus.PENDING,
+            referenceNumber: referenceNumber,
+            paymentMethod,
+          },
+        });
+      } else if (status == 'EXPIRED') {
+        // STOP THE SCHEDULE TO REMOVE THE SEAT FROM RESERVATION IF IT IS RUNNING
+        scheduler.removeById(referenceNumber);
+        await prisma.eventTicket.update({
+          where: {
+            id: orderId,
+          },
+          data: {
+            // tslint:disable-next-line:no-null-keyword
+            showTimeId: null,
+            paymentStatus: PaymentStatus.EXPIRED,
             referenceNumber: referenceNumber,
             paymentMethod,
           },

@@ -326,6 +326,7 @@ enum PaymentStatus {
   EXPIRED
   SUCCESS
   PENDING
+  
   PAYED
   CANCELED
   TOBERETURNED
