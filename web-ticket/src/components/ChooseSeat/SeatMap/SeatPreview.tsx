@@ -1,8 +1,4 @@
-import { Col, Row, Space } from "antd";
-import React, { useState } from "react";
 import Seat from "./seat/seat";
-import styles from "./seat.map.module.css";
-import seatStyles from "./seat/seat.module.css";
 interface Props {
   seatMap: any;
 }
@@ -13,18 +9,16 @@ export default function SeatPreview({ seatMap }: Props) {
       className="cool-scroll"
       style={{
         display: "flex",
-        height: "500px",
+        height: "600px",
         flexDirection: "column-reverse",
         width: "100%",
-        // overflow: "scroll",
         overflow: "scroll",
         alignItems: "center",
-        // backgroundColor:'red',
-        // justifyContent: "center",
         boxSizing: "border-box",
         paddingBottom: "20px",
-        bottom:0,
-        
+        bottom: 0,
+        boxShadow: "inset 0 0 10px #5d5d5d54",
+        borderRadius: "5px",
       }}
     >
       {seatMap.map((e: any) => {
@@ -33,13 +27,29 @@ export default function SeatPreview({ seatMap }: Props) {
             style={{
               display: "flex",
               margin: "auto",
-              height:"100%"
-              // flexGrow:1,
-              // flex:1,
-              // justifyContent: "flex-end",
+              height: "100%",
             }}
           >
             {e.seats.map((i: any) => {
+              // return (
+              //   <>
+              //     {e.columnType === "PADDING" ? (
+              //       <div
+              //         key={`P ${e.columnName}`}
+              //         style={{
+              //           flexDirection: "column",
+              //           width: "20px",
+              //           boxSizing: "border-box",
+              //           display: "flex",
+              //           flexShrink: 0,
+              //         }}
+              //       ></div>
+              //     ) : (
+              //       <Seat seat={i} key={i.seatName} />
+              //     )}
+              //   </>
+              // );
+
               if (e.columnType === "PADDING") {
                 return (
                   <div
@@ -50,7 +60,6 @@ export default function SeatPreview({ seatMap }: Props) {
                       boxSizing: "border-box",
                       display: "flex",
                       flexShrink: 0,
-                      // backgroundColor: "red",
                     }}
                   ></div>
                 );
@@ -68,7 +77,7 @@ export default function SeatPreview({ seatMap }: Props) {
                 }}
               ></span>
             ) : (
-              <div style={{height:"20px"}}>{""}</div>
+              <div style={{ height: "20px" }}>{""}</div>
             )}
           </div>
         );
