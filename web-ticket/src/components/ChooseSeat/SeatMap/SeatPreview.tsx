@@ -9,7 +9,7 @@ export default function SeatPreview({ seatMap }: Props) {
       className="cool-scroll"
       style={{
         display: "flex",
-        height: "600px",
+        // height: "600px",
         flexDirection: "column-reverse",
         width: "100%",
         overflow: "scroll",
