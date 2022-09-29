@@ -17,8 +17,8 @@ export default function SeatPreview({ seatMap }: Props) {
         boxSizing: "border-box",
         paddingBottom: "20px",
         bottom: 0,
-        boxShadow: "inset 0 0 10px #5d5d5d54",
-        borderRadius: "5px",
+        // boxShadow: "inset 0 0 10px #5d5d5d54",
+        // borderRadius: "5px",
       }}
     >
       {seatMap.map((e: any) => {
